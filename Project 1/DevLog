@@ -1,0 +1,393 @@
+Brendan Thompson
+
+Development Log for Project 1
+
+Objectives:
+	- file i/o
+	- trim all whitespace
+		- Hello World -> HelloWorld
+		- blank lines removed completely
+
+======================================================================
+======================================================================
+
+09/06/17
+
+Summary:
+	- Trimmed whitespace and blank lines
+Thoughts:
+	- I should learn to handle exceptions instead of calling exit() from prepareFileIO
+	- Do I really want to commit to c++ over c for the whole semester
+		- c++ can do everything c can do plus actual classes
+	- should I use getline() and parse the individual lines as opposed to one character at a time?
+	- probably don't need a one line long writeByte function
+
+Should I use getline() and then parse the line?
+	- https://stackoverflow.com/questions/3263323/c-read-from-istream-until-newline-but-not-whitespace
+		"Read the lines into a std::string using std::getline(), then assign the string to a std::istringstream object, and extract the data from that rather than directly from istream."
+	- std::istringstream object?
+		- http://www.cplusplus.com/reference/sstream/istringstream/
+			"Input stream class to operate on strings.
+			Objects of this class use a string buffer that contains a sequence of characters. This sequence of characters can be accessed directly as a string object, using member str.
+			The characters in the sequence can be extracted from the stream using any operation allowed on input streams."
+		- I don't want to use another buffer. I just want to know whether or not its an endline character
+
+Using eof as a loop condition is bad because it only returns true AFTER the character is read
+	- it doesn't return true if the NEXT character is eof
+	- https://stackoverflow.com/questions/5605125/why-is-iostreameof-inside-a-loop-condition-considered-wrong
+		"Because iostream::eof will only return true after reading the end of the stream. It does not indicate, that the next read will be the end of the stream."
+	- https://stackoverflow.com/questions/29520578/c-ifstream-class-get-method-returns-the-character
+		"
+			while(in >> c){ // process c here }
+			or
+			while(in >> std::noskipws >> c) { // process c here }
+			if you want the white spaces (like \n) included.
+		"
+		- looks like I could use std::noskipws to get the endline, but will also need to manage regular white spaces
+
+Changes:
+	* No longer using eof or my getByte fn
+		"
+		while(inputFile >> currentCharacter){
+			cout << currentCharacter;
+			writeByte (currentCharacter, outputFile);
+		}
+		"
+		- trimmedOutput.txt is showing the actual characters!
+			- still not spaces or endlines
+	* Lets try std::noskipws
+		"while(inputFile >> std::noskipws >> currentCharacter){..."
+		- NICE!!!! trimmedOutput looks exactly like the testFile.txt!!
+	- Now I just need to trim the whitespace myself
+		- I wonder if this method is gonna make removing blanklines harder
+			- perhaps getline() would make blank lines easier
+				- getline() into a stream and parse it the same way >>
+				- keep track of whether or not there was any actual characters in the line
+			- I'll come back to this after I trim out the spaces
+				- my text editor trims spaces automatically, so I will have to edit the testfile in a different editor
+	* trim the spaces myself
+		- http://www.cplusplus.com/reference/cctype/isspace/
+			- if (!isspace(currentCharacter))
+				- Didn't work, went back to trimming \n characters also!
+		- testing for \n first
+		"
+			while(inputFile >> std::noskipws >> currentCharacter){
+				if (currentCharacter == '\n'){
+					cout << currentCharacter;
+					writeByte (currentCharacter, outputFile);
+				}
+				if (!isspace(currentCharacter)){
+					cout << currentCharacter;
+					writeByte (currentCharacter, outputFile);
+				}
+			}
+		"
+			- This works well!
+	* The only thing left is for me to figure out how to remove blank lines
+		Option 1: use getline() and parse the string in like the same way
+			- have to use other peoples code (more fns from the std)
+		Option 2: keep track of the number of actual characters since the last newLine character
+			- can easily just use a counter
+			"
+				while(inputFile >> std::noskipws >> currentCharacter){
+					if (currentCharacter == '\n'){
+						if (charsSinceNewLine != 0){
+							cout << currentCharacter;
+							writeByte (currentCharacter, outputFile);
+							charsSinceNewLine = 0;
+						}
+
+					}
+					if (!isspace(currentCharacter)){
+						cout << currentCharacter;
+						writeByte (currentCharacter, outputFile);
+						charsSinceNewLine++;
+					}
+				}
+			"
+			** went with this. Works like a charm!!
+
+- Removed unused readByte function
+	- probably don't need the one line long writeByte function either'
+
+- NOTICED ERROR
+	- if newLine is at the end of the file it still puts it
+	Option 1:
+		- create a buffer instead of printing and forgetting
+			- fill it with appropriate characters / newLines
+		- would still need to implement the logic for Option 2
+		- In future projects I probably wont want to store entire programs in a buffer
+	Option 2:
+		- Don't print the newLine until I get another valid character
+			- if newline
+				- charsSinceNewLine = 0;
+				- gotNewLine = true;
+			- continue iterating through until got valid character.
+				In which case, print newLine and then valid character
+		** went with this. Works well!
+	"
+	while(inputFile >> std::noskipws >> currentCharacter){
+		if (currentCharacter == '\n'){
+			if (charsSinceNewLine != 0){
+				charsSinceNewLine = 0;
+				gotNewLine = true;
+			}
+		}
+		if (!isspace(currentCharacter)){
+			if (gotNewLine){
+				gotNewLine = false;
+				cout << '\n';
+				writeByte ('\n', outputFile);
+			}
+			cout << currentCharacter;
+			writeByte (currentCharacter, outputFile);
+			charsSinceNewLine++;
+		}
+	}
+	"
+
+Keeping track of charsSinceNewLine is now unnecessary since I am waiting on printing NewLines until after I get a valid character on a new line
+
+Final Algorithm:
+"
+	while(inputFile >> std::noskipws >> currentCharacter){
+		if (currentCharacter == '\n'){
+			gotNewLine = true;
+		}
+		if (!isspace(currentCharacter)){
+			if (gotNewLine){
+				gotNewLine = false;
+				// cout << '\n';
+				writeCharToFile ('\n', outputFile);
+			}
+			// cout << currentCharacter;
+			writeCharToFile (currentCharacter, outputFile);
+		}
+	}
+"
+
+Commented out most of the cout statements
+
+
+
+
+======================================================================
+======================================================================
+
+09/05/17
+
+Summary:
+	- Did most of the work:
+		- #includes, file format, created testFile, opened infile & outfile, reading & writing to file
+	- Still need to:
+		- format the output properly
+Thoughts:
+	- I should learn to handle exceptions instead of calling exit() from prepareFileIO
+	- Do I really want to commit to c++ over c?
+
+Reusing code:
+	- Luckily I have C++ file i/o in a project I did for Dr. England's ST: Automated MIDI File Production class
+	- Original Code Snippets:
+		A) Basic file structure
+			"
+			int main () { ... system ("Pause");	return 0;}
+			"
+		A) Includes
+			"
+				#include <iostream>
+				#include <fstream>
+				using namespace std
+			"
+			1) changed std to "using std::cout; using std::endl;"
+				- https://stackoverflow.com/questions/22645097/what-does-include-iostream-do
+		B) IO Files Declarations
+			"
+				//Global IO Stream
+				#ifndef GLOBAL
+				#define GLOBAL
+					ofstream globalOutputFile;
+					ifstream globalInputFile;
+				#endif
+			"
+			1) defined it locally instead of globally
+		C) Open IO Files
+			"
+				//attempt to open globalOutputFile
+				globalOutputFile.open("prog4.mid", ios::binary);
+				if (!globalOutputFile)
+				{
+					cerr<< "Can't open prog4.mid; aborting." <<endl;
+					exit(1);
+				}
+
+				//attempt to open globalInputFile
+				cout<<"What file would you like to read in? ";
+				cin>>fileName;
+			    cout << endl << "Attempting to open binary file " << fileName << " ..." << endl;
+			    globalInputFile.open(fileName.c_str(), ios::binary);
+			    if (!globalInputFile) {
+			        cerr << "Can't open " << fileName << " for input; aborting." << endl;
+			        exit(1);
+			    }
+			"
+			1) Changed variable names to new non-global filenames
+			2) Edit Text
+			3) Abstracted into new function prepareFileIO()
+		D) Close IO Files
+			"
+				globalInputFile.close();
+				globalOutputFile.close();
+			"
+			1) Abstracted into new function closeFileIO()
+		E) Reading and Writing one byte
+			"
+				// wb = takes in a single Byte Hex value and prints it to the output file
+				void wb (unsigned value) {
+					globalOutputFile<< char(value);
+				}
+
+				char rb (){
+					char value;
+					globalInputFile>> hex>> value;
+					if (globalInputFile.eof())
+					{
+						return "@"; // @ = my designated eof character
+					}
+					return value;
+				}
+			"
+			1) Changed Function Names
+
+Create Function Prototypes
+void prepareFileIO(ifstream inFile, ofstream outFile);
+void closeFileIO(ifstream inFile, ofstream outFile);
+void writeByte (unsigned value, ofstream outFile);
+char readByte (ifstream inFile);
+
+Getting the input characters and outputting them straight to console
+	1) Iterate through characters of file
+		"
+			while (!inputFile.eof()){
+
+			}
+		"
+		- got !_.eof() from the reused rb function referenced in (E) above
+	2) Get & Output
+		{
+		char currentCharacter = readByte(inputFile);
+		cout << currentCharacter;
+		}
+
+Create a Makefile
+	1) Create Makefile
+	2) Reuse code from my old NetCentric Operating Systems class
+		"
+			# Brendan Thompson
+			# 04/09/17
+			# Makefile for NetCentric Project 2 Program 4
+
+			# Compile and Link With "make main"
+			# clear object, txt, and exe files with "make clean"
+			# run with ./BRENxOS
+
+			main: moses_m.o PSW.o ProcessTable.o Scheduler.o Semaphore.o Kernel.o MemoryManager.o moses_m.h PSW.h ProcessTable.h Scheduler.h Semaphore.h MemoryManager.h
+				gcc -o BRENxOS moses_m.o PSW.o ProcessTable.o Scheduler.o Semaphore.o Kernel.o MemoryManager.o
+
+			Kernel.o: Kernel.c PSW.h ProcessTable.h Scheduler.h moses_m.h
+				gcc -c Kernel.c
+
+		...
+
+			clean:
+				rm BRENxOS Kernel.o MemoryManager.o Semaphore.o Scheduler.o ProcessTable.o PSW.o moses_m.txt dump.txt paging.txt
+		"
+	3) Update Code for this new use as a c++ project
+		"
+			# Brendan Thompson
+			# 09/05/17
+			# Makefile for Compiler Construction Project 1
+
+			# "make main" = Compile and Link
+			# "make clean" = remove created files (.o, trimmedOutput.txt)
+			# "./bjthompson18" = run
+
+			main: bjthompson18.o
+				g++ -o bjthompson18 bjthompson18.o
+
+			bjthompson18.o: bjthompson18.c++
+				g++ -c bjthompson18.c++
+
+			clean:
+				rm bjthompson18 bjthompson18.o trimmedOutput.txt
+		"
+
+First Build:
+	- Need more includes:
+		#include <iostream>	// Console IO
+		#include <fstream>	// File IO
+		#include <stdlib.h>	// Exit()
+		using std::cin;
+		using std::cout;
+		using std::cerr;
+		using std::endl;
+		using std::ifstream;
+		using std::ofstream;
+		- changed string to char[MAX_STRING_LENGTH] instead of including it
+			#define MAX_STRING_LENGTH 50
+			- remove c_str() from infile.open(fileName.c_str())
+	- sync all variable names with changes
+	- Huge error resulting from line 7 (#include <iostream>)
+		"
+		In file included from /usr/include/c++/5/ios:42:0,
+                 from /usr/include/c++/5/ostream:38,
+                 from /usr/include/c++/5/iostream:39,
+                 from bjthompson18.cpp:7:
+					/usr/include/c++/5/bits/ios_base.h: In copy constructor ‘std::basic_ios<char>::basic_ios(const std::basic_ios<char>&)’:
+					/usr/include/c++/5/bits/ios_base.h:855:5: error: ‘std::ios_base::ios_base(const std::ios_base&)’ is private
+					     ios_base(const ios_base&);
+     ^
+		In file included from /usr/include/c++/5/ios:44:0,
+                 from /usr/include/c++/5/ostream:38,
+                 from /usr/include/c++/5/iostream:39,
+                 from bjthompson18.cpp:7:
+        "
+		- https://stackoverflow.com/questions/19213032/crazy-c-compiler-error-messages-about-a-copy-constructor-from-mingw32
+		- Problem: ofstream & ifstream don't like to be copied
+		- Solution: pass the io files by reference
+	- accidentally had outFile >> variable, instead of <<
+	- removed hex >> from inFile >> hex >> value;
+
+	RESULT:
+		"sh: 1: Pause: not found"
+			- remove system(Pause);
+			- I think I used that for bloodshed devc++
+		- printed it out as one long line with no spaces at all
+		"HelloWorldThisismyExampleFileRightNowithas12lines456(&(*&!@$%^&*()_?>""))EventuallyItWillHAVE8liness"
+		"
+		...
+				while(!inputFile.eof()){
+					char currentCharacter = readByte(inputFile);
+					cout << currentCharacter;
+				}
+		...
+			char readByte (ifstream &inFile){
+				char value;
+				inFile >> value;
+				return value;
+			}
+		"
+		- so does that mean readByte skips the whitespace and endline characters?
+			- If so, that is nice for the spaces but I will need to catch endlines somehow
+
+Lets add output to the while loop
+	Fills the file with:
+		"7210110810811187111114108100841041051151051157712169120971091121081017010510810182105103104116781111191051161049711549501081051101011155253544038404238336436379438424041956362343441416911810111011611797108108121731168710510810872658669561081051101011150"
+	- Change unsigned to char for writeByte
+	Filles the file with:
+		"4865 6c6c 6f57 6f72 6c64 5468 6973 6973
+		4d79 4578 616d 706c 6546 696c 6552 6967
+		6874 4e6f 7769 7468 6173 3132 6c69 6e65
+		7334 3536 2826 282a 2621 4024 255e 262a
+		2829 5f3f 3e22 2229 2945 7665 6e74 7561
+		6c6c 7949 7457 696c 6c48 4156 4538 6c69
+		6e65 7300"

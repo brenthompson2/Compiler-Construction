@@ -1,0 +1,671 @@
+Devlog
+Compiler V3
+Brendan Thompson
+
+=========================================================
+=========================================================
+
+Goal:
+	- Create a compiler that handles 12 commands:
+		- READ, WRITE, STOP, dim, aREAD, aWRITE, goto, loop, loop-end, ifa, nop, ?
+	- Preprocesses file by removing whitespace and unifying to upper case
+	- Passes through file again getting line labels
+	- Writes op code to <file>.obj
+	- Manages Variables with a SymbolTable
+	- Ignores comments written c* or //
+
+=========================================================
+=========================================================
+
+10/09/17
+
+Summary of Work:
+	- Updated Parser in all commands to reflect changes to tREAD
+		- Closer to the NDFA version from class
+	- Changed Command handler function calls from bool newCOMMAND to int handleCOMMAND
+	- Made all deconstructors similar
+
+Thoughts:
+	- Each command has a parser function and they are all super similar
+		- Could possibly abstract them away into less function
+		- aread & awrite = identical
+		- read & write = identical
+	- What was the limit to the length of a variable name?
+	- Is their a built in way of doing exception handling other than creating bool functions and testing them upon return
+		- bools force more pointers when unable to give actual return values
+	- FileManger write<TYPE>ToObj() functions should probably become template functions
+	- Symbol Table can't get sorted or it would throw off the sync between the .obj file and the variable's memory location
+		- or would it be possible since I am using a struct that has "memoryLocation" as a field.
+		-  I have to look into that more
+	- Consulted Green Book
+		- I do not feel it is necessary to put my name on every single function since I wrote every line in every file
+
+Status:
+	- Compiler Driver:
+		- creates an instance of Compiler, tells it to compiler, and shutdowns the compiler
+		- takes in a fileName as a parameter
+	- Compiler:
+		- creates an instance of FileManager & SymbolTable
+		- maps input file line numbers to preprocessed file line numbers with globalLinesOfCodeArray
+			- max 1000 lines
+		- gets one line at a time and manages commands with command handling objects
+	- FileManager:
+		- opens .transy, .obj, and .noblanks files
+		- preprocesses .transy into .noblanks
+		- upon request hands the compiler one line at a time from the preprocessed file
+		- writes char/string/int to .obj file
+	- SymbolTable:
+		- manages variable names and their associated virtual memory locations
+	- Commands:
+		I) tREAD:
+			- handles read command, tells parent FileManager to write op code to .obj, and tells MemoryManager to manage variables
+		II) tWRITE:
+			- handles write command, tells parent FileManager to write op code to .obj, and tells MemoryManager to manage variables
+		III) tSTOP:
+			- handles stop command, tells parent FileManager to write op code to .obj
+			- Should this not have the "t" in "tSTOP"?
+		IV) DIM:
+			- handles write command, tells parent FileManager to write op code to .obj, and tells MemoryManager to manage variables
+		V) aREAD:
+			- handles aREAD command, tells parent FileManager to write op code to .obj, and tells MemoryManager to manage variables
+			- arrays must have already been declared by a dim command
+		VI) aWRITE:
+			- handles aWRITE command, tells parent FileManager to write op code to .obj, and tells MemoryManager to manage variables
+			- arrays must have already been declared by a dim command
+
+Still Need to Implement:
+	- FileManager:
+		- need another pass after preprocessing to get line labels
+	- Compiler:
+		A) Needs to Take in Flags
+		B) Only supposed to take in 1 file
+	- Commands:
+		I) goto
+		II) loop
+		III) loop-end
+		IV) ifa
+		V) nop
+		VI) ?
+	- On The Horizon:
+		A) flags
+			-n = don't remove noblanks
+			-o = don't remove obj
+		B) aREAD & aWRITE put constants in lookup table
+		C) DIMs must be before any other command
+
+
+- Updated Parser in all commands to reflect changes to tREAD
+	- Closer to the NDFA version from class
+	- tWRITE:
+		A) Replace parseVariables() & analyzeCharacter() with parseParameters() & parseVariable()
+			- .cpp & .h
+		B) call parseParameters() instead of parseVariables() in newWRITE()
+		C) Change initial value of currentCharIterator to 5 instead of 4
+			- made this a symbolic constant INDEX_FIRST_CHAR_AFTER_<commandName>_COMMAND
+	- aREAD
+		A) Replace parseVariables() & analyzeCharacter() with parseParameters() & parseVariable()
+			- .cpp & .h
+		B) call parseParameters() instead of parseVariables() in newWRITE()
+		C) rewrite parseParameters()
+		D) use symbolic constant INDEX_FIRST_CHAR_AFTER_AREAD_COMMAND
+		E) Create parseIndex()
+			- variable names more general to work well with start & end indexes
+			- have to pass a bool asking if start or end index so that it can properly update globalStartIndex or globalEndIndex
+				- maybe it should return the string currentIndexString instead of the bool isNotLastParameter
+					- isNotLastParameter allows for smooth checking of values and conditional parsing of parameters
+			- Commented out sections since someday will handle variables instead of digits as start & end indexes
+	- aWRITE
+		- same as aREAD
+	- DIM
+		A) copy version from aREAD
+		B) turn parseIndex() into parseSize()
+		C) manage getting brackets in parseVariable() & parseSize()
+		D) rewrite parseParameters()
+
+- Changed Command handler function calls from bool newCOMMAND to int handleCOMMAND
+	- returns command handler's globalNumErrors
+	- takes in line number
+		- reports errors
+
+- Made all deconstructors similar
+	- Compiler
+	- FileManager
+	- SymbolTable
+
+=========================================================
+=========================================================
+
+10/08/17
+
+Summary of Work:
+	- Fixed ignoring of comment when creating .noblanks and loaded each line of .noblanks file into globalLinesOfCodeArray[]
+	- Made it so errors report the corresponding input file line number
+	- Implemented better error checking in tREAD variable name parser
+		- closer to NDFA version from class
+
+Thoughts:
+	- What was the limit to the length of a variable name?
+	- Is their a built in way of doing exception handling other than creating bool functions and testing them upon return
+		- bools force more pointers when unable to give actual return values
+	- I have been using a lot of unsigned int for variables that shouldn't ever be negative
+		- What is the best type to declare a counter that can only be a real number?
+		- int is shorter, making it cleaner to look at and faster to type
+	- FileManger write<TYPE>ToObj() functions should probably become template functions
+	- Symbol Table can't get sorted or it would throw off the sync between the .obj file and the variable's memory location
+		- or would it be possible since I am using a struct that has "memoryLocation" as a field.
+		-  I have to look into that more
+	- Consulted Green Book
+		- I do not feel it is necessary to put my name on every single function since I wrote every line in every file
+
+Status:
+	- Compiler Driver:
+		- creates an instance of Compiler, tells it to compiler, and shutdowns the compiler
+		- takes in a fileName as a parameter
+	- Compiler:
+		- creates an instance of FileManager & SymbolTable
+		- maps input file line numbers to preprocessed file line numbers with globalLinesOfCodeArray
+			- max 1000 lines
+		- gets one line at a time and manages commands with command handling objects
+	- FileManager:
+		- opens .transy, .obj, and .noblanks files
+		- preprocesses .transy into .noblanks
+		- upon request hands the compiler one line at a time from the preprocessed file
+		- writes char/string/int to .obj file
+	- SymbolTable:
+		- manages variable names and their associated virtual memory locations
+	- Commands:
+		I) tREAD:
+			- handles read command, tells parent FileManager to write op code to .obj, and tells MemoryManager to manage variables
+		II) tWRITE:
+			- handles write command, tells parent FileManager to write op code to .obj, and tells MemoryManager to manage variables
+		III) tSTOP:
+			- handles stop command, tells parent FileManager to write op code to .obj
+		IV) DIM:
+			- handles write command, tells parent FileManager to write op code to .obj, and tells MemoryManager to manage variables
+		V) aREAD:
+			- handles aREAD command, tells parent FileManager to write op code to .obj, and tells MemoryManager to manage variables
+			- arrays must have already been declared by a dim command
+		VI) aWRITE:
+			- handles aWRITE command, tells parent FileManager to write op code to .obj, and tells MemoryManager to manage variables
+			- arrays must have already been declared by a dim command
+
+Still Need to Implement:
+	- Compiler:
+		A) Needs to Take in Flags
+		B) Only supposed to take in 1 file
+	- Parsers:
+		Update all parsers using the nice new tREAD version
+			- if only this was implemented in a nice object oriented way instead of re-implemented for every command
+
+- Fixed ignoring of comment when creating .noblanks and loaded each line of .noblanks file into globalLinesOfCodeArray[]
+	- Rewrote the entire section of code
+	- MAX_NUM_LINES_IN_TRANSY_PROGRAM = 1000
+	- had to re-google-search the syntax for appending a char to a string (currentString += currentChar)
+		- maybe because I forgot to cite it last time I didn't remember it
+		- www.cplusplus.com/reference/string/string/operator+=/
+
+- Made it so errors report the corresponding input file line number
+
+- Implemented better error checking in tREAD variable name parser
+	- built in function to check if character is alphabetic or a digit: "isalpha(char)" & "isdigit(char)"
+		- www.cplusplus.com/reference/cctype/
+	- only adds variables to SymbolTable if valid syntax
+	- NOT USING THESE SYMBOLIC CONSTANTS
+		#define CHAR_IS_ALPHABETIC 0
+		#define CHAR_IS_DIGIT 1
+		#define CHAR_IS_COMMA 2
+		#define CHAR_IS_ENDL 3
+		#define CHAR_IS_UNDERSCORE 4
+
+
+=========================================================
+=========================================================
+
+10/03/17
+
+Summary of Work:
+	- Prepared for command line flags
+	- Cleaned Output to Console
+
+Thoughts:
+	- Is their a built in way of doing exception handling other than creating bool functions and testing them upon return
+		- bools force more pointers when unable to give actual return values
+	- I have been using a lot of unsigned int for variables that shouldn't ever be negative
+		- What is the best type to declare a counter that can only be a real number?
+		- int is shorter, making it cleaner to look at and faster to type
+	- FileManger write<TYPE>ToObj() functions should probably become template functions
+	- Symbol Table can't get sorted or it would throw off the sync between the .obj file and the variable's memory location
+		- or would it be possible since I am using a struct that has "memoryLocation" as a field.
+		-  I have to look into that more
+	- Consulted Green Book
+		- I do not feel it is necessary to put my name on every single function since I wrote every line in every file
+
+Status:
+	- Compiler Driver: creates an instance of Compiler, tells it to compiler, and shutdowns the compiler
+	- Compiler: creates an instance of FileManager & SymbolTable, gets one line at a time and manages commands with objects based off one parsed line at a time
+	- FileManager: gets .transy file, prepares .obj file, preprocesses .transy into .noblanks, and hands the compiler one line at a time from the preprocessed file
+	- SymbolTable: manages variable names and their associated virtual memory locations
+	- Commands:
+		- tREAD: handles read command, tells parent FileManager to write op code to .obj, and tells MemoryManager to manage variables
+		- tWRITE: handles write command, tells parent FileManager to write op code to .obj, and tells MemoryManager to manage variables
+		- tSTOP: handles stop command, tells parent FileManager to write op code to .obj
+		- DIM: handles write command, tells parent FileManager to write op code to .obj, and tells MemoryManager to manage variables
+		- aREAD: handles aREAD command, tells parent FileManager to write op code to .obj, and tells MemoryManager to manage variables
+			- arrays must have already been declared by a dim command
+		- aWRITE: handles aWRITE command, tells parent FileManager to write op code to .obj, and tells MemoryManager to manage variables
+			- arrays must have already been declared by a dim command
+	- Other:
+		- ./Compiler can only handle taking in 1 file
+
+Still Need to Implement:
+	- SymbolTable:
+	- Parsing:
+		A) Doesn't test variable names well
+			- must be alphanumeric
+			- start with a letter
+			- can have _ after 1st
+	- Compiler:
+		A) Needs to Take in Flags
+		B) Only supposed to take in 1 file
+
+- Prepared Command line input for flags
+
+- Cleaned Output
+
+=========================================================
+=========================================================
+
+10/1/17
+
+Summary of Work:
+	- Takes in file names as arguments
+		- currently only works with one file
+	- Reduced Globals in FileManager
+	- Changed Destructors to ~ functions
+	- Made FileManager getLine() conditionally return END_FILE_SENTINEL
+	- Moved re-opening of preprocessed file into its own function
+	- Implemented Commands:
+		- dim, aread, awrite
+	- Implemented Comments: // & c*
+
+Thoughts:
+	- Consulted Green Book
+		- I do not feel it is necessary to put my name on every single function since I wrote every line in every file
+	- Is their a built in way of doing exception handling other than creating bool functions and testing them upon return
+		- bools force more pointers when unable to give actual return values
+	- I have been using a lot of unsigned int for variables that shouldn't ever be negative
+		- What is the best type to declare a counter that can only be a real number?
+		- int is shorter, making it cleaner to look at and faster to type
+	- FileManger write<TYPE>ToObj() functions should probably become template functions
+
+Status:
+	- Compiler Driver: creates an instance of Compiler, tells it to compiler, and shutdowns the compiler
+	- Compiler: creates an instance of FileManager & SymbolTable, gets one line at a time and manages commands with objects based off one parsed line at a time
+	- FileManager: gets .transy file, prepares .obj file, preprocesses .transy into .noblanks, and hands the compiler one line at a time from the preprocessed file
+	- SymbolTable: manages variable names and their associated virtual memory locations
+	- Commands:
+		- tREAD: handles read command, tells parent FileManager to write op code to .obj, and tells MemoryManager to manage variables
+		- tWRITE: handles write command, tells parent FileManager to write op code to .obj, and tells MemoryManager to manage variables
+		- tSTOP: handles stop command, tells parent FileManager to write op code to .obj
+		- DIM: handles write command, tells parent FileManager to write op code to .obj, and tells MemoryManager to manage variables
+		- aREAD: handles aREAD command, tells parent FileManager to write op code to .obj, and tells MemoryManager to manage variables
+		- aWRITE: handles aWRITE command, tells parent FileManager to write op code to .obj, and tells MemoryManager to manage variables
+	- Other:
+		- ./Compiler can only handle taking in 1 file
+
+Still Need to Implement:
+	- SymbolTable:
+		A) isn't sorted alphabetically
+	- Parsing:
+		A) Doesn't test variable names well
+			- must be alphanumeric
+			- start with letter
+			- can have _ after 1st
+	- Compiler:
+		A) should work with multiple files
+			- currently only works if given 1 file via command line
+
+- Takes in file names as arguments
+	- currently only works with one file
+
+- Reduced Globals in FileManager
+
+- Changed Destructors to ~ functions
+
+- Made FileManager getLine() conditionally return END_FILE_SENTINEL
+
+- Moved re-opening of preprocessed file into its own function
+
+- Implemented DIM
+	- had to change SymbolTable MemoryTableObject
+	- parse variables goes through one character at a time, sending it to analyzeChar
+		- if analyzeChar sees [, parses size one character at a time, send it to analyzeSize
+			- if analyzeSize sees ], adds to variableArray and returns to parsing variables
+	- converted string to int
+		- https://stackoverflow.com/questions/6093414/convert-char-array-to-single-int
+
+- Implemented aREAD
+	- only handles one read at a time (aREAD varName startIndex endIndex'\0')
+
+- Implemented aWRITE
+	- only handles one write at a time (aWRITE varName startIndex endIndex'\0')
+
+- Implemented Comments
+	- wow that got messy fast
+	- std::istream::peak() made this way easier
+		- https://stackoverflow.com/questions/3712379/return-value-of-istream-peek-when-it-reaches-the-end-of-the-file
+
+
+=========================================================
+=========================================================
+
+09/26/17
+
+Summary of Work:
+	- Now Outputs Op Code to .obj file
+	- Now Manages Variables with SymbolTable
+		- switched all references from LookupTable to SymbolTable
+	- Version 1 is worthy of being turned in as it has met the goal described above
+		- See "Still Need to Implement" section below
+
+Thoughts:
+	- CONSULT GREEN BOOK
+		- surprisingly low level
+			- Doesn't use the word camelCase when describingThatStyle
+			- Doesn't discuss interface vs implementation, just talks about headers as "helpers" to source files
+		- I do not feel it is necessary to put my name on every single function since I wrote every line in every file
+	- Should try to reduce global files & names in File Manager
+	- Should the entire program be read into a vector or should I handle compilation line by line?
+		- probably not
+	- Is their a built in way of doing exception handling other than creating bool functions and testing them upon return
+		- bools force more pointers when unable to give actual return values
+	- Should the destructors be made with a ~ function
+		- YESS! Need to implement
+		- ~ get called automatically, instead of hoping the programmer manually calls shutdown
+	- I have been using a lot of unsigned int for variables that shouldn't ever be negative
+		- What is the best type to declare a counter that can only be a real number?
+		- int is shorter, making it cleaner to look at and faster to type
+	- FileManger write<TYPE>ToObj() functions should probably become template functions
+
+Status:
+	- Compiler Driver: creates an instance of Compiler, tells it to compiler, and shutdowns the compiler
+	- Compiler: creates an instance of FileManager & SymbolTable, gets one line at a time and manages commands with objects based off one parsed line at a time
+	- FileManager: gets .transy file, prepares .obj file, preprocesses .transy into .noblanks, and hands the compiler one line at a time from the preprocessed file
+	- tREAD: handles read command, tells parent FileManager to write op code to .obj, and tells MemoryManager to manage variables
+	- tWRITE: handles write command, tells parent FileManager to write op code to .obj, and tells MemoryManager to manage variables
+	- tSTOP: handles stop command, tells parent FileManager to write op code to .obj
+	- SymbolTable: manages variable names and their associated virtual memory locations
+
+Still Need to Implement:
+	- SymbolTable:
+		A) isn't sorted alphabetically
+	- Compiler:
+		A) Not taking arguments "Compile <filename>.transy"
+			- still asks the user for a file
+	- Parsing:
+		A) Doesn't test variable names well
+			- must be alphanumeric
+			- start with letter
+			- can have _ after 1st
+	- File Manager:
+		A) make the end of file character for the getLine function a #define END_SENTINEL @
+		B) should move re-opening of .noblanks for input into its own private function?
+	- Change destructors to ~ functions
+
+- Attempting to Write Op Code to file
+	- need to give the tCOMMAND objects a pointer to the main FileManager
+	- Successfully implemented for READ
+		- still not using real memLocations since LookupTable not fully implemented
+		- needed to create another FileManager fn called writeNumToObj()
+			- exact same as writeCharToObj except parameter type is dif
+				- screaming to become a template function
+	- Successfully copied & manipulated printToObj code to WRITE & STOP
+
+- FINAL STEP: Implementing Lookup Table
+	- will some day be a sorted alphabetically based off variable name characters ASCII value
+		- currently not sorted
+	- will some day search through the array with log(n) efficiency
+		- currently hardcoded
+	- successfully manages variables for tREAD & tWRITE
+
+- Changed all references of LookupTable to SymbolTable
+
+
+=========================================================
+=========================================================
+
+09/25/17
+
+Summary:
+	- Created LookupTable.cpp & .h
+	- Successfully parsed READ command and added variables to array
+		- still need to conditionally add the variables to the lookup table
+		- still need to output opp code into .obj
+	- Copied tREAD and manipulated into tWRITE
+	- Copied tREAD and heavily trimmed into tSTOP
+
+Thoughts:
+	- Should try to reduce global files & names in File Manager
+	- Should the entire program be read into a vector or should I handle compilation line by line?
+	- Is their a built in way of doing exception handling other than creating bool functions and testing them upon return
+		- Forces more pointers when unable to give actual return values
+	- Should the destructors be made with a ~ function
+	- I have been using a lot of unsigned int for variables that shouldn't ever be negative
+		- What is the best type to declare a counter that can only be a real number?
+
+Status:
+	- Compiler Driver: creates an instance of Compiler, tells it to compiler, and shutdowns the compiler
+	- Compiler: creates an instance of FileManager, gets one line at a time and parses it based off the tokenized command name
+	- FileManager: gets .transy file, prepares .obj file, preprocesses .transy into .noblanks, and hands the compiler one line at a time from the preprocessed file
+
+Still Need to Implement:
+	- t<commandName>: handles compiling the line based off the command
+		- probably gonna make as more of a C file than a C++ class
+	- LookupTable: memory management device for linking memory locations with variable names
+		- want to implement as a link list sorted alphabetically according to character ASCII values
+		- WAIT: a linked list wouldn't benefit from the sort in the way that an array would
+			- Keeping an array sorted would require a lot of excess data movement, but would be optimized for lookup & runtime
+	- in File Manager:
+		- I should make my end of file character for the getLine function a #define END_SENTINEL @
+		- should move re-opening of .noblanks for input into its own private function
+
+- Created Lookup Table
+	- Will be array sorted according to ASCII value
+	- created .h & .cpp
+
+- Implemented tREAD
+	- constructor creates an instance of tREAD to be instantiated during preprocessing
+	- newREAD(string currentString) = function for handling tREAD
+	- Parses variables into variableArray and then inserts them into lookup table
+		- have not yet implemented the addToLookupTable part
+	- I found online some cool syntax for appending characters to a string
+		- currentVariableName += currentChar;
+
+- Creating analyzeCharacter Function which basically implements error checking to simplify parseVariables function
+	- Probably a way I could bypass this and figure it out later and instead focus on Project 1 stuff
+	- Still attempting to implement it
+		- pointers galore
+			- better than globals? Idk how I feel about that
+			- I should create a struct parseStatus {} or something that I can to the function or simply manage globally
+				- currently hardcoding it
+	- massive function. Can still abstract into futher private methods
+	- was able to drastically reduce the number of pointers by double checking which variables I actually changed
+
+
+
+=========================================================
+=========================================================
+
+09/24/17
+
+Summary:
+	- Created Driver
+	- Trimmed stem of filename & unified all characters to uppercase
+	- Created Output Files (.noblanks & .obj)
+
+Thoughts:
+	- Should the entire program be read into a vector or should I handle compilation line by line?
+	- Is their a built in way of doing exception handling other than creating bool functions and testing them upon return
+		- Forces more pointers when unable to give actual return values
+	- Should the destructors be made with a ~ function
+
+Status:
+	- Compiler Driver: creates an instance of Compiler, tells it to compiler, and shutdowns the compiler
+	- Compiler: creates an instance of FileManager, gets one line at a time and parses it based off the tokenized command name
+	- FileManager: gets .transy file, prepares .obj file, preprocesses .transy into .noblanks, and hands the compiler one line at a time from the preprocessed file
+
+Still Need to Implement:
+	- t<commandName>: handles compiling the line based off the command
+		- probably gonna make as more of a C file than a C++ class
+	- LookupTable: memory management device for linking memory locations with variable names
+		- want to implement as a link list sorted alphabetically according to character ASCII values
+		- WAIT: a linked list wouldn't benefit from the sort in the way that an array would
+			- Keeping an array sorted would require a lot of excess data movement, but would be optimized for lookup & runtime
+	- I should make my end of file character for the getLine function a #define END_SENTINEL @
+
+
+- Created Driver with main() to utilize classes
+
+- Successfully trimmed output using the BREN_Compiler and FileManager
+
+- Trimmed the stem off of a filename
+	//get globalFileName
+    cout << "Attempting to find stem of " << fileName << endl;
+    bool foundPeriod = false;
+    int periodPosition = 0;
+    while (!foundPeriod){
+    	if (fileName[periodPosition] == '.'){
+    		foundPeriod = true;
+    	}
+    	else {
+    		periodPosition++;
+    	}
+    }
+    for (int i = 0; i < periodPosition; i++){
+    	globalFileName[i] = fileName[i];
+    }
+    globalFileName[periodPosition] = '\0';
+    cout << "The stem of " << fileName << " is " << globalFileName << "<--" << endl;
+    - another good option would have been to find the period and then replace it with '\0' as opposed to finding the period, walking the string while copying all of the characters up until the period, and then manually null terminating
+
+- decided to implement cleaner version of trim stem
+    - needed to include <string.h> for strcpy
+    "
+    cout << "Attempting to find stem of " << fileName << endl;
+    strcpy(globalFileName, fileName);
+    for (int i = 0; i < MAX_STRING_LENGTH; i++){
+    	if (globalFileName[i] == '.'){
+    		globalFileName[i] = '\0';
+    	}
+    }
+    cout << "The stem of " << fileName << " is " << globalFileName << "<--" << endl;
+    "
+- Created the two output files: .obj & .noblanks
+
+- Unified case to upper
+	toupper(character)
+
+- Started Compiling
+	- FileManager::getNextLine - returns next line to compile
+		- switched noBlanks to fstream for input and output
+		- after writing .noblanks, must return to beginning
+			- www.cplusplus.com/forum/beginner/30644/
+			noBlanksFile.clear();	// if state of stream was eof, this would clear it
+			noBlanksFile.seekg(0, noBlanksFile.beg);
+		- Using "@" to mark eof
+
+- Started Parsing
+
+
+
+
+
+=========================================================
+=========================================================
+
+09/21/17
+
+Summary:
+	- Created tSTOP, tREAD, and tWRITE classes
+
+Thoughts:
+	- Is their a built in way of doing exception handling other than creating bool functions and testing them upon return
+		- Forces more pointers when unable to give actual return values
+	- Should the destructors be made with a ~ function
+
+- Created tSTOP, tREAD, and tWRITE classes
+	- All have both Interface & Implementation in one .cpp
+		- hopefully they won't get big enough to warrant their own .h's
+
+- Made FileManager Constructor not have a return type
+
+
+
+=========================================================
+=========================================================
+
+09/15/17
+
+Summary:
+	- Created Project
+	- Started Implementing a FileManager
+
+Thoughts:
+	- Is their a built in way of doing exception handling other than creating bool functions and testing them upon return
+		- Forces more pointers
+
+
+- Step 1: Reuse code from project 1
+	- Grabbed all code from project1.cpp into Compiler.cpp
+		- split header info into Compiler.h
+	- Makefile
+	- testFile.txt
+
+- Step 2: Abstract away Project 1 into FileManager Object
+	- (File IO, R/W, and Create .noblanks)
+	- FileManager.cpp & .h
+	- Create a class
+		- reuse code from my summer Audio Synthesizer Production Work:
+			- header:
+				#pragma once
+				class FileManager {
+				public:
+				private:
+				}
+			- implementation:
+				bool FileManager::FileManager(){ ... }
+					- just now decided to use bools for exception handling
+			- Clearly Separated Commenting // ==========
+	- Update Makefile
+	- Make Constructor a bool for exception handling
+		- their may be a built in way of do exception handling in c++
+
+- Step 3: Implementing FileManager Constructor()
+	- bool prepareFileIO() turned into bool for exception handling
+	- globalInputFile & globalOutputFile
+		- every function in here will most likely be using them
+		- define them: (may not need to allocate using new or specify with this.)
+			this.globalInputFile = new ifstream();
+			this.globalOutputFile = new ofstream();
+	-
+
+- Step 4: Implementing FileManager_prepareTransyFile()
+	-
+
+- Step 5: Create BREN_Compiler Object
+	- leaving the filename "Compiler" in case that is important to Dr. Moorman running it
+
+
+- Step 6: Instantiate FileManager object in the Compiler
+	- Compiler.h
+		#include "FileManager.h"
+			- I think I remember reading that "" is better than <>
+		FileManager globalFileManager;
+	- Compiler.cpp
+		A) Constructor
+			FileManager = new FileManager;
+		B) Destructor
+			delete FileManager;
+
+
+

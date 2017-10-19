@@ -1,0 +1,13 @@
+// Brendan Thompson
+c* testFile2.transy
+
+// test comments, dim, aread, and awrite
+
+
+dim firstArray[10], secondArray[20]
+aREAD secondArray, 12, 20 // Comments here
+aREAD thirdArray, 0, 5
+aWRITE firstArray, 3, 10
+aWRITE fourthArray, 2, 8
+// Comment Line
+stop
