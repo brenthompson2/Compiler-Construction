@@ -184,7 +184,7 @@ void FileManager::createFileNames(string originalFileName){
 bool FileManager::openFirstFiles(string inputFileName){
 	// INFILES
     // cout << "\t\t[FILE MANAGER]: Attempting to open " << inputFileName << " for input..." << endl;
-    inputFile.open(inputFileName);
+    inputFile.open(inputFileName.c_str());
     if (!inputFile) {
         cerr << "\t\t[FILE MANAGER]: ERROR: Failed to open " << inputFileName << " for input" << endl;
         return false;
