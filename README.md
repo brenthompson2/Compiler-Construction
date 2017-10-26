@@ -1,15 +1,8 @@
 # Compiler-Construction
 
-Brendan Thompson
+	Brendan Thompson
+	Transylvania University	Compiler Construction Fall 2017 with Dr. Moorman
 
-Transylvania University
+Implementation of a "Transy" language compiler. Repository Created for downloading, compiling, and running the code on a lab computer remotely from my personal machine. (Still have to get onto campus wifi though)
 
-Compiler Construction
-
-Fall 2017
-
-Dr. Moorman
-
-Implementation of a "Transy" language compiler for Transylvania University Fall Term 2017 Compiler Construction
-
-Check out the DevLog in each version of the compiler to see the status of construction sorted by day
+Check out the DevLog in each version of the compiler to see the status of construction reported daily
