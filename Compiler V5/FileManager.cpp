@@ -3,7 +3,7 @@
 
 	File: FileManger.cpp
 	Author: Brendan Thompson
-	Updated: 10/12/17
+	Updated: 10/29/17
 
 	Description: Implementation of main FileManager for Compiler object made for Transylvania University University Fall Term 2017 Compiler Construction class
 
@@ -18,8 +18,9 @@
 
 // Instantiates a FileManager object
 FileManager::FileManager(){
-	keepObjFile = true;
-	keepNoBlanksFile = false;
+	keepObjFlag = false;
+	keepNoBlanksFlag = false;
+	cout << "\t\t[FileManager]: Initialized FileManager\n";
 	return ;
 }
 
@@ -34,24 +35,10 @@ FileManager::~FileManager(){
 	Public Pre-Compiling Methods
 ============================================================================== */
 
-// parses the flags and manages the global flag bools
-void FileManager::setFlags(char *arrayOfFlags, int numberOfFlags){
-	char currentFlag;
-
-	for (int i = 0; i < numberOfFlags; i++){
-		currentFlag = arrayOfFlags[i];
-		if ((currentFlag == 'n') || (currentFlag == 'N')){
-			keepNoBlanksFile = true;
-		}
-		if ((currentFlag == 'o') || (currentFlag == 'O')){
-			keepObjFile = true;
-		}
-	}
-}
-
-// Sets the FileManagers's Global FileNames & Links to the ParentLineManager
-bool FileManager::prepareForCompilation(string fileToCompile, LineLabelTable *lineManager){
+// Sets the FileManagers's Global FileNames & Links to the Parent's LineManager & LiteralManager
+bool FileManager::prepareForCompilation(string fileToCompile, LiteralTable *literalManager, LineLabelTable *lineManager){
 	ParentLineManager = lineManager;
+	ParentLiteralManager = literalManager;
 	bool successfullyPrepared = false;
 
 	// Create Global File Names & Open All Files
@@ -70,12 +57,14 @@ bool FileManager::preprocessFile(){
 
 	// Preprocess Files
 	gatherLineLabels();
-	inputFile.seekg(0, ifstream::beg);
+	globalInputFile.clear();
+	globalInputFile.seekg(0);
 
+	// cout << "\t\t[FILE MANAGER]: Attempting to writeNoBlanksFile...\n";
 	writeNoBlanksFile();
 
 	// Open & Close Files
-	inputFile.close();
+	globalInputFile.close();
 	noBlanksOutFile.close();
 	successfullyPreprocessed = openCompilationFiles();
 
@@ -83,7 +72,7 @@ bool FileManager::preprocessFile(){
 		cout << "\t\t[FILE MANAGER]: Error! Unable to Preprocess File\n";
 	}
 	else {
-		cout << "\t\t[FILE MANAGER]: Preprocesses Successfully. Prepared to Compile...\n";
+		cout << "\t\t[FILE MANAGER]: Preprocessed Successfully. Prepared to Compile...\n";
 	}
 	return successfullyPreprocessed;
 }
@@ -129,6 +118,30 @@ void FileManager::writeStringToObj (string currentString){
 		i++;
 	}
 	return;
+}
+
+/* ==============================================================================
+	Public Flag Methods
+============================================================================== */
+
+// parses the flags and manages the global flag bools
+void FileManager::setFlags(char *arrayOfFlags, int numberOfFlags){
+	char currentFlag;
+
+	for (int i = 0; i < numberOfFlags; i++){
+		currentFlag = arrayOfFlags[i];
+		if ((currentFlag == 'n') || (currentFlag == 'N')){
+			keepNoBlanksFlag = true;
+		}
+		if ((currentFlag == 'o') || (currentFlag == 'O')){
+			setKeepOBJ();
+		}
+	}
+}
+
+// sets the keepObjFlag to true
+void FileManager::setKeepOBJ(){
+	keepObjFlag = true;
 }
 
 /* ==============================================================================
@@ -184,8 +197,8 @@ void FileManager::createFileNames(string originalFileName){
 bool FileManager::openFirstFiles(string inputFileName){
 	// INFILES
     // cout << "\t\t[FILE MANAGER]: Attempting to open " << inputFileName << " for input..." << endl;
-    inputFile.open(inputFileName.c_str());
-    if (!inputFile) {
+    globalInputFile.open(inputFileName.c_str());
+    if (!globalInputFile) {
         cerr << "\t\t[FILE MANAGER]: ERROR: Failed to open " << inputFileName << " for input" << endl;
         return false;
     }
@@ -227,11 +240,11 @@ void FileManager::removeFiles(){
 	preprocessedInFile.close();
 	objOutFile.close();
 
-	if (!keepNoBlanksFile){
+	if (!keepNoBlanksFlag){
 		cout << "\t\t[FILE MANAGER]: Removing " << globalPreprocessedFileName << "...\n";
 		remove(globalPreprocessedFileName);
 	}
-	if (!keepObjFile){
+	if (!keepObjFlag){
 		cout << "\t\t[FILE MANAGER]: Removing " << globalObjFileName << "...\n";
 		remove(globalObjFileName);
 	}
@@ -248,8 +261,8 @@ void FileManager::gatherLineLabels(){
 	int currentLineNumber = 0;
 	int numCharsInLineLabel;
 
-	while (!(inputFile.eof())){
-		getline(inputFile, currentLine);
+	while (!(globalInputFile.eof())){
+		getline(globalInputFile, currentLine);
 		// cout << "\t\t[FILE MANAGER]: Checking for Label in Line: " << currentLine << endl;
 		numCharsInLineLabel = checkForLineLabel(currentLine);
 
@@ -326,8 +339,8 @@ bool FileManager::writeNoBlanksFile(){
 	bool validLineToAdd = false;
 	bool wroteFirstLine = false;
 
-	while (!(inputFile.eof())){
-		getline(inputFile, currentLine);
+	while (!(globalInputFile.eof())){
+		getline(globalInputFile, currentLine);
 		// cout << "\t\t[FILE MANAGER]: Got Line: " << currentLine << endl;
 		validLineToAdd = checkCurrentLine(&currentLine);
 
@@ -355,14 +368,15 @@ bool FileManager::checkCurrentLine(string *currentLine) {
 	int newLineCursor = 0;
 
 	int lengthOfString = (*currentLine).length();
+	bool parsingLiteral = false;
 	bool continueParsingLine = true;
-	bool validLineToAdd = false;
+	bool validLineToAdd = true;
 
 	currentCharacter = (*currentLine)[0];
 
 	// Check For Line Label
 	int indexLineLabel = checkForLineLabel((*currentLine));
-	if ((continueParsingLine) && (indexLineLabel != NO_LINE_LABEL)){
+	if (indexLineLabel != NO_LINE_LABEL){
 
 		// Trim Off Line Label
 		int numCharsInString = (*currentLine).length();
@@ -404,13 +418,22 @@ bool FileManager::checkCurrentLine(string *currentLine) {
 	// Parse through the line
 	for (int i = 0; (i < lengthOfString) && continueParsingLine; i++){
 
-
-		// current character is NOT a space or a tab and therefore it is a valid character that needs to be added
-		if (! ((currentCharacter == ' ') || (currentCharacter == '\t')) ){
-			newVersionOfLine += ((char) toupper(currentCharacter));
+		if (parsingLiteral) {
+			// new line character during literal
+			if (currentCharacter == '\r'){
+				continueParsingLine = false;
+				cerr << "\t\t\t[FILE MANAGER]: Found end of line before end of quote: " << *currentLine << endl;
+			}
+			newVersionOfLine += currentCharacter;
 			newLineCursor++;
-			validLineToAdd = true;
-			// cout << "\t\t\t[FILE MANAGER]: " << currentCharacter << " is a valid character. New Version of Line: " << newVersionOfLine << endl;
+			// cout << "\t\t\t[FILE MANAGER]: " << currentCharacter << " is part of a literal. New Version of Line: " << newVersionOfLine << endl;
+		}
+		else { // current character is NOT part of a literal, a space, or a tab and therefore it is a valid character that needs to be added
+			if (! ((currentCharacter == ' ') || (currentCharacter == '\t')) ){
+				newVersionOfLine += ((char) toupper(currentCharacter));
+				newLineCursor++;
+				// cout << "\t\t\t[FILE MANAGER]: " << currentCharacter << " is a valid character. New Version of Line: " << newVersionOfLine << endl;
+			}
 		}
 
 		oldLineCursor++;
@@ -422,16 +445,29 @@ bool FileManager::checkCurrentLine(string *currentLine) {
 			if ((*currentLine)[oldLineCursor + 1] == '/'){ // got // full-line comment
 				newVersionOfLine[newLineCursor] = '\n';
 				continueParsingLine = false;
-				validLineToAdd = true;
 			}
 		}
 
-		// new line character not first character
+		// new line character mid line
 		if (currentCharacter == '\r'){
 			continueParsingLine = false;
-			validLineToAdd = true;
+		}
+
+		// found "literal in quotes"
+		if (currentCharacter == '\"'){
+			if (!parsingLiteral) {
+				parsingLiteral = true;
+			}
+			else {
+				parsingLiteral = false;
+			}
 		}
 	}
+
+	// Catch if line is missing an end-quote (commented out because testing during compilation)
+	// if (parsingLiteral){
+	// 	validLineToAdd = false;
+	// }
 
 	// cout << "\t\t\t[FILE MANAGER]: Changing -->" << (*currentLine) << "<-- to -->" << newVersionOfLine << "<--\n";
 	(*currentLine) = newVersionOfLine;

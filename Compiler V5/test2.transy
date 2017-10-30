@@ -1,6 +1,6 @@
 c* Brendan Thompson
-c* test1.transy
-c* Updated 10/23/17
+c* test2.transy
+c* Updated 10/29/17
 C* Test File for Compiler V5
 C* Tests each command and the known possible Syntax Errors
 
@@ -35,7 +35,7 @@ c* ======= WRITE COMMAND =======
 // write 2bad, soSad45, ShouldThisBeValid_  	// 2bad invalid variable name
 
 c* ======= STOP COMMAND =======
-stop
+// stop
 // stop,				// characters after stop command
 // stop apple			// characters after stop command
 
@@ -150,16 +150,31 @@ c* ======= Compiler V5 ========
 c* ============================
 
 c* ======= lREAD COMMAND =======
+ lread variableName
+ lread 									// missing variable name
+ lread apple,								// Extra Characters after first Var
+ lread apple, banana						// Extra Characters after first Var
+ lread _failure  							// variable names can't start with _
+ lread illegal#Char*  					// variable names can't have other random chars
+ lread 2bad							  	// 2bad invalid variable name
 
 c* ======= lWRITE COMMAND =======
+// lwrite "Hello World"
+// lwrite 									// Missing literal
+// lwrite missingQuotes						// Missing quotes
+// lwrite missingLeftQuote"					// Missing first quote
+// lwrite "missingRightQuote					// Missing end quote
+// lwrite "firstLit", "secondLit"			// Extra Characters after first Var
 
 c* ======= IF COMMAND =======
 
+
 c* ======= CLS COMMAND =======
-cls
+// cls
 // cls,				// characters after cls command
 // cls apple			// characters after cls command
 
 c* ======= CDUMP COMMAND =======
+
 
 c* ======= SUBP COMMAND =======

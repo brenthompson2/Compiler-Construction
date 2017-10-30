@@ -1,8 +1,38 @@
 # Compiler-Construction
 
-	Brendan Thompson
-	Transylvania University	Compiler Construction Fall 2017 with Dr. Moorman
+Brendan Thompson
 
-Implementation of a "Transy" language compiler. Repository Created for downloading, compiling, and running the code on a lab computer remotely from my personal machine. (Still have to get onto campus wifi though)
+Transylvania University	Compiler Construction Fall 2017 with Dr. Moorman
 
-Check out the DevLog in each version of the compiler to see the status of construction reported daily
+The BRENxCompiler is written in C++ and turns programs written in the Transy Language (.transy) to Transy Object Code (.obj). An Emulator capable of running the Transy Object Code is not yet under construction
+
+This GitHub Repository was created for downloading, compiling, and running the code on a lab computer remotely from my personal machine. (Unfortunately I still have to get onto campus wifi first)
+
+## Use
+
+#### Compiling the Transy Compiler
+
+In order to use this Transy Language (.transy) to Transy Object Code (.obj) compiler, the C++ code that it is written in must first be compiled into an executable
+
+On Ubuntu: navigate the terminal to the directory of the preferred Compiler Version and run `make`
+
+To remove all of the files run `make clean`
+
+#### Using the Transy Compiler
+
+On Ubuntu: navigate to the directory with the `Compiler` executable and type `./Compiler <fileName>`
+
+Flags:
+	`-n` = keep noblanks file even if it successfully compiles
+	`-o` = keep obj file even if it failed compilation
+
+Other Info:
+	If no file is specified it will attempt to compile `test1.transy`
+
+#### Running Transy Object Code
+
+An emulator capable of running Transy Object Code on a computer will be under construction shortly
+
+## Development
+
+Check out the DevLog in each version of the compiler to see a detailed description of the different components as well as to view the status of construction as it was reported during each day of work

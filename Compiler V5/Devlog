@@ -13,10 +13,307 @@ Brendan Thompson
 =========================================================
 =========================================================
 
+10/29/17
+
+I) Summary of Work:
+	- Completed the Implementation of the lWRITE Command
+	- Stopped LiteralTable from Inheriting from SymbolTable
+	- Implemented New Command Parser in BRENxCompiler::getCommand()
+	- Implemented lREAD
+
+II) Still Need to Implement:
+	- New Commands:
+		- lREAD &literal
+		- IF (id # id) then label
+		- cdump index index
+		- subp operation (var, id)
+	- Change BRENxCompiler.getCommand() to use strncmp() instead of manually[] && comparing[] && each[] && char[]
+	- On The Horizon:
+		A) Handle Floats
+		B) aREAD & aWRITE put constants into lookup table
+			- will be able to use same nice parser functions from LOOP
+		C) DIMs must be at top of file before any other command
+		D) coreMemoryArray[1000] = (bool) failedCompilation; (0 = success, 1 = failed)
+
+III) Thoughts:
+	- Need to test what happens when a line label is on a blank line
+		- which line of object code does the label then point to
+	- Each command has a parser function and they are all super similar
+		- Could possibly abstract them away into less function
+		- aread & awrite = identical
+		- read & write = identical
+		**** tIF has most of them if I ever want to abstract away the functions into a ParserObject
+	- What was the limit to the length of a variable name supposed to be?
+	- Is their a built in way of doing exception handling other than creating bool functions and testing them upon return
+		- bools force more pointers when unable to give actual return values
+		- try {} catch
+	- FileManger write<TYPE>ToObj() functions should probably become a template function
+	- Symbol Table can't get sorted or it would throw off the sync between the .obj file and the variable's memory location
+		- or would it be possible since I am using a struct that has "memoryLocation" as a field.
+		-  I have to look into that more
+			- I could still sort the Data Structure alphabetically by VariableName and not mess with the memoryLocations
+
+IV) Status:
+	- Compiler Driver:
+		- creates an instance of Compiler, tells it to compiler, and shutdowns the compiler
+		- takes in a fileName as a parameter
+	- Compiler:
+		- creates an instance of FileManager, SymbolTable, and LineLabelTable
+		- gets one line at a time and manages commands with command handling objects
+	- FileManager:
+		- opens .transy, .obj, and .noblanks files
+		- preprocesses .transy into .noblanks
+		- upon request hands the compiler one line at a time from the preprocessed file
+		- writes char/string/int to .obj file
+	- SymbolTable:
+		- manages variable names and their associated virtual memory locations
+	- LiteralTable:
+		- manages literal phrases and their associated virtual memory locations
+	- LineLabelTable:
+		- manages Line Label names and their associated .obj & .transy line numbers
+		- Max 1000 lines in the program
+	- tCommands:
+		1) READ:
+			- handles read command, tells parent FileManager to write op code to .obj, and tells MemoryManager to manage variables
+		2) WRITE:
+			- handles write command, tells parent FileManager to write op code to .obj, and tells MemoryManager to manage variables
+		3) STOP:
+			- handles stop command, tells parent FileManager to write op code to .obj
+		4) DIM:
+			- handles write command, tells parent FileManager to write op code to .obj, and tells MemoryManager to manage variables
+			- Can't DIM an array with the same name
+		5) aREAD:
+			- handles aREAD command, tells parent FileManager to write op code to .obj, and tells MemoryManager to manage variables
+			- arrays must have already been declared by a dim command
+		6) aWRITE:
+			- handles aWRITE command, tells parent FileManager to write op code to .obj, and tells MemoryManager to manage variables
+			- arrays must have already been declared by a dim command
+		7) GOTO:
+			- handles GOTO command, tells parent FileManager to write op code to .obj, and gets Line Label Location from LineLabelTable
+		8) LOOP:
+			- handles LOOP command, tells parent FileManager to write op code to .obj, and tells MemoryManager to manage variables
+		9) LOOPEND:
+			- handles LOOPEND command, tells parent FileManager to write op code to .obj
+		10) IFA:
+			- handles IFA command, tells parent FileManager to write op code to .obj, tells MemoryManager to manage variables, and gets Line Label Location from LineLabelTable
+		11) NOP:
+			- handles NOP command, tells parent FileManager to write op code to .obj
+		12) LISTO:
+			- handles LISTO command, tells parent FileManager to write op code to .obj
+
+		14) lWRITE:
+			- handles lWRITE command, tells parent FileManager to write op code to .obj and tells LiteralTable to manage literals
+
+		16) CLS
+			- handles CLS command, tells parent FileManager to write op code to .obj
+
+	- To Implement:
+		13) lREAD:
+			- handles lREAD command, tells parent FileManager to write op code to .obj, tells MemoryManager to manage variables, and tells LiteralTable to manage literals
+		15) IF:
+			- (<  : -1)	 (<= : -2)  (=  : -3)  (>  : -4)  (>= : -5)  (!  : -6)
+			- handles IF command, tells parent FileManager to write op code to .obj, tells MemoryManager to manage variables, and gets Line Label Location from LineLabelTable
+		17) CDUMP:
+			- handles CDUMP command, tells parent FileManager to write op code to .obj, tells MemoryManager to manage variables, and gets Line Label Location from LineLabelTable
+		18) SUBP:
+			- (sin : -10)  (cos : -11)  (exp : -12)  (abs : -13)  (alg : -14)  (aln : -15)  (log : -16)  (sqr : -17)
+			- handles SUBP command, tells parent FileManager to write op code to .obj, tells MemoryManager to manage variables, and gets Line Label Location from LineLabelTable
+
+V) Log Of Activity:
+
+- Completed the Implementation of the lWRITE Command
+	- Re-Wrote parsingLiteral()
+		- (char == '\"') syntax from https://stackoverflow.com/questions/25860500/check-if-a-char-is-a-single-quote-c
+	- Only adding Valid Literals to LiteralTable
+
+- Stopped LiteralTable from Inheriting from SymbolTable
+	- I didn't make the Symbol Table class abstract enough for it to make sense to use any of the functions or objects
+	- I wanted a new object to be the type for the array and thus needed to modify all of the functions
+
+- Implemented New Command Parser in BRENxCompiler::getCommand()
+	- takes advantage of strncmp()
+
+- Implemented lREAD
+	- Copied code from lWRITE & replaced parseLiteral() with parseVariable() from READ
+		- Only adding Valid Literals to LiteralTable
+	- Added variableName field to literalTableObject and manipulated the LiteralTable methods accordingly
+
+- Spent way too much time tracking down a preprocessor-breaking bug that randomly appeared
+	- Gathering the line labels would cause a failed ifstream reboot
+		- needed to add globalInputFile.clear() before globalInputFile.seekg(0)
+		- https://stackoverflow.com/questions/28331017/rewind-an-ifstream-object-after-hitting-end-of-file
+
+- Began implementing IF
+	- Copied IFA
+	- Copied parseConstant() from tLOOP
+	- Created parseTestCond() & checkForThen()
+
+=========================================================
+=========================================================
+
+10/26/17
+
+I) Summary of Work:
+	- Provided info about how to use the compiler in the README.md
+	- Created Literal Table by inheriting from symbol table
+	- Created an instance of the Literal Table
+	- Changed no-blanks process to ignore removing blanks and changing the case when parsing "literals in quotes"
+	- Started Implementing lWRITE Command
+
+II) Still Need to Implement:
+	- New Commands:
+		- lREAD &literal
+		- lWRITE
+		- IF (id # id) then label
+		- cdump index index
+		- subp operation (var, id)
+	- Change BRENxCompiler.getCommand() to use strncmp() instead of manually[] && comparing[] && each[] && char[]
+	- On The Horizon:
+		A) Handle Floats
+		B) aREAD & aWRITE put constants into lookup table
+			- will be able to use same nice parser functions from LOOP
+		C) DIMs must be at top of file before any other command
+		D) coreMemoryArray[1000] = (bool) failedCompilation; (0 = success, 1 = failed)
+
+III) Thoughts:
+	- The Literal Table inheriting from the SymbolTable appears to be creating another instance of the SymbolTable to shutdown after compilation
+	- Need to test what happens when a line label is on a blank line
+		- which line of object code does the label then point to
+	- Each command has a parser function and they are all super similar
+		- Could possibly abstract them away into less function
+		- aread & awrite = identical
+		- read & write = identical
+	- What was the limit to the length of a variable name supposed to be?
+	- Is their a built in way of doing exception handling other than creating bool functions and testing them upon return
+		- bools force more pointers when unable to give actual return values
+		- try {} catch
+	- FileManger write<TYPE>ToObj() functions should probably become a template function
+	- Symbol Table can't get sorted or it would throw off the sync between the .obj file and the variable's memory location
+		- or would it be possible since I am using a struct that has "memoryLocation" as a field.
+		-  I have to look into that more
+			- I could still sort the Data Structure alphabetically by VariableName and not mess with the memoryLocations
+
+IV) Status:
+	- Compiler Driver:
+		- creates an instance of Compiler, tells it to compiler, and shutdowns the compiler
+		- takes in a fileName as a parameter
+	- Compiler:
+		- creates an instance of FileManager, SymbolTable, and LineLabelTable
+		- gets one line at a time and manages commands with command handling objects
+	- FileManager:
+		- opens .transy, .obj, and .noblanks files
+		- preprocesses .transy into .noblanks
+		- upon request hands the compiler one line at a time from the preprocessed file
+		- writes char/string/int to .obj file
+	- SymbolTable:
+		- manages variable names and their associated virtual memory locations
+	- LiteralTable:
+		- manages literal phrases and their associated virtual memory locations
+	- LineLabelTable:
+		- manages Line Label names and their associated .obj & .transy line numbers
+		- Max 1000 lines in the program
+	- tCommands:
+		1) READ:
+			- handles read command, tells parent FileManager to write op code to .obj, and tells MemoryManager to manage variables
+		2) WRITE:
+			- handles write command, tells parent FileManager to write op code to .obj, and tells MemoryManager to manage variables
+		3) STOP:
+			- handles stop command, tells parent FileManager to write op code to .obj
+		4) DIM:
+			- handles write command, tells parent FileManager to write op code to .obj, and tells MemoryManager to manage variables
+			- Can't DIM an array with the same name
+		5) aREAD:
+			- handles aREAD command, tells parent FileManager to write op code to .obj, and tells MemoryManager to manage variables
+			- arrays must have already been declared by a dim command
+		6) aWRITE:
+			- handles aWRITE command, tells parent FileManager to write op code to .obj, and tells MemoryManager to manage variables
+			- arrays must have already been declared by a dim command
+		7) GOTO:
+			- handles GOTO command, tells parent FileManager to write op code to .obj, and gets Line Label Location from LineLabelTable
+		8) LOOP:
+			- handles LOOP command, tells parent FileManager to write op code to .obj, and tells MemoryManager to manage variables
+		9) LOOPEND:
+			- handles LOOPEND command, tells parent FileManager to write op code to .obj
+		10) IFA:
+			- handles IFA command, tells parent FileManager to write op code to .obj, tells MemoryManager to manage variables, and gets Line Label Location from LineLabelTable
+		11) NOP:
+			- handles NOP command, tells parent FileManager to write op code to .obj
+		12) LISTO:
+			- handles LISTO command, tells parent FileManager to write op code to .obj
+
+		16) CLS
+			- handles CLS command, tells parent FileManager to write op code to .obj
+
+	- To Implement:
+		13) lREAD:
+			- handles LISTO command, tells parent FileManager to write op code to .obj, tells MemoryManager to manage variables, and tells LiteralTable to manage literals
+		14) lWRITE:
+			- handles LISTO command, tells parent FileManager to write op code to .obj, tells MemoryManager to manage variables, and tells LiteralTable to manage literals
+		15) IF:
+			- (<  : -1)	 (<= : -2)  (=  : -3)  (>  : -4)  (>= : -5)  (!  : -6)
+			- handles LISTO command, tells parent FileManager to write op code to .obj, tells MemoryManager to manage variables, and gets Line Label Location from LineLabelTable
+		17) CDUMP:
+			- handles LISTO command, tells parent FileManager to write op code to .obj, tells MemoryManager to manage variables, and gets Line Label Location from LineLabelTable
+		18) SUBP:
+			- (sin : -10)  (cos : -11)  (exp : -12)  (abs : -13)  (alg : -14)  (aln : -15)  (log : -16)  (sqr : -17)
+			- handles LISTO command, tells parent FileManager to write op code to .obj, tells MemoryManager to manage variables, and gets Line Label Location from LineLabelTable
+
+V) Log Of Activity:
+
+- Provided info about how to use the compiler in the README.md
+	- How to Compile the Compiler
+	- How to Compile Transy into Transy Obj
+	- How to Execute (can't yet)
+	- Mentioned DevLog
+
+- Created Literal Table by inheriting from symbol table
+	- https://www.tutorialspoint.com/cplusplus/cpp_inheritance.html
+	- Changed Private Symbol Table members to Protected
+		- same protections from external use but the derived class will get a protected version of it also
+			- private members are not inherited
+			- https://stackoverflow.com/questions/12784083/what-is-the-difference-between-protected-and-private
+	- Added to MakeFile and successfully compiled
+		- needed to #include "SymbolTable.h" in LiteralTable.h
+
+- Created an instance of the Literal Table
+	- Compiler.h:
+		- #include "LiteralTable.h"
+		- LiteralTable globalLiteralTable;
+	- Compiler.cpp:
+		- passed to the FileManager in globalFileManager.prepareForCompilation();
+		- will soon be passed to the necessary command handlers
+	- Compiles, Runs, but now 2 instances of SymbolTable are being shutdown after compilation
+		- The Literal Table inheriting from the SymbolTable must be creating another instance of it
+		- I will have to come back to this later
+
+- Changed no-blanks process to ignore removing blanks and changing the case when parsing "literals in quotes"
+
+- Started Implementing lWRITE Command
+	- copied from write
+		- changed char WRITE_OP_CODE 2 to string LWRITE_OP_CODE 17
+		- changed writeCharToFile(WRITE_OP_CODE) to writeStringToFile(LWRITE_OP_CODE)
+		- fixed a few fn names
+		- edited parser
+		- removed references to variableArray and replaced in parser with globalLiteralString
+	- Uncommented Section from Makefile
+	- Uncommented Section from Compiler.h includes
+	- Uncommented Section from Compiler.h private members
+	- Uncommented Section from Compiler.cpp instantiateCommandObjects()
+		- passed LiteralTable
+	- Added Section to Compiler.cpp getCommand()
+		- used good ol new strncmp()
+
+
+=========================================================
+=========================================================
+
 10/23/17
 
 I) Summary of Work:
 	- Changed Compiler V4 to V5 because project 1 was technically Compiler V1
+	- Changed all command translator objects to tCOMMAND
+	- Prepared To Add the 6 new commands
+	- Implemented CLS Commands:
 
 II) Still Need to Implement:
 	- New Components:
@@ -25,7 +322,6 @@ II) Still Need to Implement:
 		- lREAD &literal
 		- lWRITE
 		- IF (id # id) then label
-		- CLS
 		- cdump index index
 		- subp operation (var, id)
 	- On The Horizon:
@@ -34,7 +330,6 @@ II) Still Need to Implement:
 			- will be able to use same nice parser functions from LOOP
 		C) DIMs must be at top of file before any other command
 		D) coreMemoryArray[1000] = (bool) compiledCorrect;
-	- Change all command handling class naming conventions to tCOMMAND
 
 III) Thoughts:
 	- Each command has a parser function and they are all super similar
@@ -96,6 +391,9 @@ IV) Status:
 		12) LISTO:
 			- handles LISTO command, tells parent FileManager to write op code to .obj
 
+		16) CLS
+			- handles CLS command, tells parent FileManager to write op code to .obj
+
 	- To Implement:
 		13) lREAD:
 			- handles LISTO command, tells parent FileManager to write op code to .obj, tells MemoryManager to manage variables, and tells LiteralTable to manage literals
@@ -104,8 +402,6 @@ IV) Status:
 		15) IF:
 			- (<  : -1)	 (<= : -2)  (=  : -3)  (>  : -4)  (>= : -5)  (!  : -6)
 			- handles LISTO command, tells parent FileManager to write op code to .obj, tells MemoryManager to manage variables, and gets Line Label Location from LineLabelTable
-		16) CLS
-			- handles CLS command, tells parent FileManager to write op code to .obj
 		17) CDUMP:
 			- handles LISTO command, tells parent FileManager to write op code to .obj, tells MemoryManager to manage variables, and gets Line Label Location from LineLabelTable
 		18) SUBP:
@@ -166,6 +462,7 @@ II) Still Need to Implement:
 			- will be able to use same nice parser functions from LOOP
 		C) DIMs must be at top of file before any other command
 		D) coreMemoryArray[1000] = (bool) compiledCorrect;
+	- Change all command handling class naming conventions to tCOMMAND
 
 III) Thoughts:
 	- Each command has a parser function and they are all super similar

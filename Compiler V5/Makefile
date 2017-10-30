@@ -1,30 +1,32 @@
 # Brendan Thompson
-# 10/23/17
+# 10/26/17
 # Makefile for Compiler V5
 
 # "make main" = Compile and Link
-# "make clean" = removes created files
-# "./Compiler <fileName.transy>" = compile the file
-	# Currently doesn't work with flags
+# "make clean" = removes all created files (Compiler, *.o, *.noblanks, *.obj)
+# "./Compiler <fileName.transy>" = compile the fileName
 
 #######################
 ### Main Components ###
 #######################
 
-main: CompilerDriver.o Compiler.o FileManager.o SymbolTable.o LineLabelTable.o tREAD.o tWRITE.o tSTOP.o tDIM.o taREAD.o taWRITE.o tGOTO.o tLOOP.o tLOOPEND.o tIFA.o tNOP.o tLISTO.o tCLS.o
-	g++ -o Compiler CompilerDriver.o Compiler.o FileManager.o SymbolTable.o LineLabelTable.o tREAD.o tWRITE.o tSTOP.o tDIM.o taREAD.o taWRITE.o tGOTO.o tLOOP.o tLOOPEND.o tIFA.o tNOP.o tLISTO.o tCLS.o
+main: CompilerDriver.o Compiler.o FileManager.o SymbolTable.o LiteralTable.o LineLabelTable.o tREAD.o tWRITE.o tSTOP.o tDIM.o taREAD.o taWRITE.o tGOTO.o tLOOP.o tLOOPEND.o tIFA.o tNOP.o tLISTO.o tlREAD.o tlWRITE.o tIF.o tCLS.o
+	g++ -o Compiler CompilerDriver.o Compiler.o FileManager.o SymbolTable.o LiteralTable.o LineLabelTable.o tREAD.o tWRITE.o tSTOP.o tDIM.o taREAD.o taWRITE.o tGOTO.o tLOOP.o tLOOPEND.o tIFA.o tNOP.o tLISTO.o tlREAD.o tlWRITE.o tIF.o tCLS.o
 
 CompilerDriver.o: CompilerDriver.cpp Compiler.o
 	g++ -c CompilerDriver.cpp
 
-Compiler.o: Compiler.cpp Compiler.h FileManager.o SymbolTable.o LineLabelTable.o tREAD.o tWRITE.o tSTOP.o tDIM.o taREAD.o taWRITE.o tGOTO.o tLOOP.o tLOOPEND.o tIFA.o tNOP.o tLISTO.o tCLS.o
+Compiler.o: Compiler.cpp Compiler.h FileManager.o SymbolTable.o LiteralTable.o LineLabelTable.o tREAD.o tWRITE.o tSTOP.o tDIM.o taREAD.o taWRITE.o tGOTO.o tLOOP.o tLOOPEND.o tIFA.o tNOP.o tLISTO.o tlREAD.o tlWRITE.o tIF.o tCLS.o
 	g++ -c Compiler.cpp
 
-FileManager.o: FileManager.cpp FileManager.h
+FileManager.o: FileManager.cpp FileManager.h LiteralTable.h LineLabelTable.h
 	g++ -c FileManager.cpp
 
 SymbolTable.o: SymbolTable.cpp SymbolTable.h
 	g++ -c SymbolTable.cpp
+
+LiteralTable.o: LiteralTable.cpp LiteralTable.h
+	g++ -c LiteralTable.cpp
 
 LineLabelTable.o: LineLabelTable.cpp LineLabelTable.h
 	g++ -c LineLabelTable.cpp
@@ -81,14 +83,14 @@ tLISTO.o: tLISTO.cpp tLISTO.h
 ###### Commands V5 #####
 ########################
 
-# tlREAD.o: tlREAD.cpp tlREAD.h
-# 	g++ -c tlREAD.cpp
+tlREAD.o: tlREAD.cpp tlREAD.h
+	g++ -c tlREAD.cpp
 
-# tlWRITE.o: tlWRITE.cpp tlWRITE.h
-# 	g++ -c tlWRITE.cpp
+tlWRITE.o: tlWRITE.cpp tlWRITE.h
+	g++ -c tlWRITE.cpp
 
-# tIF.o: tIF.cpp tIF.h
-# 	g++ -c tIF.cpp
+tIF.o: tIF.cpp tIF.h
+	g++ -c tIF.cpp
 
 tCLS.o: tCLS.cpp tCLS.h
 	g++ -c tCLS.cpp

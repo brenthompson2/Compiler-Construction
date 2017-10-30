@@ -19,6 +19,7 @@ Constructor & Destructor
 LineLabelTable::LineLabelTable(){
 	globalNumLinesOfCode = 0;
 	globalNumLabels = 0;
+	cout << "\t\t[LineLabelTable]: Initialized LineLabelTable\n";
 	return;
 }
 

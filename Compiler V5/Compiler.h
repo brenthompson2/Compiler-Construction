@@ -22,6 +22,7 @@
 
 #include "FileManager.h"
 #include "SymbolTable.h"
+#include "LiteralTable.h"
 #include "LineLabelTable.h"
 
 #include "tREAD.h"
@@ -36,9 +37,9 @@
 #include "tIFA.h"
 #include "tNOP.h"
 #include "tLISTO.h"
-// #include "tlREAD.h"
-// #include "tlWRITE.h"
-// #include "tIF.h"
+#include "tlREAD.h"
+#include "tlWRITE.h"
+#include "tIF.h"
 #include "tCLS.h"
 // #include "tCDUMP.h"
 // #include "tSUBP.h"
@@ -87,12 +88,14 @@ private:
 	/* ==============================================================================
 		Private Member Variables
 	============================================================================== */
-	string globalFileName;
+	// string globalFileName;
 	int numErrors;
+	bool foundFirstLineAfterDIM;
 
 	// Global Helper Objects
 	FileManager globalFileManager;
 	SymbolTable globalMemoryManager;
+	LiteralTable globalLiteralManager;
 	LineLabelTable globalLineManager;
 
 	// objects for handling (translating) commands
@@ -108,9 +111,9 @@ private:
 	tIFA mainIFAHandler;
 	tNOP mainNOPHandler;
 	tLISTO mainLISTOHandler;
-	// tlREAD mainLREADHandler;
-	// tlWRITE mainLWRITEHandler;
-	// tIFA mainIFAHandler;
+	tlREAD mainLREADHandler;
+	tlWRITE mainLWRITEHandler;
+	tIF mainIFHandler;
 	tCLS mainCLSHandler;
 	// tCDUMP mainCDUMPHandler;
 	// tSUBP mainSUBPHandler;
@@ -120,7 +123,7 @@ private:
 	============================================================================== */
 
 	// iterates through the line one character at a time and tells the appropriate object to handle the command
-	void getCommand(string currentLine, int correspondingLineNumber);
+	void handleCommand(string currentLine, int correspondingLineNumber);
 
 	// instantiates objects for handling commands by passing the FileManager, MemoryManager, SymbolTable, LineLabelTable, and/or LiteralTable by reference
 	void instantiateCommandObjects();

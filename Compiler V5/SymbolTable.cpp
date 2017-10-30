@@ -3,7 +3,7 @@
 
 	File: SymbolTable.cpp
 	Author: Brendan Thompson
-	Updated: 10/13/17
+	Updated: 10/26/17
 
 	Description: 	Implementation for SymbolTable for Compiler object made for Transylvania University University Fall Term 2017 Compiler Construction class
 
@@ -21,6 +21,7 @@ Constructor & Destructor
 SymbolTable::SymbolTable(){
 	numObjectsInArray = 0;
 	numUsedMemory = 0;
+	cout << "\t\t[SymbolTable]: Initialized SymbolTable\n";
 	return;
 }
 
@@ -112,7 +113,7 @@ int SymbolTable::getSymbolTableIndex(string variableName){
 
 
 /* ==============================================================================
-	Private Accessor Methods
+	Protected Accessor Methods
 ============================================================================== */
 
 // adds the variable to the table (HAVE NOT YET IMPLEMENTED SORT)

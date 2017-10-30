@@ -1,11 +1,11 @@
 /*
   ==============================================================================
 
-	File: SymbolTable.cpp
+	File: LiteralTable.cpp
 	Author: Brendan Thompson
-	Updated: 10/26/17
+	Updated: 10/29/17
 
-	Description: Interface for SymbolTable for Compiler object made for Transylvania University University Fall Term 2017 Compiler Construction class
+	Description: Interface for LiteralTable for Compiler object made for Transylvania University University Fall Term 2017 Compiler Construction class
 
   ==============================================================================
 */
@@ -17,7 +17,7 @@
 ============================================================================== */
 
 #include <iostream>	// Console IO
-using std::cin;
+// using std::cin;
 using std::cout;
 using std::cerr;
 using std::endl;
@@ -27,68 +27,66 @@ using std::string;
 	Symbolic Constants
 ============================================================================== */
 
-#define MAX_STRING_LENGTH 50
-#define MAX_VARIABLE_NAME_LENGTH 128
+// #define MAX_STRING_LENGTH 50
+// #define MAX_VARIABLE_NAME_LENGTH 128
 #define MAX_NUM_VARIABLES 1000
 #define NOT_FOUND_IN_ARRAY -1
+
+const string UNNAMED_LITERAL = "_NA";
+const string UNDEFINED_LITERAL = "";
 
 /* ==============================================================================
 	Type Definitions
 ============================================================================== */
 
-struct memoryTableObject {
+struct literalTableObject {
 	string variableName;
+	string literalString;
 	unsigned int memoryLocation;
-	bool isArray;
-	unsigned int size;
 };
 
 /* ==============================================================================
-	symbol Table Class Interface
+	Literal Table Class Interface
 ============================================================================== */
 
-class SymbolTable {
+class LiteralTable {
 public:
 	/* ==============================================================================
 	Constructor & Destructor
 	============================================================================== */
-	SymbolTable();
-	~SymbolTable();
+	LiteralTable();
+	~LiteralTable();
 
 	/* ==============================================================================
 		Public Manipulator Methods
 	============================================================================== */
 
-	// if the variable doesn't already exist, calls insertInto(), and regardless sets the memoryLocation for the currentMemoryObject
-	void manageMemoryTableObject(memoryTableObject *currentMemoryObject);
-
-	// if the variable exists, removes it from the table (NOT YET IMPLEMENTED)
-	void removeVariable(string variableName);
+	// if the Literal doesn't already exist, calls insertInto(), and regardless sets the memoryLocation for the currentLiteralObject
+	void manageLiteralObject(literalTableObject *currentLiteralObject);
 
 	/* ==============================================================================
 		Public Accessor Methods
 	============================================================================== */
 
-	// iterates through the SymbolTable and prints the variableName & memoryLocation
-	void printSymbolTable();
+	// iterates through the LiteralTable and prints the literalString & memoryLocation
+	void printLiteralTable();
 
-	// returns true if the variable already exists in the SymbolTable
-	bool currentlyExists(string variableName);
+	// returns true if the variable already exists in the LiteralTable
+	bool currentlyExists(string currentVariableName);
 
 	// returns the memoryLocation for the variable
-	int lookup(string variableName);
+	int lookup(string currentVariableName);
 
 	// returns the lookup table index for the variable
-	int getSymbolTableIndex(string variableName);
+	int getLiteralTableIndex(string literalToFind);
 
 protected:
 
 	/* ==============================================================================
 		Private Members
 	============================================================================== */
-	memoryTableObject symbolTableArray[MAX_NUM_VARIABLES]; // SymbolTable implemented as array of memoryTableObjects
+	literalTableObject LiteralTableArray[MAX_NUM_VARIABLES]; // LiteralTable implemented as array of memoryTableObjects
 	unsigned int numObjectsInArray;
-	unsigned int numUsedMemory;
 
 
 	/* ==============================================================================
@@ -96,6 +94,6 @@ protected:
 	============================================================================== */
 
 	// adds the variable to the table (HAVE NOT YET IMPLEMENTED SORT)
-	int insertInto(memoryTableObject *currentMemoryObject);
+	int insertInto(literalTableObject *currentMemoryObject);
 
 };

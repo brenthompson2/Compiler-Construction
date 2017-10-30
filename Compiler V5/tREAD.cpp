@@ -158,7 +158,7 @@ bool tREAD::parseVariable(int *currentCharIterator){
 		}
 
 		if (!caseFound){
-			cout << "\t\t\t[GOTO]: Invalid Syntax: Unknown Character in line: " << globalCurrentLine << endl;
+			cout << "\t\t\t[tREAD]: Invalid Syntax: Unknown Character in line: " << globalCurrentLine << endl;
 			(*currentCharIterator)++;
 			globalNumErrors++;
 		}

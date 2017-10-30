@@ -15,6 +15,7 @@
 
 #pragma once
 
+#include "LiteralTable.h"
 #include "LineLabelTable.h"
 
 #include <iostream>	// Console IO
@@ -51,11 +52,8 @@ public:
 		Public Pre-Compiling Methods
 	============================================================================== */
 
-	// parses the flags and manages the global flag bools
-	void setFlags(char *arrayOfFlags, int numberOfFlags);
-
-	// Sets the FileManagers's Global FileNames & Links to the ParentLineManager
-	bool prepareForCompilation(string fileToCompile, LineLabelTable *lineManager);
+	// Sets the FileManagers's Global FileNames & Links to the Parent's LineManager & LiteralManager
+	bool prepareForCompilation(string fileToCompile, LiteralTable *literalManager, LineLabelTable *lineManager);
 
 	// Creates the preprocessed .noblanks file & upon completion returns status of success
 	bool preprocessFile();
@@ -76,13 +74,23 @@ public:
 	// Writes the string "currentString" to the .obj output file
 	void writeStringToObj (string currentString);
 
+	/* ==============================================================================
+		Public Flag Methods
+	============================================================================== */
+
+	// parses the flags and manages the global flag bools
+	void setFlags(char *arrayOfFlags, int numberOfFlags);
+
+	// sets the keepObjFlag to true
+	void setKeepOBJ();
+
 private:
 	/* ==============================================================================
 		Private Members
 	============================================================================== */
 
 	// Files & File Names
-	ifstream inputFile; // <fileName>.transy
+	ifstream globalInputFile; // <fileName>.transy
 	ifstream preprocessedInFile; // <fileName>.noblanks
 	ofstream noBlanksOutFile; // <fileName>.noblanks
 	ofstream objOutFile; // <fileName>.obj
@@ -91,10 +99,11 @@ private:
 	char globalObjFileName[MAX_STRING_LENGTH]; // stem of filename
 
 	// Flags
-	bool keepNoBlanksFile; // -n
-	bool keepObjFile; // -o
+	bool keepNoBlanksFlag; // -n = keep even if compiles successfully
+	bool keepObjFlag; // -o = keep even if compilation fails
 
 	// Parent's Objects
+	LiteralTable *ParentLiteralManager;
 	LineLabelTable *ParentLineManager;
 
 	/* ==============================================================================

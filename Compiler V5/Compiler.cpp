@@ -19,6 +19,7 @@
 // Instantiates a BREN_Compiler object, tell FileManager to preprocess .transy file, and instantiates objects for handling commands
 BREN_Compiler::BREN_Compiler (){
 	numErrors = 0;
+	foundFirstLineAfterDIM = false;
 	instantiateCommandObjects();
 	cout << "\t[Compiler]: Initialized Compiler\n";
 	return;
@@ -39,16 +40,17 @@ bool BREN_Compiler::prepareForCompilation(string fileToCompile, char *arrayOfFla
 	bool successfullyPrepared = false;
 
 	// Set Member Variables
-	globalFileName = fileToCompile;
+	// globalFileName = fileToCompile;
 	globalFileManager.setFlags(arrayOfFlags, numberOfFlags);
 
 	// PreProcess File
-	successfullyPrepared = globalFileManager.prepareForCompilation(fileToCompile, &globalLineManager);
+	// cout << "\t[Compiler]: Attempting to preprocess file...\n";
+	successfullyPrepared = globalFileManager.prepareForCompilation(fileToCompile, &globalLiteralManager, &globalLineManager);
 	if (successfullyPrepared){
 		successfullyPrepared = globalFileManager.preprocessFile();
 	}
 
-	globalLineManager.printLineLabelTable();
+	// globalLineManager.printLineLabelTable();
 
 	return successfullyPrepared;
 }
@@ -70,7 +72,7 @@ void BREN_Compiler::compile(){
 	}
 
 	while (continueCompiling){
-		getCommand(currentLine, actualLineNumber);
+		handleCommand(currentLine, actualLineNumber);
 
 		currentLine = globalFileManager.getNextLine();
 		lineCount++;
@@ -86,13 +88,14 @@ void BREN_Compiler::compile(){
 
 	if (numErrors == 0){
 		cout << "\n\t[Compiler]: Successfully Compiled the file\n";
-
+		globalFileManager.setKeepOBJ();
 	}
 	else {
 		cout << "\n\t[Compiler]: Completed Compiling with " << numErrors << " errors\n";
 	}
 
 	globalMemoryManager.printSymbolTable();
+	globalLiteralManager.printLiteralTable();
 
 	return;
 }
@@ -102,143 +105,117 @@ void BREN_Compiler::compile(){
 ============================================================================== */
 
 // iterates through the line one character at a time and tells the appropriate object to handle the command
-void BREN_Compiler::getCommand(string currentLine, int correspondingLineNumber){
+void BREN_Compiler::handleCommand(string currentLine, int correspondingLineNumber){
 	char currentCharacter = currentLine[0];
-	switch (currentCharacter){
-		case 'A':
-			// AREAD
-			if ((currentLine[1] == 'R') && (currentLine[2] == 'E') && (currentLine[3] == 'A') && (currentLine[4] == 'D')){
-				// cout << "\t[Compiler]: Found aREAD Command\n";
-				numErrors += mainAREADHandler.handleAREAD(currentLine, correspondingLineNumber);
-			}
-			// AWRITE
-			else {
-				if ((currentLine[1] == 'W') && (currentLine[2] == 'R') && (currentLine[3] == 'I') && (currentLine[4] == 'T') && (currentLine[5] == 'E')){
-					// cout << "\t[Compiler]: Found aWRITE Command\n";
-					numErrors += mainAWRITEHandler.handleAWRITE(currentLine, correspondingLineNumber);
-				}
-				else {
-					cout << "\t[Compiler]: Invalid Command in line " << correspondingLineNumber << ": " <<  currentLine << endl << endl << endl;
-					numErrors++;
-				}
-			}
-			break;
-		case 'C':
-			// CLS
-			if ((currentLine[1] == 'L') && (currentLine[2] == 'S')){
-				// cout << "\t[Compiler]: Found CLS Command\n";
-				numErrors += mainCLSHandler.handleCLS(currentLine, correspondingLineNumber);
-			}
-			else {
-				cout << "\t[Compiler]: Invalid Command in line " << correspondingLineNumber << ": " <<  currentLine << endl << endl << endl;
-				numErrors++;
-			}
-			break;
-		case 'D':
-			// DIM
-			if ((currentLine[1] == 'I') && (currentLine[2] == 'M')){
-				// cout << "\t[Compiler]: Found Dim Command\n";
-				numErrors += mainDIMHandler.handleDIM(currentLine, correspondingLineNumber);
-			}
-			else {
-				cout << "\t[Compiler]: Invalid Command in line " << correspondingLineNumber << ": " <<  currentLine << endl << endl << endl;
-				numErrors++;
-			}
-			break;
-		case 'G':
-			// DIM
-			if ((currentLine[1] == 'O') && (currentLine[2] == 'T') && (currentLine[3] == 'O')){
-				// cout << "\t[Compiler]: Found GOTO Command\n";
-				numErrors += mainGOTOHandler.handleGOTO(currentLine, correspondingLineNumber);
-			}
-			else {
-				cout << "\t[Compiler]: Invalid Command in line " << correspondingLineNumber << ": " <<  currentLine << endl << endl << endl;
-				numErrors++;
-			}
-			break;
-		case 'I':
-			// DIM
-			if ((currentLine[1] == 'F') && (currentLine[2] == 'A')){
-				// cout << "\t[Compiler]: Found IFA Command\n";
-				numErrors += mainIFAHandler.handleIFA(currentLine, correspondingLineNumber);
-			}
-			else {
-				cout << "\t[Compiler]: Invalid Command in line " << correspondingLineNumber << ": " <<  currentLine << endl << endl << endl;
-				numErrors++;
-			}
-			break;
-		case 'L':
-			if ((currentLine[1] == 'I') && (currentLine[2] == 'S') && (currentLine[3] == 'T') && (currentLine[4] == 'O')){
-				// LISTO
-				// cout << "\t[Compiler]: Found LISTO Command\n";
-				numErrors += mainLISTOHandler.handleLISTO(currentLine, correspondingLineNumber);
-			}
-			else {
-				if ((currentLine[1] == 'O') && (currentLine[2] == 'O') && (currentLine[3] == 'P')){
-					// LOOP-END
-					if ((currentLine[4] == '-') && (currentLine[5] == 'E') && (currentLine[6] == 'N') && (currentLine[7] == 'D')){
-						// cout << "\t[Compiler]: Found LOOPEND Command\n";
-						numErrors += mainLOOPENDHandler.handleLOOPEND(currentLine, correspondingLineNumber);
-					}
-					// LOOP
-					else {
-						// cout << "\t[Compiler]: Found LOOP Command\n";
-						numErrors += mainLOOPHandler.handleLOOP(currentLine, correspondingLineNumber);
-					}
-				}
-				else {
-					cout << "\t[Compiler]: Invalid Command in line " << correspondingLineNumber << ": " <<  currentLine << endl << endl << endl;
-					numErrors++;
-				}
-			}
-			break;
-		case 'N':
-			// NOP
-			if ((currentLine[1] == 'O') && (currentLine[2] == 'P')){
-				// cout << "\t[Compiler]: Found NOP Command\n";
-				numErrors += mainNOPHandler.handleNOP(currentLine, correspondingLineNumber);
-			}
-			else {
-				cout << "\t[Compiler]: Invalid Command in line " << correspondingLineNumber << ": " <<  currentLine << endl << endl << endl;
-				numErrors++;
-			}
-			break;
-		case 'R':
-			// READ
-			if ((currentLine[1] == 'E') && (currentLine[2] == 'A') && (currentLine[3] == 'D')){
-				// cout << "\t[Compiler]: Found tRead Command\n";
-				numErrors += mainREADHandler.handleREAD(currentLine, correspondingLineNumber);
-			}
-			else {
-				cout << "\t[Compiler]: Invalid Command in line " << correspondingLineNumber << ": " <<  currentLine << endl << endl << endl;
-				numErrors++;
-			}
-			break;
-		case 'S':
-			// STOP
-			if ((currentLine[1] == 'T') && (currentLine[2] == 'O') && (currentLine[3] == 'P')){
-				// cout << "\t[Compiler]: Found Stop Command\n";
-				numErrors += mainSTOPHandler.handleSTOP(currentLine, correspondingLineNumber);
-			}
-			else {
-				cout << "\t[Compiler]: Invalid Command in line " << correspondingLineNumber << ": " <<  currentLine << endl << endl << endl;
-				numErrors++;
-			}
-			break;
-		case 'W':
-			// WRITE
-			if ((currentLine[1] == 'R') && (currentLine[2] == 'I') && (currentLine[3] == 'T') && (currentLine[4] == 'E')){
-				// cout << "\t[Compiler]: Found tWrite Command\n";
-				numErrors += mainWRITEHandler.handleWRITE(currentLine, correspondingLineNumber);
-			}
-			else {
-				cout << "\t[Compiler]: Invalid Command in line " << correspondingLineNumber << ": " <<  currentLine << endl << endl << endl;
-				numErrors++;
-			}
-			break;
-		default:
-			cerr << "\t[Compiler]: ERROR: Failed to interpret command in line " << correspondingLineNumber << ": " <<  currentLine << endl << endl << endl;
-			break;
+	bool caseFound = false;
+
+	// New Command Parser / Tokenizer
+	if (!(strncmp(currentLine.c_str(), "AREAD", 4))){
+		cout << "\t[Compiler]: Found aREAD Command\n";
+		numErrors += mainAREADHandler.handleAREAD(currentLine, correspondingLineNumber);
+		caseFound = true;
+		foundFirstLineAfterDIM = true;
+	}
+	if (!(strncmp(currentLine.c_str(), "AWRITE", 5))){
+		cout << "\t[Compiler]: Found aWRITE Command\n";
+		numErrors += mainAWRITEHandler.handleAWRITE(currentLine, correspondingLineNumber);
+		caseFound = true;
+		foundFirstLineAfterDIM = true;
+	}
+	if (!(strncmp(currentLine.c_str(), "CLS", 2))){
+		cout << "\t[Compiler]: Found CLS Command\n";
+		numErrors += mainCLSHandler.handleCLS(currentLine, correspondingLineNumber);
+		caseFound = true;
+		foundFirstLineAfterDIM = true;
+	}
+	if (!(strncmp(currentLine.c_str(), "DIM", 2))){
+		cout << "\t[Compiler]: Found DIM Command\n";
+		if (foundFirstLineAfterDIM) {
+			cerr << "\t[Compiler]: ERROR: Found DIM Command not at top of file on line " << correspondingLineNumber << ": " <<  currentLine << endl << endl << endl;
+			numErrors++;
+		}
+		else {
+			numErrors += mainDIMHandler.handleDIM(currentLine, correspondingLineNumber);
+		}
+		caseFound = true;
+	}
+	if (!(strncmp(currentLine.c_str(), "GOTO", 3))){
+		cout << "\t[Compiler]: Found GOTO Command\n";
+		numErrors += mainGOTOHandler.handleGOTO(currentLine, correspondingLineNumber);
+		caseFound = true;
+		foundFirstLineAfterDIM = true;
+	}
+	if (!(strncmp(currentLine.c_str(), "IFA", 2))){
+		cout << "\t[Compiler]: Found IFA Command\n";
+		numErrors += mainIFAHandler.handleIFA(currentLine, correspondingLineNumber);
+		caseFound = true;
+		foundFirstLineAfterDIM = true;
+	}
+	else {
+		if (!(strncmp(currentLine.c_str(), "IF", 1))){
+			cout << "\t[Compiler]: Found IF Command\n";
+			numErrors += mainIFHandler.handleIF(currentLine, correspondingLineNumber);
+			caseFound = true;
+			foundFirstLineAfterDIM = true;
+		}
+	}
+	if (!(strncmp(currentLine.c_str(), "LISTO", 4))){
+		cout << "\t[Compiler]: Found LISTO Command\n";
+		numErrors += mainLISTOHandler.handleLISTO(currentLine, correspondingLineNumber);
+		caseFound = true;
+		foundFirstLineAfterDIM = true;
+	}
+	if (!(strncmp(currentLine.c_str(), "LOOP", 3))){
+		cout << "\t[Compiler]: Found LOOP Command\n";
+		numErrors += mainLOOPHandler.handleLOOP(currentLine, correspondingLineNumber);
+		caseFound = true;
+		foundFirstLineAfterDIM = true;
+	}
+	if (!(strncmp(currentLine.c_str(), "LOOPEND", 3))){
+		cout << "\t[Compiler]: Found LOOPEND Command\n";
+		numErrors += mainLOOPENDHandler.handleLOOPEND(currentLine, correspondingLineNumber);
+		caseFound = true;
+		foundFirstLineAfterDIM = true;
+	}
+	if (!(strncmp(currentLine.c_str(), "LREAD", 4))){
+		cout << "\t[Compiler]: Found lREAD Command\n";
+		numErrors += mainLREADHandler.handleLREAD(currentLine, correspondingLineNumber);
+		caseFound = true;
+		foundFirstLineAfterDIM = true;
+	}
+	if (!(strncmp(currentLine.c_str(), "LWRITE", 5))){
+		cout << "\t[Compiler]: Found lWRITE Command\n";
+		numErrors += mainLWRITEHandler.handleLWRITE(currentLine, correspondingLineNumber);
+		caseFound = true;
+		foundFirstLineAfterDIM = true;
+	}
+	if (!(strncmp(currentLine.c_str(), "NOP", 2))){
+		cout << "\t[Compiler]: Found NOP Command\n";
+		numErrors += mainNOPHandler.handleNOP(currentLine, correspondingLineNumber);
+		caseFound = true;
+		foundFirstLineAfterDIM = true;
+	}
+	if (!(strncmp(currentLine.c_str(), "READ", 3))){
+		cout << "\t[Compiler]: Found READ Command\n";
+		numErrors += mainREADHandler.handleREAD(currentLine, correspondingLineNumber);
+		caseFound = true;
+		foundFirstLineAfterDIM = true;
+	}
+	if (!(strncmp(currentLine.c_str(), "STOP", 3))){
+		cout << "\t[Compiler]: Found STOP Command\n";
+		numErrors += mainSTOPHandler.handleSTOP(currentLine, correspondingLineNumber);
+		caseFound = true;
+		foundFirstLineAfterDIM = true;
+	}
+	if (!(strncmp(currentLine.c_str(), "WRITE", 4))){
+		cout << "\t[Compiler]: Found WRITE Command\n";
+		numErrors += mainWRITEHandler.handleWRITE(currentLine, correspondingLineNumber);
+		caseFound = true;
+		foundFirstLineAfterDIM = true;
+	}
+
+	if (!caseFound){
+		cerr << "\t[Compiler]: ERROR: Failed to interpret command in line " << correspondingLineNumber << ": " <<  currentLine << endl << endl << endl;
 	}
 }
 
@@ -259,9 +236,9 @@ void BREN_Compiler::instantiateCommandObjects(){
 	mainNOPHandler.prepareNOP(&globalFileManager);
 	mainLISTOHandler.prepareLISTO(&globalFileManager);
 
-	// mainLREADHandler.prepareLREAD(&globalFileManager);
-	// mainLWRITEHandler.prepareLWRITE(&globalFileManager);
-	// mainIFAHandler.prepareIFA(&globalFileManager);
+	mainLREADHandler.prepareLREAD(&globalFileManager, &globalLiteralManager);
+	mainLWRITEHandler.prepareLWRITE(&globalFileManager, &globalLiteralManager);
+	mainIFHandler.prepareIF(&globalFileManager, &globalMemoryManager, &globalLineManager);
 	mainCLSHandler.prepareCLS(&globalFileManager);
 	// mainCDUMPHandler.prepareCDUMP(&globalFileManager);
 	// mainSUBPHandler.prepareSUBP(&globalFileManager);
