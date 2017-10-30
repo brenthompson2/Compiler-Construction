@@ -24,8 +24,8 @@ I) Summary of Work:
 	- Spent way too much time tracking down a preprocessor-breaking bug that randomly appeared
 	- Implemented IF
 	- Implemented CompilationResultFlag as coreMemory[1000]
-	- Implemented CDUMP command
 	- Created Backup 1
+	- Started Implementing CDUMP command
 
 II) Still Need to Implement:
 	- New Output Files:
@@ -157,10 +157,10 @@ V) Log Of Activity:
 
 - Implemented CompilationResultFlag as coreMemory[1000]
 
-- Implement CDUMP
-	- Copied and Modified code from LOOP
-
 - Created Backup 1
+
+- Started to Implement CDUMP
+	- Copied and Modified code from LOOP
 
 =========================================================
 =========================================================

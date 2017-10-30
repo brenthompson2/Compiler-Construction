@@ -1,11 +1,11 @@
 /*
   ==============================================================================
 
-	File: SymbolTable.cpp
+	File: tLISTO.h
 	Author: Brendan Thompson
-	Updated: 10/29/17
+	Updated: 10/12/17
 
-	Description: Interface for SymbolTable for Compiler object made for Transylvania University University Fall Term 2017 Compiler Construction class
+	Description: Interface for Functions for processing LISTO command for Compiler object made for Transylvania University University Fall Term 2017 Compiler Construction class
 
   ==============================================================================
 */
@@ -17,6 +17,11 @@
 ============================================================================== */
 
 #include <iostream>	// Console IO
+#include <stdlib.h>	// Exit()
+#include <string.h> // strcpy & strcat
+
+#include "FileManager.h"
+
 using std::cin;
 using std::cout;
 using std::cerr;
@@ -27,82 +32,58 @@ using std::string;
 	Symbolic Constants
 ============================================================================== */
 
-#define MAX_STRING_LENGTH 50
-#define MAX_VARIABLE_NAME_LENGTH 128
-#define MAX_NUM_VARIABLES 1001
-#define NOT_FOUND_IN_ARRAY -1
-
-#define INDEX_COMPILATION_RESULT 1000
-#define SUCCESSFULLY_COMPILED 0
-#define FAILED_COMPILATION 1
+#define INDEX_FIRST_CHAR_AFTER_LISTO_COMMAND 5
+const char LISTO_OP_CODE = '6';
 
 /* ==============================================================================
 	Type Definitions
 ============================================================================== */
 
-struct memoryTableObject {
-	string variableName;
-	unsigned int memoryLocation;
-	int integerValue;
-	bool booleanValue;
-	bool stringValue;
-	bool isArray;
-	unsigned int size;
-};
-
 /* ==============================================================================
-	symbol Table Class Interface
+	tLISTO Class Interface
 ============================================================================== */
 
-class SymbolTable {
+class tLISTO {
 public:
 	/* ==============================================================================
 	Constructor & Destructor
 	============================================================================== */
-	SymbolTable();
-	~SymbolTable();
+	tLISTO();
+	~tLISTO();
 
 	/* ==============================================================================
 		Public Manipulator Methods
 	============================================================================== */
 
-	// if the variable doesn't already exist, calls insertInto(), and regardless sets the memoryLocation for the currentMemoryObject
-	void manageMemoryTableObject(memoryTableObject *currentMemoryObject);
+	// Connects local pointer to FileManager & SymbolTable with the parent's (compiler's) versions
+	void prepareLISTO(FileManager *parentFileManager);
 
-	// sets coreMemory boolean regarding the result of compilation
-	void setCompilationResult(bool completedSuccessfully);
+	// calls the functions necessary to parse the line and print the object code to the file while counting errors
+	// returns num errors
+	int handleLISTO(string currentLine, int correspondingLineNumber);
 
-	/* ==============================================================================
-		Public Accessor Methods
-	============================================================================== */
-
-	// iterates through the SymbolTable and prints the variableName & memoryLocation
-	void printSymbolTable();
-
-	// returns true if the variable already exists in the SymbolTable
-	bool currentlyExists(string variableName);
-
-	// returns the memoryLocation for the variable
-	int lookup(string variableName);
-
-	// returns the lookup table index for the variable
-	int getSymbolTableIndex(string variableName);
-
-protected:
+private:
 
 	/* ==============================================================================
 		Private Members
 	============================================================================== */
-	memoryTableObject symbolTableArray[MAX_NUM_VARIABLES]; // SymbolTable implemented as array of memoryTableObjects
-	unsigned int numObjectsInArray;
-	unsigned int numUsedMemory;
+	string globalCurrentLine;
+	unsigned int globalNumErrors;
+
+	FileManager *currentFileManager; // pointer to the Compiler's (parent's) FileManager
 
 
 	/* ==============================================================================
-		Private Methods
+		Private Manipulator Methods
 	============================================================================== */
 
-	// adds the variable to the table (HAVE NOT YET IMPLEMENTED SORT)
-	int insertInto(memoryTableObject *currentMemoryObject);
+	// checks to see if LISTO command is immediately followed by end of string character
+	void checkSyntax();
 
+	// tells the FileManager to print the object code for the command, which includes the command op code
+	void outputLISTOCommand();
+
+	/* ==============================================================================
+		Private Accessor Methods
+	============================================================================== */
 };

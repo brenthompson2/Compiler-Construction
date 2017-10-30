@@ -1,11 +1,11 @@
 /*
   ==============================================================================
 
-	File: SymbolTable.cpp
+	File: LineLabelTable.cpp
 	Author: Brendan Thompson
-	Updated: 10/29/17
+	Updated: 10/13/17
 
-	Description: Interface for SymbolTable for Compiler object made for Transylvania University University Fall Term 2017 Compiler Construction class
+	Description: Interface for LineLabelTable for Compiler object made for Transylvania University University Fall Term 2017 Compiler Construction class
 
   ==============================================================================
 */
@@ -17,6 +17,7 @@
 ============================================================================== */
 
 #include <iostream>	// Console IO
+#include <algorithm>	// std::transform()
 using std::cin;
 using std::cout;
 using std::cerr;
@@ -29,80 +30,70 @@ using std::string;
 
 #define MAX_STRING_LENGTH 50
 #define MAX_VARIABLE_NAME_LENGTH 128
-#define MAX_NUM_VARIABLES 1001
+#define MAX_NUM_LINES 1000
 #define NOT_FOUND_IN_ARRAY -1
-
-#define INDEX_COMPILATION_RESULT 1000
-#define SUCCESSFULLY_COMPILED 0
-#define FAILED_COMPILATION 1
 
 /* ==============================================================================
 	Type Definitions
 ============================================================================== */
 
-struct memoryTableObject {
-	string variableName;
-	unsigned int memoryLocation;
-	int integerValue;
-	bool booleanValue;
-	bool stringValue;
-	bool isArray;
-	unsigned int size;
+struct lineLabelObject {
+	string labelName;
+	int transyLineNumber;
+	int objLineNumber;
 };
 
 /* ==============================================================================
-	symbol Table Class Interface
+	Line Label Table Class Interface
 ============================================================================== */
 
-class SymbolTable {
+class LineLabelTable {
 public:
 	/* ==============================================================================
 	Constructor & Destructor
 	============================================================================== */
-	SymbolTable();
-	~SymbolTable();
+	LineLabelTable();
+	~LineLabelTable();
 
 	/* ==============================================================================
 		Public Manipulator Methods
 	============================================================================== */
 
-	// if the variable doesn't already exist, calls insertInto(), and regardless sets the memoryLocation for the currentMemoryObject
-	void manageMemoryTableObject(memoryTableObject *currentMemoryObject);
+	// adds a new line to the LineLabelTable by mapping it's transyLineNumber
+	void addLine(int actualTransyLineNumber);
 
-	// sets coreMemory boolean regarding the result of compilation
-	void setCompilationResult(bool completedSuccessfully);
+	// adds a label to the table index associated with the transyLineNumber
+	void addLineLabel(string newLineLabel, int newTransyLineNumber);
 
 	/* ==============================================================================
 		Public Accessor Methods
 	============================================================================== */
 
-	// iterates through the SymbolTable and prints the variableName & memoryLocation
-	void printSymbolTable();
+	// returns the TransyLineNumber for the currentObjLineNumber
+	int getTransyLineNumber(int currentObjLineNumber);
 
-	// returns true if the variable already exists in the SymbolTable
-	bool currentlyExists(string variableName);
+	// returns the currentObjLineNumber for the nameOfLabel
+	int getObjLineNumber(string nameOfLabel);
 
-	// returns the memoryLocation for the variable
-	int lookup(string variableName);
+	// iterates through the LineLabelTable and prints the labelName & memoryLocation
+	void printLineLabelTable();
 
-	// returns the lookup table index for the variable
-	int getSymbolTableIndex(string variableName);
-
-protected:
+private:
 
 	/* ==============================================================================
 		Private Members
 	============================================================================== */
-	memoryTableObject symbolTableArray[MAX_NUM_VARIABLES]; // SymbolTable implemented as array of memoryTableObjects
-	unsigned int numObjectsInArray;
-	unsigned int numUsedMemory;
+	int LineNumberArray[MAX_NUM_LINES]; // array for mapping line numbers, indexed in order of objLineNumber
+	lineLabelObject LineLabelArray[MAX_NUM_LINES]; // array for mapping line labels to line numbers, indexed in order of appearance
+	int globalNumLinesOfCode;
+	int globalNumLabels;
 
 
 	/* ==============================================================================
 		Private Methods
 	============================================================================== */
 
-	// adds the variable to the table (HAVE NOT YET IMPLEMENTED SORT)
-	int insertInto(memoryTableObject *currentMemoryObject);
+	// returns whether or not the line label already exists
+	bool alreadyExists(string currentLineLabel);
 
 };

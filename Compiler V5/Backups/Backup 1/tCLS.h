@@ -1,11 +1,11 @@
 /*
   ==============================================================================
 
-	File: LiteralTable.cpp
+	File: tCLS.h
 	Author: Brendan Thompson
-	Updated: 10/29/17
+	Updated: 10/23/17
 
-	Description: Interface for LiteralTable for Compiler object made for Transylvania University University Fall Term 2017 Compiler Construction class
+	Description: Interface for Functions for processing tCLS command for Compiler object made for Transylvania University University Fall Term 2017 Compiler Construction class
 
   ==============================================================================
 */
@@ -17,7 +17,12 @@
 ============================================================================== */
 
 #include <iostream>	// Console IO
-// using std::cin;
+#include <stdlib.h>	// Exit()
+#include <string.h> // strcpy & strcat
+
+#include "FileManager.h"
+
+using std::cin;
 using std::cout;
 using std::cerr;
 using std::endl;
@@ -27,73 +32,61 @@ using std::string;
 	Symbolic Constants
 ============================================================================== */
 
-// #define MAX_STRING_LENGTH 50
-// #define MAX_VARIABLE_NAME_LENGTH 128
-#define MAX_NUM_LITERALS 1000
-#define NOT_FOUND_IN_ARRAY -1
-
-const string UNNAMED_LITERAL = "_NA";
-const string UNDEFINED_LITERAL = "";
+#define INDEX_FIRST_CHAR_AFTER_CLS_COMMAND 3
+const string CLS_OP_CODE = "19";
 
 /* ==============================================================================
 	Type Definitions
 ============================================================================== */
 
-struct literalTableObject {
-	string variableName;
-	string literalString;
-	unsigned int memoryLocation;
-};
-
 /* ==============================================================================
-	Literal Table Class Interface
+	tCLS Class Interface
 ============================================================================== */
 
-class LiteralTable {
+class tCLS {
 public:
 	/* ==============================================================================
 	Constructor & Destructor
 	============================================================================== */
-	LiteralTable();
-	~LiteralTable();
+	tCLS();
+	~tCLS();
 
 	/* ==============================================================================
 		Public Manipulator Methods
 	============================================================================== */
 
-	// if the Literal doesn't already exist, calls insertInto(), and regardless sets the memoryLocation for the currentLiteralObject
-	void manageLiteralObject(literalTableObject *currentLiteralObject);
+	// Connects local pointer to FileManager & SymbolTable with the parent's (compiler's) versions
+	void prepareCLS(FileManager *parentFileManager);
 
-	/* ==============================================================================
-		Public Accessor Methods
-	============================================================================== */
+	// calls the functions necessary to parse the line and print the object code to the file while counting errors
+	// returns num errors
+	int handleCLS(string currentLine, int correspondingLineNumber);
 
-	// iterates through the LiteralTable and prints the literalString & memoryLocation
-	void printLiteralTable();
-
-	// returns true if the variable already exists in the LiteralTable
-	bool currentlyExists(string currentVariableName);
-
-	// returns the memoryLocation for the variable
-	int lookup(string currentVariableName);
-
-	// returns the lookup table index for the variable
-	int getLiteralTableIndex(string literalToFind);
-
-protected:
+private:
 
 	/* ==============================================================================
 		Private Members
 	============================================================================== */
-	literalTableObject LiteralTableArray[MAX_NUM_LITERALS]; // LiteralTable implemented as array of memoryTableObjects
-	unsigned int numObjectsInArray;
+	string globalCurrentLine;
+	unsigned int globalNumErrors;
+
+	FileManager *currentFileManager; // pointer to the Compiler's (parent's) FileManager
 
 
 	/* ==============================================================================
-		Private Methods
+		Private Manipulator Methods
 	============================================================================== */
 
-	// adds the variable to the table (HAVE NOT YET IMPLEMENTED SORT)
-	int insertInto(literalTableObject *currentMemoryObject);
+	// checks to see if tCLS command is immediately followed by end of string character
+	void checkSyntax();
 
+	// tells the FileManager to print the object code for the command, which includes the command op code
+	void outputCLSCommand();
+
+
+
+
+	/* ==============================================================================
+		Private Accessor Methods
+	============================================================================== */
 };

@@ -1,11 +1,11 @@
 /*
   ==============================================================================
 
-	File: SymbolTable.cpp
+	File: tGOTO.h
 	Author: Brendan Thompson
-	Updated: 10/29/17
+	Updated: 10/12/17
 
-	Description: Interface for SymbolTable for Compiler object made for Transylvania University University Fall Term 2017 Compiler Construction class
+	Description: Interface for Functions for processing GOTO command for Compiler object made for Transylvania University University Fall Term 2017 Compiler Construction class
 
   ==============================================================================
 */
@@ -17,6 +17,12 @@
 ============================================================================== */
 
 #include <iostream>	// Console IO
+#include <stdlib.h>	// Exit()
+#include <string.h> // strcpy & strcat
+
+#include "LineLabelTable.h"
+#include "FileManager.h"
+
 using std::cin;
 using std::cout;
 using std::cerr;
@@ -28,81 +34,67 @@ using std::string;
 ============================================================================== */
 
 #define MAX_STRING_LENGTH 50
-#define MAX_VARIABLE_NAME_LENGTH 128
-#define MAX_NUM_VARIABLES 1001
-#define NOT_FOUND_IN_ARRAY -1
+#define MAX_VARIABLE_NAME_LENGTH 128	// currently using strings which may or may not allow for 128 characters
+#define MAX_ARGUMENTS 7
+#define INDEX_FIRST_CHAR_AFTER_GOTO_COMMAND 4
 
-#define INDEX_COMPILATION_RESULT 1000
-#define SUCCESSFULLY_COMPILED 0
-#define FAILED_COMPILATION 1
+const char GOTO_OP_CODE = '8';
 
 /* ==============================================================================
 	Type Definitions
 ============================================================================== */
 
-struct memoryTableObject {
-	string variableName;
-	unsigned int memoryLocation;
-	int integerValue;
-	bool booleanValue;
-	bool stringValue;
-	bool isArray;
-	unsigned int size;
-};
-
 /* ==============================================================================
-	symbol Table Class Interface
+	tGOTO Class Interface
 ============================================================================== */
 
-class SymbolTable {
+class tGOTO {
 public:
 	/* ==============================================================================
 	Constructor & Destructor
 	============================================================================== */
-	SymbolTable();
-	~SymbolTable();
+	tGOTO();
+	~tGOTO();
 
 	/* ==============================================================================
 		Public Manipulator Methods
 	============================================================================== */
 
-	// if the variable doesn't already exist, calls insertInto(), and regardless sets the memoryLocation for the currentMemoryObject
-	void manageMemoryTableObject(memoryTableObject *currentMemoryObject);
+	// Connects local pointer to FileManager & LineLabelTable with the parent's (compiler's) versions
+	void prepareGOTO(FileManager *parentFileManager, LineLabelTable *parentLineManager);
 
-	// sets coreMemory boolean regarding the result of compilation
-	void setCompilationResult(bool completedSuccessfully);
+	// calls the functions necessary to parse the line, sync the variables with the SymbolTable, and print the object code to the file while counting errors
+	// returns number of errors
+	int handleGOTO(string currentLine, int actualLineNumber);
 
-	/* ==============================================================================
-		Public Accessor Methods
-	============================================================================== */
-
-	// iterates through the SymbolTable and prints the variableName & memoryLocation
-	void printSymbolTable();
-
-	// returns true if the variable already exists in the SymbolTable
-	bool currentlyExists(string variableName);
-
-	// returns the memoryLocation for the variable
-	int lookup(string variableName);
-
-	// returns the lookup table index for the variable
-	int getSymbolTableIndex(string variableName);
-
-protected:
+private:
 
 	/* ==============================================================================
 		Private Members
 	============================================================================== */
-	memoryTableObject symbolTableArray[MAX_NUM_VARIABLES]; // SymbolTable implemented as array of memoryTableObjects
-	unsigned int numObjectsInArray;
-	unsigned int numUsedMemory;
+	string globalCurrentLine;
+	string globalLineLabelName;
+	int globalLineLabelLineNumber;
+	int globalNumErrors;
 
+	FileManager *currentFileManager; // pointer to the Compiler's (parent's) FileManager
+	LineLabelTable *currentLineManager; // pointer to the Compiler's (parent's) SymbolTable
 
 	/* ==============================================================================
-		Private Methods
+		Private Manipulator Methods
 	============================================================================== */
 
-	// adds the variable to the table (HAVE NOT YET IMPLEMENTED SORT)
-	int insertInto(memoryTableObject *currentMemoryObject);
 
+	// calls parseLineLabelName until no more variable to parse
+	void parseParameters();
+
+	// parses through a line one character at a time, sets globalLineLabelName, and returns whether or not there are any more variables to parse
+	bool parseLineLabelName(int *currentCharIterator);
+
+	/* ==============================================================================
+		Private Accessor Methods
+	============================================================================== */
+
+	// tells the FileManager to print the object code for the command, which includes the command op code and the variable memoryLocations
+	void outputGOTOCommand();
 };
