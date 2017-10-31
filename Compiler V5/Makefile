@@ -1,31 +1,31 @@
 # Brendan Thompson
-# 10/26/17
+# 10/30/17
 # Makefile for Compiler V5
 
 # "make main" = Compile and Link
-# "make clean" = removes all created files (Compiler, *.o, *.noblanks, *.obj)
+# "make clean" = removes all created files (Compiler, *.o, *.noblanks, *.obj, *.core, *.literal)
 # "./Compiler <fileName.transy>" = compile the fileName
 
 #######################
 ### Main Components ###
 #######################
 
-main: CompilerDriver.o Compiler.o FileManager.o SymbolTable.o LiteralTable.o LineLabelTable.o tREAD.o tWRITE.o tSTOP.o tDIM.o taREAD.o taWRITE.o tGOTO.o tLOOP.o tLOOPEND.o tIFA.o tNOP.o tLISTO.o tlREAD.o tlWRITE.o tIF.o tCLS.o tCDUMP.o
-	g++ -o Compiler CompilerDriver.o Compiler.o FileManager.o SymbolTable.o LiteralTable.o LineLabelTable.o tREAD.o tWRITE.o tSTOP.o tDIM.o taREAD.o taWRITE.o tGOTO.o tLOOP.o tLOOPEND.o tIFA.o tNOP.o tLISTO.o tlREAD.o tlWRITE.o tIF.o tCLS.o tCDUMP.o
+main: CompilerDriver.o Compiler.o FileManager.o SymbolTable.o LiteralTable.o LineLabelTable.o tREAD.o tWRITE.o tSTOP.o tDIM.o taREAD.o taWRITE.o tGOTO.o tLOOP.o tLOOPEND.o tIFA.o tNOP.o tLISTO.o tlREAD.o tlWRITE.o tIF.o tCLS.o tCDUMP.o tSUBP.o
+	g++ -o Compiler CompilerDriver.o Compiler.o FileManager.o SymbolTable.o LiteralTable.o LineLabelTable.o tREAD.o tWRITE.o tSTOP.o tDIM.o taREAD.o taWRITE.o tGOTO.o tLOOP.o tLOOPEND.o tIFA.o tNOP.o tLISTO.o tlREAD.o tlWRITE.o tIF.o tCLS.o tCDUMP.o tSUBP.o
 
 CompilerDriver.o: CompilerDriver.cpp Compiler.o
 	g++ -c CompilerDriver.cpp
 
-Compiler.o: Compiler.cpp Compiler.h FileManager.o SymbolTable.o LiteralTable.o LineLabelTable.o tREAD.o tWRITE.o tSTOP.o tDIM.o taREAD.o taWRITE.o tGOTO.o tLOOP.o tLOOPEND.o tIFA.o tNOP.o tLISTO.o tlREAD.o tlWRITE.o tIF.o tCLS.o tCDUMP.o
+Compiler.o: Compiler.cpp Compiler.h FileManager.o SymbolTable.o LiteralTable.o LineLabelTable.o tREAD.o tWRITE.o tSTOP.o tDIM.o taREAD.o taWRITE.o tGOTO.o tLOOP.o tLOOPEND.o tIFA.o tNOP.o tLISTO.o tlREAD.o tlWRITE.o tIF.o tCLS.o tCDUMP.o tSUBP.o
 	g++ -c Compiler.cpp
 
 FileManager.o: FileManager.cpp FileManager.h LiteralTable.h LineLabelTable.h
 	g++ -c FileManager.cpp
 
-SymbolTable.o: SymbolTable.cpp SymbolTable.h
+SymbolTable.o: SymbolTable.cpp SymbolTable.h FileManager.h
 	g++ -c SymbolTable.cpp
 
-LiteralTable.o: LiteralTable.cpp LiteralTable.h
+LiteralTable.o: LiteralTable.cpp LiteralTable.h FileManager.h
 	g++ -c LiteralTable.cpp
 
 LineLabelTable.o: LineLabelTable.cpp LineLabelTable.h
@@ -98,12 +98,12 @@ tCLS.o: tCLS.cpp tCLS.h
 tCDUMP.o: tCDUMP.cpp tCDUMP.h
 	g++ -c tCDUMP.cpp
 
-# tSUBP.o: tSUBP.cpp tSUBP.h
-# 	g++ -c tSUBP.cpp
+tSUBP.o: tSUBP.cpp tSUBP.h
+	g++ -c tSUBP.cpp
 
 #####################
 ####### Other #######
 #####################
 
 clean:
-	rm Compiler *.o *.noblanks *.obj
+	rm Compiler *.o *.noblanks *.obj *.core *.literal

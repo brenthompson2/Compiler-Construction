@@ -3,7 +3,7 @@
 
 	File: taREAD.h
 	Author: Brendan Thompson
-	Updated: 10/09/17
+	Updated: 10/30/17
 
 	Description: Interface for Functions for processing aREAD command for Compiler object made for Transylvania University University Fall Term 2017 Compiler Construction class
 
@@ -39,6 +39,10 @@ using std::string;
 #define MAX_ARGUMENTS 7
 #define INDEX_FIRST_CHAR_AFTER_AREAD_COMMAND 5
 
+#define ARRAY_ID_CODE 0
+#define START_INDEX_ID_CODE 1
+#define END_INDEX_ID_CODE 2
+
 const string AREAD_OP_CODE = "11";
 
 /* ==============================================================================
@@ -73,10 +77,9 @@ private:
 	/* ==============================================================================
 		Private Members
 	============================================================================== */
-	memoryTableObject currentArrayObject;
-	string globalArrayName;
-	string globalStartIndex;
-	string globalEndIndex;
+	memoryTableObject globalArrayObject;
+	memoryTableObject globalStartIndex;
+	memoryTableObject globalEndIndex;
 
 	string globalCurrentLine;
 	unsigned int globalNumErrors;
@@ -92,11 +95,11 @@ private:
 	// calls parseVariable() to get globalArrayName, and then parseIndex() twice to get the start & end indexes
 	void parseParameters();
 
-	// parses through a line one character at a time, adds complete currentVariableName to globalArrayName, and returns whether or not there are any more parameters to parse
-	bool parseVariable(int *currentCharIterator);
+	// parses through a line one character at a time, manages the global member variable associated with the parameterNumber, and returns whether or not there are any more parameters to parse
+	bool parseVariable(int *currentCharIterator, int parameterNumber);
 
-	// parses through a line one character at a time, conditionally adds complete currentIndexString to globalStartIndex or globalEndIndex, and returns whether or not there are any more parameters to parse
-	bool parseIndex(int *currentCharIterator, bool gettingStartIndex);
+	// parses through a line one character at a time, manages the global member variable associated with the parameterNumber, and returns whether or not there are any more parameters to parse
+	bool parseConstant(int *currentCharIterator, int parameterNumber);
 
 	// Ensures the globalArrayName already exists in the Symbol Table and gets the memory location
 	void getMemoryLocation();

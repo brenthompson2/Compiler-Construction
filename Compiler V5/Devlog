@@ -13,6 +13,173 @@ Brendan Thompson
 =========================================================
 =========================================================
 
+10/30/17
+
+I) Summary of Work:
+	- Created .literal & .core
+	- Output .literal & .core
+	- Added Flags -l & -c
+	- Initialized all variable names to _NA and their value to 0.123456789
+	- Changed all instances of writeCharToObj to writeStringToObj
+	- Started handling floats
+	- Created Backup 2
+	- Started Removing memoryLocation attribute from SymbolTable in favor of just using the index
+	- Changed aREAD & aWRITE to take in IDs for start & end index
+	- SymbolTable stores constant's values
+
+II) Still Need to Implement:
+	- New Commands:
+		- subp operation (var, id)
+	- Handle Floats
+	- Set value of constants in SymbolTable
+	- Sync OBJ line numbers for LineLabels as last part of pre-compilation
+
+III) Thoughts:
+	- Need to test what happens when a line label is on a blank line
+		- which line of object code does the label then point to
+	- Each command has a parser function and they are all super similar
+		- Could possibly abstract them away into less function
+		- aread & awrite = identical
+		- read & write = identical
+		**** tIF has most of them if I ever want to abstract away the functions into a ParserObject
+	- What was the limit to the length of a variable name supposed to be?
+	- Is their a built in way of doing exception handling other than creating bool functions and testing them upon return
+		- bools force more pointers when unable to give actual return values
+		- try {} catch
+	- FileManger write<TYPE>ToObj() functions should probably become a template function
+	- Symbol Table can't get sorted or it would throw off the sync between the .obj file and the variable's memory location
+		- or would it be possible since I am using a struct that has "memoryLocation" as a field.
+		-  I have to look into that more
+			- I could still sort the Data Structure alphabetically by VariableName and not mess with the memoryLocations
+
+IV) Status:
+	- Compiler Driver:
+		- creates an instance of Compiler, tells it to prepare for compilation, tells it to compile, and shutdowns the compiler
+		- takes in flags and a fileName as a parameter
+	- Compiler:
+		- creates an instance of FileManager, SymbolTable, LiteralTable, and LineLabelTable
+		- gets one line at a time and manages commands with command handling objects
+	- FileManager:
+		- opens .transy, .obj, .noblanks, .literal, and .core files
+		- syncs lineLabels with LineLabelTable
+		- preprocesses .transy into .noblanks
+		- upon request hands the compiler one line at a time from the preprocessed file
+		- writes char/string/int to .obj file
+		- writes one literal at a time to .literal
+		- writes one ID at a time to .core
+		- compiler command flags determine what files are kept (-n -o -l -c)
+	- SymbolTable:
+		- manages IDs (variables or Constants) and their associated values and virtual memory locations
+		- sets all initial values to 0.123456789
+		- coreMemoryArray[1000] = (bool) failedCompilation; (0 = success, 1 = failed)
+		- calls on the FileManager to output .core file
+	- LiteralTable:
+		- manages literal phrases and their associated virtual memory locations
+		- calls on the FileManager to output .literal file
+	- LineLabelTable:
+		- manages Line Label names and their associated .obj & .transy line numbers
+		- Max 1000 lines in the program
+	- tCommands:
+		1) READ:
+			- handles read command, tells parent FileManager to write op code to .obj, and tells MemoryManager to manage variables
+		2) WRITE:
+			- handles write command, tells parent FileManager to write op code to .obj, and tells MemoryManager to manage variables
+		3) STOP:
+			- handles stop command, tells parent FileManager to write op code to .obj
+		4) DIM:
+			- handles write command, tells parent FileManager to write op code to .obj, and tells MemoryManager to manage variables
+			- Can't DIM an array with the same name
+			- All DIM statements must be at the top of the file
+		5) aREAD:
+			- handles aREAD command, tells parent FileManager to write op code to .obj, and tells MemoryManager to manage variables
+			- arrays must have already been declared by a dim command
+		6) aWRITE:
+			- handles aWRITE command, tells parent FileManager to write op code to .obj, and tells MemoryManager to manage variables
+			- arrays must have already been declared by a dim command
+		7) GOTO:
+			- handles GOTO command, tells parent FileManager to write op code to .obj, and gets Line Label Location from LineLabelTable
+		8) LOOP:
+			- handles LOOP command, tells parent FileManager to write op code to .obj, and tells MemoryManager to manage variables
+		9) LOOPEND:
+			- handles LOOPEND command, tells parent FileManager to write op code to .obj
+		10) IFA:
+			- handles IFA command, tells parent FileManager to write op code to .obj, tells MemoryManager to manage variables, and gets Line Label Location from LineLabelTable
+		11) NOP:
+			- handles NOP command, tells parent FileManager to write op code to .obj
+		12) LISTO:
+			- handles LISTO command, tells parent FileManager to write op code to .obj
+		13) lREAD:
+			- handles lREAD command, tells parent FileManager to write op code to .obj, tells MemoryManager to manage variables, and tells LiteralTable to manage literals
+		14) lWRITE:
+			- handles lWRITE command, tells parent FileManager to write op code to .obj and tells LiteralTable to manage literals
+		15) IF:
+			- (<  : -1)	 (<= : -2)  (=  : -3)  (>  : -4)  (>= : -5)  (!  : -6)
+			- handles IF command, tells parent FileManager to write op code to .obj, tells MemoryManager to manage variables, and gets Line Label Location from LineLabelTable
+		16) CLS
+			- handles CLS command, tells parent FileManager to write op code to .obj
+		17) CDUMP:
+			- handles CDUMP command, tells parent FileManager to write op code to .obj and tells MemoryManager to manage variables
+
+	- To Implement:
+		18) SUBP:
+			- (sin : -10)  (cos : -11)  (exp : -12)  (abs : -13)  (alg : -14)  (aln : -15)  (log : -16)  (sqr : -17)
+			- handles SUBP command, tells parent FileManager to write op code to .obj, tells MemoryManager to manage variables, and gets Line Label Location from LineLabelTable
+
+V) Log Of Activity:
+
+- Created .literal & .core
+	- global ofstream
+		- opened in openCompilationFiles()
+		- closed in removeFiles()
+
+	- global fileName
+		- created in createFileNames()
+	- writeStringToLiteral() & writeStringToCore() (same thing as writeStringToObj())
+	- removes files if compilation fails
+		- Implemented Keep file flags (-l & -c)
+
+- Output .literal & .core
+	- SymbolTable::outputCoreFile()
+	- LiteralTable::outputLiteralFile()
+	- both needed pointer to parent FileManager passed by compiler during preprocessing
+	- got around needed type-special output functions by converting int to string
+		- stringToOutput = std::to_string(value);
+		- https://stackoverflow.com/questions/5590381/easiest-way-to-convert-int-to-string-in-c
+
+- Initialized all variable names to _NA and their value to 0.123456789
+	- set value for every index of SymbolTable during construction
+	- needed to create writeNumToObj(float value) and set the precision in order to output all 8 decimal places
+		- #include <iomanip> for std::setprecision(8)
+		- https://stackoverflow.com/questions/6226210/writing-a-double-type-value-to-a-text-file
+
+- Changed all instances of writeCharToObj to writeStringToObj
+
+- Started handling floats
+	- Changed all instances of writeNumToObj to be able to handle floats
+	- still need to change global member variables from int to float
+
+- Created Backup 2
+
+- Started Removing memoryLocation attribute from SymbolTable in favor of just using the index
+	- changed how arrays are added to the table
+
+- Changed aREAD & aWRITE to take in IDs for start & end index
+	- copied a lot of code from CDUMP
+
+- SymbolTable stores constant values
+	- new field in memoryTableObject bool isConstant
+	***** STRUGGLING ******
+	- failing to convert string to float
+		- symbolTableArray[numObjectsInArray].value = std::stof(symbolTableArray[numObjectsInArray].variableName);
+		- www.cplusplus.com/reference/string/stof/
+
+**** Noticed Line Labels Dont Sync
+	- need to sinc OBJ line Number with Transy Line number as last part of pre-processing
+
+
+=========================================================
+=========================================================
+
 10/29/17
 
 I) Summary of Work:
@@ -32,7 +199,6 @@ II) Still Need to Implement:
 		- .literal
 		- .core
 	- New Commands:
-		- cdump index index
 		- subp operation (var, id)
 	- On The Horizon:
 		A) Handle Floats
@@ -173,7 +339,7 @@ I) Summary of Work:
 	- Created an instance of the Literal Table
 	- Changed no-blanks process to ignore removing blanks and changing the case when parsing "literals in quotes"
 	- Started Implementing lWRITE Command
-	- Implemented DIM must be at top of file
+	- Implemented All DIM commands must be at top of file
 
 II) Still Need to Implement:
 	- New Commands:

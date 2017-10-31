@@ -3,9 +3,11 @@
 
 	File: LiteralTable.cpp
 	Author: Brendan Thompson
-	Updated: 10/29/17
+	Updated: 10/30/17
 
 	Description: Interface for LiteralTable for Compiler object made for Transylvania University University Fall Term 2017 Compiler Construction class
+		- manages literal phrases and their associated virtual memory locations
+		- calls on the FileManager to output .literal file
 
   ==============================================================================
 */
@@ -15,6 +17,8 @@
 /* ==============================================================================
 	File Includes
 ============================================================================== */
+
+#include "FileManager.h"
 
 #include <iostream>	// Console IO
 // using std::cin;
@@ -33,7 +37,7 @@ using std::string;
 #define NOT_FOUND_IN_ARRAY -1
 
 const string UNNAMED_LITERAL = "_NA";
-const string UNDEFINED_LITERAL = "";
+const string UNDEFINED_LITERAL = "0.123456789";
 
 /* ==============================================================================
 	Type Definitions
@@ -42,7 +46,7 @@ const string UNDEFINED_LITERAL = "";
 struct literalTableObject {
 	string variableName;
 	string literalString;
-	unsigned int memoryLocation;
+	unsigned int memoryLocation; // currently same as index
 };
 
 /* ==============================================================================
@@ -64,12 +68,12 @@ public:
 	// if the Literal doesn't already exist, calls insertInto(), and regardless sets the memoryLocation for the currentLiteralObject
 	void manageLiteralObject(literalTableObject *currentLiteralObject);
 
+	// sets the global currentFileManager to point to the Compiler's parentFileManager
+	void linkWithParentFileManager(FileManager *parentFileManager);
+
 	/* ==============================================================================
 		Public Accessor Methods
 	============================================================================== */
-
-	// iterates through the LiteralTable and prints the literalString & memoryLocation
-	void printLiteralTable();
 
 	// returns true if the variable already exists in the LiteralTable
 	bool currentlyExists(string currentVariableName);
@@ -80,6 +84,12 @@ public:
 	// returns the lookup table index for the variable
 	int getLiteralTableIndex(string literalToFind);
 
+	// iterates through the LiteralTable and prints the literalString & memoryLocation
+	void printLiteralTable();
+
+	// iterates through the LiteralTable and outputs the literalString & memoryLocation to .literal file
+	void outputLiteralFile();
+
 protected:
 
 	/* ==============================================================================
@@ -88,6 +98,7 @@ protected:
 	literalTableObject LiteralTableArray[MAX_NUM_LITERALS]; // LiteralTable implemented as array of memoryTableObjects
 	unsigned int numObjectsInArray;
 
+	FileManager *currentFileManager;
 
 	/* ==============================================================================
 		Private Methods

@@ -6,6 +6,8 @@
 	Updated: 10/29/17
 
 	Description: Interface for Main compiler Object made for Transylvania University University Fall Term 2017 Compiler Construction class
+		- creates an instance of FileManager, SymbolTable, LiteralTable, and LineLabelTable
+		- gets one line at a time and manages commands with command handling objects
 
   ==============================================================================
 */
@@ -42,7 +44,7 @@
 #include "tIF.h"
 #include "tCLS.h"
 #include "tCDUMP.h"
-// #include "tSUBP.h"
+#include "tSUBP.h"
 
 
 using std::cin;
@@ -116,7 +118,7 @@ private:
 	tIF mainIFHandler;
 	tCLS mainCLSHandler;
 	tCDUMP mainCDUMPHandler;
-	// tSUBP mainSUBPHandler;
+	tSUBP mainSUBPHandler;
 
 	/* ==============================================================================
 		Private Methods

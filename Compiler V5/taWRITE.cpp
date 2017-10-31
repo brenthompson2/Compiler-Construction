@@ -3,7 +3,7 @@
 
 	File: taWRITE.cpp
 	Author: Brendan Thompson
-	Updated: 10/09/17
+	Updated: 10/30/17
 
 	Description: Implementation of Functions for processing aWRITE command for Compiler object made for Transylvania University University Fall Term 2017 Compiler Construction class
 
@@ -69,23 +69,33 @@ void taWRITE::parseParameters(){
 	int currentCharIterator = INDEX_FIRST_CHAR_AFTER_AWRITE_COMMAND;
 
 	// Get Array Name
-	continueParsingParameters = parseVariable(&currentCharIterator);
+	continueParsingParameters = parseVariable(&currentCharIterator, ARRAY_CODE);
 
-	// Get Start Index
+	// Parse START Index
 	if (continueParsingParameters){
-		continueParsingParameters = parseIndex(&currentCharIterator, true);
+		if ((isdigit(globalCurrentLine[currentCharIterator])) || (globalCurrentLine[currentCharIterator] == '.')){
+			continueParsingParameters = parseConstant(&currentCharIterator, START_INDEX_CODE);
+		}
+		else {
+			continueParsingParameters = parseVariable(&currentCharIterator, START_INDEX_CODE);
+		}
 	}
 	else {
-		cout << "\t\t\t[aWRITE]: Error: Expecting Start index: " << globalCurrentLine << endl;
+		cout << "\t\t\t[aWRITE]: Invalid Syntax: Expecting End Index: " << globalCurrentLine << endl;
 		globalNumErrors++;
 	}
 
-	// Get End Index
+	// Parse END Index
 	if (continueParsingParameters){
-		continueParsingParameters = parseIndex(&currentCharIterator, false);
+		if ((isdigit(globalCurrentLine[currentCharIterator])) || (globalCurrentLine[currentCharIterator] == '.')){
+			continueParsingParameters = parseConstant(&currentCharIterator, END_INDEX_CODE);
+		}
+		else {
+			continueParsingParameters = parseVariable(&currentCharIterator, END_INDEX_CODE);
+		}
 	}
 	else {
-		cout << "\t\t\t[aWRITE]: Error: Expecting End index: " << globalCurrentLine << endl;
+		cout << "\t\t\t[aWRITE]: Invalid Syntax: Expecting End Index: " << globalCurrentLine << endl;
 		globalNumErrors++;
 	}
 
@@ -98,21 +108,21 @@ void taWRITE::parseParameters(){
 	return;
 }
 
-// parses through a line one character at a time, adds complete currentVariableName to globalArrayName, and returns whether or not there are any more parameters to parse
-bool taWRITE::parseVariable(int *currentCharIterator){
+// parses through a line one character at a time, manages the global member variable associated with the parameterNumber, and returns whether or not there are any more parameters to parse
+bool taWRITE::parseVariable(int *currentCharIterator, int parameterNumber){
 	char currentChar;
 	string currentVariableName = "";
 	int numCharactersInVarName = 0;
 
 	bool continueParsingVariable = true;
-	bool isNotLastParameter = true;
+	bool isNotLastParameter = false;
 	bool isValidVariableName = true;
 	bool caseFound;
 
 	while (continueParsingVariable){
 		currentChar = globalCurrentLine[(*currentCharIterator)];
 		caseFound = false;
-		// cout << "\t\t[aWRITE]: Current Character: " << currentChar << endl;
+		// cout << "\t\t\t[aWRITE]: Current Character: " << currentChar << endl;
 
 		// Alphabetic
 		if (isalpha(currentChar)){
@@ -120,7 +130,7 @@ bool taWRITE::parseVariable(int *currentCharIterator){
 			numCharactersInVarName++;
 			(*currentCharIterator)++;
 			caseFound = true;
-			// cout << "\t\t[aWRITE]: Current Variable Name: " << currentVariableName << endl;
+			// cout << "\t\t\t[aWRITE]: Current Variable Name: " << currentVariableName << endl;
 		}
 
 		// Digit
@@ -134,6 +144,7 @@ bool taWRITE::parseVariable(int *currentCharIterator){
 			numCharactersInVarName++;
 			(*currentCharIterator)++;
 			caseFound = true;
+			// cout << "\t\t\t[aWRITE]: Current Variable Name: " << currentVariableName << endl;
 		}
 
 		// Underscore
@@ -147,27 +158,39 @@ bool taWRITE::parseVariable(int *currentCharIterator){
 			numCharactersInVarName++;
 			(*currentCharIterator)++;
 			caseFound = true;
+			// cout << "\t\t\t[aWRITE]: Current Variable Name: " << currentVariableName << endl;
 		}
 
-		// Comma
+		// Comma ,
 		if (currentChar == ','){
-			if (numCharactersInVarName == 0){
-				cout << "\t\t\t[aWRITE]: Invalid Syntax: Expecting at least one character before ,: " << globalCurrentLine << endl;
-				isValidVariableName = false;
+			if (parameterNumber == END_INDEX_CODE){
+				cout << "\t\t\t[aWRITE]: Invalid Syntax: Not Expecting Comma after EndIndex: " << globalCurrentLine << endl;
 				globalNumErrors++;
 			}
+			else {
+				if (numCharactersInVarName == 0){
+					cout << "\t\t\t[aWRITE]: Invalid Syntax: Expecting an ID before , " << globalCurrentLine << endl;
+					isValidVariableName = false;
+					globalNumErrors++;
+				}
+			}
 			continueParsingVariable = false;
-			(*currentCharIterator)++;
 			isNotLastParameter = true;
+			(*currentCharIterator)++;
 			caseFound = true;
 		}
 
 		// End Of Line
 		if (currentChar == '\0'){
 			if (numCharactersInVarName == 0){
-				cout << "\t\t\t[aWRITE]: Invalid Syntax: Expecting at least one character in variable name: " << globalCurrentLine << endl;
-				globalNumErrors++;
+				cout << "\t\t\t[aWRITE]: Invalid Syntax: Expecting an ID before End of Line: " << globalCurrentLine << endl;
 				isValidVariableName = false;
+				globalNumErrors++;
+			}
+			if (parameterNumber == START_INDEX_CODE){
+				cout << "\t\t\t[aWRITE]: Invalid Syntax: Expecting EndIndex after StartIndex: " << globalCurrentLine << endl;
+				isValidVariableName = false;
+				globalNumErrors++;
 			}
 			continueParsingVariable = false;
 			isNotLastParameter = false;
@@ -175,103 +198,142 @@ bool taWRITE::parseVariable(int *currentCharIterator){
 		}
 
 		if (!caseFound){
-			cout << "\t\t\t[GOTO]: Invalid Syntax: Unknown Character in line: " << globalCurrentLine << endl;
+			cout << "\t\t\t[aWRITE]: Invalid Syntax: Unknown Character in line: " << globalCurrentLine << endl;
 			(*currentCharIterator)++;
 			globalNumErrors++;
 		}
 	}
 
+	// Assign to Global Parameter Name
 	if (isValidVariableName){
-		globalArrayName = currentVariableName;
+		switch (parameterNumber){
+			case ARRAY_CODE:
+				globalArrayObject.variableName = currentVariableName;
+				break;
+			case START_INDEX_CODE:
+				globalStartIndex.variableName = currentVariableName;
+				globalStartIndex.isConstant = false;
+				break;
+			case END_INDEX_CODE:
+				globalEndIndex.variableName = currentVariableName;
+				globalEndIndex.isConstant = false;
+				break;
+		}
 	}
 
 	return isNotLastParameter;
 }
 
-// parses through a line one character at a time, conditionally adds complete currentIndexString to globalStartIndex or globalEndIndex, and returns whether or not there are any more parameters to parse
-bool taWRITE::parseIndex(int *currentCharIterator, bool gettingStartIndex){
+// parses through a line one character at a time, manages the global member variable associated with the parameterNumber, and returns whether or not there are any more parameters to parse
+bool taWRITE::parseConstant(int *currentCharIterator, int parameterNumber){
 	char currentChar;
-	string currentIndexString = "";
-	int numCharactersInIndex = 0;
+	string currentVariableName = "";
+	int numCharactersInVarName = 0;
 
-	bool continueParsingIndex = true;
+	bool continueParsingVariable = true;
 	bool isNotLastParameter = false;
-	bool isValidIndex = false;
+	bool isValidVariableName = true;
+	bool readingDecimal = false;
 	bool caseFound;
 
-	while (continueParsingIndex){
+	while (continueParsingVariable){
 		currentChar = globalCurrentLine[(*currentCharIterator)];
 		caseFound = false;
-		// cout << "\t\t[aWRITE]: Current Character: " << currentChar << endl;
+		// cout << "\t\t\t[aWRITE]: Current Character: " << currentChar << endl;
 
 		// Alphabetic
-		// if (isalpha(currentChar)){
-		// 	currentVariableName += currentChar;
-		// 	numCharactersInIndex++;
-		// 	(*currentCharIterator)++;
-			// caseFound = true;
-		// 	// cout << "\t\t[tREAD]: Current Variable Name: " << currentVariableName << endl;
-		// }
+		if (isalpha(currentChar)){
+			currentVariableName += currentChar;
+			numCharactersInVarName++;
+			(*currentCharIterator)++;
+			caseFound = true;
+			// cout << "\t\t\t[aWRITE]: Current Variable Name: " << currentVariableName << endl;
+		}
 
 		// Digit
 		if (isdigit(currentChar)){
-			isValidIndex = true;
-			currentIndexString += currentChar;
-			numCharactersInIndex++;
+			currentVariableName += currentChar;
+			numCharactersInVarName++;
 			(*currentCharIterator)++;
 			caseFound = true;
+			// cout << "\t\t\t[aWRITE]: Current Variable Name: " << currentVariableName << endl;
 		}
 
-		// Underscore
-		// if (currentChar == '_'){
-		// 	if (numCharactersInIndex == 0){
-		// 		cout << "\t\t[aWRITE]: Invalid Syntax: Variables can not start with an underscore: " << globalCurrentLine << endl;
-		// 		isValidIndex = false;
-		// 		globalNumErrors++;
-		// 	}
-		// 	currentIndexString += currentChar;
-		// 	numCharactersInIndex++;
-		// 	(*currentCharIterator)++;
-			// caseFound = true;
-		// }
+		// Decimal Point
+		if (currentChar == '.'){
+			if (readingDecimal){
+				cout << "\t\t\t[aWRITE]: Invalid Syntax: Multiple Decimal Points in One Constant: " << globalCurrentLine << endl;
+				isValidVariableName = false;
+				globalNumErrors++;
+				isNotLastParameter = true;
+			}
+			else {
+				readingDecimal = true;
+				currentVariableName += currentChar;
+				numCharactersInVarName++;
+				(*currentCharIterator)++;
+			}
+			caseFound = true;
+			// cout << "\t\t\t[aWRITE]: Current Variable Name: " << currentVariableName << endl;
+		}
 
-		// Comma
+		// Comma ,
 		if (currentChar == ','){
-			if (numCharactersInIndex == 0){
-				cout << "\t\t\t[aWRITE]: Invalid Syntax: Expecting a start index before ,: " << globalCurrentLine << endl;
-				isValidIndex = false;
+			if (parameterNumber == END_INDEX_CODE){
+				cout << "\t\t\t[aWRITE]: Invalid Syntax: Not Expecting Comma after EndIndex: " << globalCurrentLine << endl;
 				globalNumErrors++;
 			}
-			continueParsingIndex = false;
-			(*currentCharIterator)++;
+			else {
+				if (numCharactersInVarName == 0){
+					cout << "\t\t\t[aWRITE]: Invalid Syntax: Expecting an ID before , " << globalCurrentLine << endl;
+					isValidVariableName = false;
+					globalNumErrors++;
+				}
+			}
+			continueParsingVariable = false;
 			isNotLastParameter = true;
+			(*currentCharIterator)++;
 			caseFound = true;
 		}
 
 		// End Of Line
 		if (currentChar == '\0'){
-			if (numCharactersInIndex == 0){
-				cout << "\t\t\t[aWRITE]: Invalid Syntax: Expecting at least one digit in index: " << globalCurrentLine << endl;
+			if (numCharactersInVarName == 0){
+				cout << "\t\t\t[aWRITE]: Invalid Syntax: Expecting a Variable Name before End of Line: " << globalCurrentLine << endl;
+				isValidVariableName = false;
 				globalNumErrors++;
 			}
-			continueParsingIndex = false;
+			if (parameterNumber == START_INDEX_CODE){
+				cout << "\t\t\t[aWRITE]: Invalid Syntax: Expecting EndIndex after StartIndex: " << globalCurrentLine << endl;
+				isValidVariableName = false;
+				globalNumErrors++;
+			}
+			continueParsingVariable = false;
 			isNotLastParameter = false;
 			caseFound = true;
 		}
 
 		if (!caseFound){
-			cout << "\t\t\t[GOTO]: Invalid Syntax: Unknown Character in line: " << globalCurrentLine << endl;
+			cout << "\t\t\t[aWRITE]: Invalid Syntax: Unknown Character in line: " << globalCurrentLine << endl;
 			(*currentCharIterator)++;
 			globalNumErrors++;
 		}
 	}
 
-	if (isValidIndex){
-		if (gettingStartIndex){
-			globalStartIndex = currentIndexString;
-		}
-		else {
-			globalEndIndex = currentIndexString;
+	// Assign to Global Parameter Name
+	if (isValidVariableName){
+		switch (parameterNumber){
+			case ARRAY_CODE:
+				globalArrayObject.variableName = currentVariableName;
+				break;
+			case START_INDEX_CODE:
+				globalStartIndex.variableName = currentVariableName;
+				globalStartIndex.isConstant = true;
+				break;
+			case END_INDEX_CODE:
+				globalEndIndex.variableName = currentVariableName;
+				globalEndIndex.isConstant = true;
+				break;
 		}
 	}
 
@@ -280,14 +342,22 @@ bool taWRITE::parseIndex(int *currentCharIterator, bool gettingStartIndex){
 
 // Ensures the globalArrayName already exists in the Symbol Table and gets the memory location
 void taWRITE::getMemoryLocation(){
-	if ((*currentMemoryManager).currentlyExists(globalArrayName)){
-		currentArrayObject.memoryLocation = (*currentMemoryManager).lookup(currentArrayObject.variableName);
+	if ((*currentMemoryManager).currentlyExists(globalArrayObject.variableName)){
+		globalArrayObject.memoryLocation = (*currentMemoryManager).lookup(globalArrayObject.variableName);
 	}
 	else {
-		cout << "\t\t\t[aWRITE]: Failed to get memory Location as " << globalArrayName << " is undeclared: " << globalCurrentLine << endl;
-		currentArrayObject.memoryLocation = -1;
+		cout << "\t\t\t[aWRITE]: Failed to get memory Location as " << globalArrayObject.variableName << " is undeclared: " << globalCurrentLine << endl;
+		globalArrayObject.memoryLocation = -1;
 		globalNumErrors++;
 	}
+
+	globalStartIndex.isArray = false;
+	globalStartIndex.size = 1;
+	globalEndIndex.isArray = false;
+	globalEndIndex.size = 1;
+
+	(*currentMemoryManager).manageMemoryTableObject(&globalStartIndex);
+	(*currentMemoryManager).manageMemoryTableObject(&globalEndIndex);
 	return;
 }
 
@@ -296,18 +366,17 @@ void taWRITE::outputAWRITECommand(){
 	// cout << "\t\t[aWRITE]: Attempting to Print Object code to .obj...\n";
 
 	(*currentFileManager).writeStringToObj(AWRITE_OP_CODE);
-	(*currentFileManager).writeCharToObj(' ');
-	(*currentFileManager).writeNumToObj(currentArrayObject.memoryLocation);
-	(*currentFileManager).writeCharToObj(' ');
-	(*currentFileManager).writeStringToObj(globalStartIndex);
-	(*currentFileManager).writeCharToObj(' ');
-	(*currentFileManager).writeStringToObj(globalEndIndex);
+	(*currentFileManager).writeStringToObj(" ");
+	(*currentFileManager).writeNumToObj((float) globalArrayObject.memoryLocation);
+	(*currentFileManager).writeStringToObj(" ");
+	(*currentFileManager).writeNumToObj((float) globalStartIndex.memoryLocation);
+	(*currentFileManager).writeStringToObj(" ");
+	(*currentFileManager).writeNumToObj((float) globalEndIndex.memoryLocation);
 
-	(*currentFileManager).writeCharToObj('\n');
+	(*currentFileManager).writeStringToObj("\n");
 	// cout << "\t\t[aWRITE]: Wrote to .obj\n";
 	return;
 }
-
 
 /* ==============================================================================
 	Private Accessor Methods

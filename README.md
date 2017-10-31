@@ -25,6 +25,8 @@ On Ubuntu: navigate to the directory with the `Compiler` executable and type `./
 Flags:
 	`-n` = keep noblanks file even if it successfully compiles
 	`-o` = keep obj file even if it failed compilation
+	`-l` = keep literal file even if it failed compilation
+	`-c` = keep core file even if it failed compilation
 
 Other Info:
 	If no file is specified it will attempt to compile `test1.transy`

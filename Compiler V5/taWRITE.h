@@ -3,7 +3,7 @@
 
 	File: aWRITE.h
 	Author: Brendan Thompson
-	Updated: 10/09/17
+	Updated: 10/30/17
 
 	Description: Interface for Functions for processing aWRITE command for Compiler object made for Transylvania University University Fall Term 2017 Compiler Construction class
 
@@ -39,6 +39,10 @@ using std::string;
 #define MAX_ARGUMENTS 7
 #define INDEX_FIRST_CHAR_AFTER_AWRITE_COMMAND 6
 
+#define ARRAY_CODE 0
+#define START_INDEX_CODE 1
+#define END_INDEX_CODE 2
+
 const string AWRITE_OP_CODE = "12";
 
 /* ==============================================================================
@@ -73,12 +77,9 @@ private:
 	/* ==============================================================================
 		Private Members
 	============================================================================== */
-	// memoryTableObject variableArray[MAX_ARGUMENTS]; // memoryTableObject declared in SymbolTable
-	// unsigned int numVariablesInArray;
-	memoryTableObject currentArrayObject;
-	string globalArrayName;
-	string globalStartIndex;
-	string globalEndIndex;
+	memoryTableObject globalArrayObject;
+	memoryTableObject globalStartIndex;
+	memoryTableObject globalEndIndex;
 
 	string globalCurrentLine;
 	unsigned int globalNumErrors;
@@ -94,11 +95,11 @@ private:
 	// calls parseVariable until no more variable to parse
 	void parseParameters();
 
-	// parses through a line one character at a time, adds complete currentVariableName to globalArrayName, and returns whether or not there are any more parameters to parse
-	bool parseVariable(int *currentCharIterator);
+	// parses through a line one character at a time, manages the global member variable associated with the parameterNumber, and returns whether or not there are any more parameters to parse
+	bool parseVariable(int *currentCharIterator, int parameterNumber);
 
-	// parses through a line one character at a time, conditionally adds complete currentIndexString to globalStartIndex or globalEndIndex, and returns whether or not there are any more parameters to parse
-	bool parseIndex(int *currentCharIterator, bool gettingStartIndex);
+	// parses through a line one character at a time, manages the global member variable associated with the parameterNumber, and returns whether or not there are any more parameters to parse
+	bool parseConstant(int *currentCharIterator, int parameterNumber);
 
 	// gets the memory location for the array
 	void getMemoryLocation();

@@ -6,6 +6,8 @@
 	Updated: 10/29/17
 
 	Description: Interface for Main compiler Object made for Transylvania University University Fall Term 2017 Compiler Construction class
+		- creates an instance of FileManager, SymbolTable, LiteralTable, and LineLabelTable
+		- gets one line at a time and manages commands with command handling objects
 
   ==============================================================================
 */
@@ -42,15 +44,17 @@ bool BREN_Compiler::prepareForCompilation(string fileToCompile, char *arrayOfFla
 	// Set Member Variables
 	// globalFileName = fileToCompile;
 	globalFileManager.setFlags(arrayOfFlags, numberOfFlags);
+	globalLiteralManager.linkWithParentFileManager(&globalFileManager);
+	globalMemoryManager.linkWithParentFileManager(&globalFileManager);
 
 	// PreProcess File
 	// cout << "\t[Compiler]: Attempting to preprocess file...\n";
-	successfullyPrepared = globalFileManager.prepareForCompilation(fileToCompile, &globalLiteralManager, &globalLineManager);
+	successfullyPrepared = globalFileManager.prepareForCompilation(fileToCompile, &globalLineManager);
 	if (successfullyPrepared){
 		successfullyPrepared = globalFileManager.preprocessFile();
 	}
 
-	// globalLineManager.printLineLabelTable();
+	globalLineManager.printLineLabelTable();
 
 	return successfullyPrepared;
 }
@@ -86,9 +90,10 @@ void BREN_Compiler::compile(){
 		}
 	}
 
+	// Manage Compilation Result
 	if (numErrors == 0){
 		cout << "\n\t[Compiler]: Successfully Compiled the file\n";
-		globalFileManager.setKeepOBJ();
+		globalFileManager.setCompilationResult(true);
 		globalMemoryManager.setCompilationResult(SUCCESSFULLY_COMPILED);
 	}
 	else {
@@ -96,8 +101,11 @@ void BREN_Compiler::compile(){
 		globalMemoryManager.setCompilationResult(FAILED_COMPILATION);
 	}
 
+	// Output Core & Literal Files
 	globalMemoryManager.printSymbolTable();
+	globalMemoryManager.outputCoreFile();
 	globalLiteralManager.printLiteralTable();
+	globalLiteralManager.outputLiteralFile();
 
 	return;
 }
@@ -173,7 +181,7 @@ void BREN_Compiler::handleCommand(string currentLine, int correspondingLineNumbe
 		caseFound = true;
 		foundFirstLineAfterDIM = true;
 	}
-	if (!(strncmp(currentLine.c_str(), "LOOPEND", 7))){
+	if (!(strncmp(currentLine.c_str(), "LOOP-END", 8))){
 		// cout << "\t[Compiler]: Found LOOPEND Command\n";
 		numErrors += mainLOOPENDHandler.handleLOOPEND(currentLine, correspondingLineNumber);
 		caseFound = true;
@@ -217,6 +225,12 @@ void BREN_Compiler::handleCommand(string currentLine, int correspondingLineNumbe
 		caseFound = true;
 		foundFirstLineAfterDIM = true;
 	}
+	if (!(strncmp(currentLine.c_str(), "SUBP", 4))){
+		// cout << "\t[Compiler]: Found SUBP Command\n";
+		numErrors += mainSUBPHandler.handleSUBP(currentLine, correspondingLineNumber);
+		caseFound = true;
+		foundFirstLineAfterDIM = true;
+	}
 	if (!(strncmp(currentLine.c_str(), "WRITE", 5))){
 		// cout << "\t[Compiler]: Found WRITE Command\n";
 		numErrors += mainWRITEHandler.handleWRITE(currentLine, correspondingLineNumber);
@@ -251,5 +265,5 @@ void BREN_Compiler::instantiateCommandObjects(){
 	mainIFHandler.prepareIF(&globalFileManager, &globalMemoryManager, &globalLineManager);
 	mainCLSHandler.prepareCLS(&globalFileManager);
 	mainCDUMPHandler.prepareCDUMP(&globalFileManager, &globalMemoryManager);
-	// mainSUBPHandler.prepareSUBP(&globalFileManager);
+	mainSUBPHandler.prepareSUBP(&globalFileManager, &globalMemoryManager);
 }

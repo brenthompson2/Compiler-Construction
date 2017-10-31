@@ -1,6 +1,6 @@
 c* Brendan Thompson
 c* test2.transy
-c* Updated 10/29/17
+c* Updated 10/30/17
 C* Test File for Compiler V5
 C* Tests each command and the known possible Syntax Errors
 
@@ -57,6 +57,7 @@ c* ======= DIM COMMAND =======
 
 c* ======= AREAD COMMAND =======
 // aread firstArray, 4, 8
+// aread firstArray, apple, banana
 // aread notYetExistantArray, 5, 20			// unable to use undeclared arrays
 // aread firstArray							// missing indexes
 // aread firstArray,						// has comma but missing indexes
@@ -67,6 +68,7 @@ c* ======= AREAD COMMAND =======
 
 c* ======= AWRITE COMMAND =======
 // awrite firstArray, 0, 10
+// awrite firstArray, apple, banana
 // awrite notYetExistantArray, 5, 20		// unable to use undeclared arrays
 // awrite firstArray						// missing indexes
 // awrite firstArray,						// has comma but missing indexes
@@ -188,11 +190,13 @@ c* ======= CLS COMMAND =======
 // cls apple			// characters after cls command
 
 c* ======= CDUMP COMMAND =======
-cdump 0, 1
-cdump var1, var2
-cdump 						// Missing both indexes
-cdump 2						// missing comma and endIndex
-cdump 3,					// missing endIndex
-cdump 4, 5,					// extra comma
+// cdump 0, 1
+// cdump var1, var2
+// cdump 						// Missing both indexes
+// cdump 2						// missing comma and endIndex
+// cdump 3,					// missing endIndex
+// cdump 4, 5,					// extra comma
 
 c* ======= SUBP COMMAND =======
+subp sin (varName, 0)
+subp sin (varName, otherVar)
