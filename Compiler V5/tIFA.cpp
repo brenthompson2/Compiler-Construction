@@ -3,7 +3,7 @@
 
 	File: tIFA.cpp
 	Author: Brendan Thompson
-	Updated: 10/12/17
+	Updated: 10/30/17
 
 	Description: Implementation of Functions for processing IFA command for Compiler object made for Transylvania University University Fall Term 2017 Compiler Construction class
 
@@ -376,16 +376,16 @@ void tIFA::outputIFACommand(){
 	(*currentFileManager).writeStringToObj(IFA_OP_CODE);
 	(*currentFileManager).writeStringToObj(" ");
 
-	(*currentFileManager).writeStringToObj(std::to_string(conditionVariable.memoryLocation));
+	(*currentFileManager).writeNumToObj(conditionVariable.memoryLocation);
 	(*currentFileManager).writeStringToObj(" ");
 
-	(*currentFileManager).writeStringToObj(std::to_string(LineLabel1.memoryLocation));
+	(*currentFileManager).writeNumToObj(LineLabel1.memoryLocation);
 	(*currentFileManager).writeStringToObj(" ");
 
-	(*currentFileManager).writeStringToObj(std::to_string(LineLabel2.memoryLocation));
+	(*currentFileManager).writeNumToObj(LineLabel2.memoryLocation);
 	(*currentFileManager).writeStringToObj(" ");
 
-	(*currentFileManager).writeStringToObj(std::to_string(LineLabel3.memoryLocation));
+	(*currentFileManager).writeNumToObj(LineLabel3.memoryLocation);
 	(*currentFileManager).writeStringToObj("\n");
 
 	return;
