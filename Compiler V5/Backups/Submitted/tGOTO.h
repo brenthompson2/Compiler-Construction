@@ -1,11 +1,11 @@
 /*
   ==============================================================================
 
-	File: tlWRITE.h
+	File: tGOTO.h
 	Author: Brendan Thompson
-	Updated: 10/29/17
+	Updated: 10/12/17
 
-	Description: Interface for Functions for processing lWRITE command for Compiler object made for Transylvania University University Fall Term 2017 Compiler Construction class
+	Description: Interface for Functions for processing GOTO command for Compiler object made for Transylvania University University Fall Term 2017 Compiler Construction class
 
   ==============================================================================
 */
@@ -20,7 +20,7 @@
 #include <stdlib.h>	// Exit()
 #include <string.h> // strcpy & strcat
 
-#include "LiteralTable.h"
+#include "LineLabelTable.h"
 #include "FileManager.h"
 
 using std::cin;
@@ -36,72 +36,65 @@ using std::string;
 #define MAX_STRING_LENGTH 50
 #define MAX_VARIABLE_NAME_LENGTH 128	// currently using strings which may or may not allow for 128 characters
 #define MAX_ARGUMENTS 7
-#define INDEX_FIRST_CHAR_AFTER_LWRITE_COMMAND 6
+#define INDEX_FIRST_CHAR_AFTER_GOTO_COMMAND 4
 
-const string LWRITE_OP_CODE = "17";
+const string GOTO_OP_CODE = "8";
 
 /* ==============================================================================
 	Type Definitions
 ============================================================================== */
 
 /* ==============================================================================
-	tlWRITE Class Interface
+	tGOTO Class Interface
 ============================================================================== */
 
-class tlWRITE {
+class tGOTO {
 public:
 	/* ==============================================================================
 	Constructor & Destructor
 	============================================================================== */
-	tlWRITE();
-	~tlWRITE();
+	tGOTO();
+	~tGOTO();
 
 	/* ==============================================================================
 		Public Manipulator Methods
 	============================================================================== */
 
-	// Connects local pointer to FileManager & LiteralTable with the parent's (compiler's) versions
-	void prepareLWRITE(FileManager *parentFileManager, LiteralTable *parentLiteralManager);
+	// Connects local pointer to FileManager & LineLabelTable with the parent's (compiler's) versions
+	void prepareGOTO(FileManager *parentFileManager, LineLabelTable *parentLineManager);
 
-	// calls the functions necessary to parse the line, sync the literal with the LiteralTable, and print the object code to the file while counting errors
+	// calls the functions necessary to parse the line, sync the variables with the SymbolTable, and print the object code to the file while counting errors
 	// returns number of errors
-	int handleLWRITE(string currentLine, int actualLineNumber);
+	int handleGOTO(string currentLine, int actualLineNumber);
 
 private:
 
 	/* ==============================================================================
 		Private Members
 	============================================================================== */
-	literalTableObject globalLiteralObject;
 	string globalCurrentLine;
+	string globalLineLabelName;
+	int globalLineLabelLineNumber;
 	int globalNumErrors;
 
 	FileManager *currentFileManager; // pointer to the Compiler's (parent's) FileManager
-	LiteralTable *currentliteralManager; // pointer to the Compiler's (parent's) LiteralTable
-
+	LineLabelTable *currentLineManager; // pointer to the Compiler's (parent's) SymbolTable
 
 	/* ==============================================================================
 		Private Manipulator Methods
 	============================================================================== */
 
 
-	// calls parseLiteral
+	// calls parseLineLabelName until no more variable to parse
 	void parseParameters();
 
-	// parses through a line one character at a time, and sets globalLiteralObject.literalString
-	void parseLiteral(int *currentCharIterator);
-
-	// parses through a line one character at a time, sets globalLiteralObject.variableName, and returns whether or not there are any more variables to parse
-	bool parseVariable(int *currentCharIterator);
-
-	// asks the literalManager to conditionally add the globalLiteralString to the Literal table and gets the globalLiteralAddress
-	void syncLiteralToLiteralTable();
-
-	// tells the FileManager to print the object code for the command, which includes the command op code and the variable memoryLocations
-	void outputLWRITECommand();
-
+	// parses through a line one character at a time, sets globalLineLabelName, and returns whether or not there are any more variables to parse
+	bool parseLineLabelName(int *currentCharIterator);
 
 	/* ==============================================================================
 		Private Accessor Methods
 	============================================================================== */
+
+	// tells the FileManager to print the object code for the command, which includes the command op code and the variable memoryLocations
+	void outputGOTOCommand();
 };
