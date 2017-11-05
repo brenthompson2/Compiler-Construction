@@ -23,7 +23,6 @@ To remove all of the files run `make clean`
 On Ubuntu: navigate to the directory with the `Compiler` executable and type `./Compiler <fileName>`
 
 Flags:
-
 	`-n` = keep noblanks file even if it successfully compiles
 	`-o` = keep obj file even if it failed compilation
 	`-l` = keep literal file even if it failed compilation

@@ -1,0 +1,11 @@
+// test3.transy
+// testing lineLabelLines
+// Brendan Thompson
+// Line Numbers Described Are Zero Indexed
+
+read transy4
+
+LabelTransy6Obj1:
+LabelTransy7Obj2:
+LabelTransy8Obj3: read transy8
+LabelAfterLastLine:
