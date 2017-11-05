@@ -3,7 +3,7 @@
 
 	File: Compiler.cpp
 	Author: Brendan Thompson
-	Updated: 10/29/17
+	Updated: 11/06/17
 
 	Description: Interface for Main compiler Object made for Transylvania University University Fall Term 2017 Compiler Construction class
 		- creates an instance of FileManager, SymbolTable, LiteralTable, and LineLabelTable

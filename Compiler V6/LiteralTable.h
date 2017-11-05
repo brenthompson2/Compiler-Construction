@@ -76,10 +76,16 @@ public:
 	============================================================================== */
 
 	// returns true if the variable already exists in the LiteralTable
-	bool currentlyExists(string currentVariableName);
+	bool currentlyExists_Variable(string currentVariableName);
+
+	// returns true if the literal already exists in the LiteralTable
+	bool currentlyExists_Literal(string currentLiteralString);
 
 	// returns the memoryLocation for the variable
-	int lookup(string currentVariableName);
+	int lookup(string literalToFind);
+
+	// returns the memoryLocation for the literalToFind
+	int lookup_Literal(string literalToFind);
 
 	// returns the lookup table index for the variable
 	int getLiteralTableIndex(string literalToFind);

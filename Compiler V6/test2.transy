@@ -153,6 +153,7 @@ c* ============================
 
 c* ======= lREAD COMMAND =======
 lread $variableName
+lread $variableName							// Duplicate variable
 // lread 									// missing variable name
 // lread $apple,							// Extra Characters after first Var
 lread missingDollarSign					// Missing $
@@ -163,6 +164,7 @@ lread missingDollarSign					// Missing $
 
 c* ======= lWRITE COMMAND =======
 lwrite "Hello World"
+lwrite "Hello World"						// Duplicate Literal
 lwrite $variableName
 // lwrite 									// Missing literal
 lwrite missingDollarSign						// Missing $

@@ -113,6 +113,12 @@ V) Log Of Activity:
 
 - Started on Compiler V6
 
+- Fixed Literal Parsers
+	- literal variables must start with $
+
+- Fixed Duplicates in LineLabelTable
+	- Comparison was only checking variableName against the literalString
+	- Created different functions depending if looking at a literal string or literal variable name
 
 =========================================================
 =========================================================
