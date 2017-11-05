@@ -3,7 +3,7 @@
 
 	File: tlWRITE.cpp
 	Author: Brendan Thompson
-	Updated: 11/06/17
+	Updated: 11/05/17
 
 	Description: Implementation of Functions for processing lWRITE command for Compiler object made for Transylvania University University Fall Term 2017 Compiler Construction class
 

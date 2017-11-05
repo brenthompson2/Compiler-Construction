@@ -3,7 +3,7 @@
 
 	File: LiteralTable.cpp
 	Author: Brendan Thompson
-	Updated: 11/06/17
+	Updated: 11/05/17
 
 	Description: Implementation for LiteralTable for Compiler object made for Transylvania University University Fall Term 2017 Compiler Construction class
 		- manages literal phrases and their associated virtual memory locations

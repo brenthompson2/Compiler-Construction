@@ -3,7 +3,7 @@
 
 	File: Compiler.h
 	Author: Brendan Thompson
-	Updated: 10/29/17
+	Updated: 11/05/17
 
 	Description: Interface for Main compiler Object made for Transylvania University University Fall Term 2017 Compiler Construction class
 		- creates an instance of FileManager, SymbolTable, LiteralTable, and LineLabelTable
@@ -45,6 +45,7 @@
 #include "tCLS.h"
 #include "tCDUMP.h"
 #include "tSUBP.h"
+// #include "tASSIGNMENT.h"
 
 
 using std::cin;
@@ -119,13 +120,17 @@ private:
 	tCLS mainCLSHandler;
 	tCDUMP mainCDUMPHandler;
 	tSUBP mainSUBPHandler;
+	// tASSIGNMENT mainASSIGNMENTHandler;
 
 	/* ==============================================================================
 		Private Methods
 	============================================================================== */
 
-	// iterates through the line one character at a time and tells the appropriate object to handle the command
+	// tells the appropriate object to handle the command in the line
 	void handleCommand(string currentLine, int correspondingLineNumber);
+
+	// iterates through the line one character at a time and returns whether or not it was assignment;
+	bool checkForAssignment(string currentLine, int correspondingLineNumber);
 
 	// instantiates objects for handling commands by passing the FileManager, MemoryManager, SymbolTable, LineLabelTable, and/or LiteralTable by reference
 	void instantiateCommandObjects();

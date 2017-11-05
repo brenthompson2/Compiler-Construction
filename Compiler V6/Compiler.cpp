@@ -3,7 +3,7 @@
 
 	File: Compiler.cpp
 	Author: Brendan Thompson
-	Updated: 11/06/17
+	Updated: 11/05/17
 
 	Description: Interface for Main compiler Object made for Transylvania University University Fall Term 2017 Compiler Construction class
 		- creates an instance of FileManager, SymbolTable, LiteralTable, and LineLabelTable
@@ -117,37 +117,43 @@ void BREN_Compiler::compile(){
 	Private Methods
 ============================================================================== */
 
-// iterates through the line one character at a time and tells the appropriate object to handle the command
+// tells the appropriate object to handle the command in the line
 void BREN_Compiler::handleCommand(string currentLine, int correspondingLineNumber){
 	char currentCharacter = currentLine[0];
 	bool caseFound = false;
 
-	// New Command Parser / Tokenizer
-	if (!(strncmp(currentLine.c_str(), "AREAD", 5))){
+	if (checkForAssignment(currentLine, correspondingLineNumber)){
+		// cout << "\t[Compiler]: Found Assignment Command\n";
+		// numErrors += mainASSIGNMENTHandler.handleASSIGNMENT(currentLine, correspondingLineNumber);
+		caseFound = true;
+		foundFirstLineAfterDIM = true;
+	}
+
+	if ((!caseFound) && (!(strncmp(currentLine.c_str(), "AREAD", 5)))){
 		// cout << "\t[Compiler]: Found aREAD Command\n";
 		numErrors += mainAREADHandler.handleAREAD(currentLine, correspondingLineNumber);
 		caseFound = true;
 		foundFirstLineAfterDIM = true;
 	}
-	if (!(strncmp(currentLine.c_str(), "AWRITE", 6))){
+	if ((!caseFound) && (!(strncmp(currentLine.c_str(), "AWRITE", 6)))){
 		// cout << "\t[Compiler]: Found aWRITE Command\n";
 		numErrors += mainAWRITEHandler.handleAWRITE(currentLine, correspondingLineNumber);
 		caseFound = true;
 		foundFirstLineAfterDIM = true;
 	}
-	if (!(strncmp(currentLine.c_str(), "CDUMP", 5))){
+	if ((!caseFound) && (!(strncmp(currentLine.c_str(), "CDUMP", 5)))){
 		// cout << "\t[Compiler]: Found CDUMP Command\n";
 		numErrors += mainCDUMPHandler.handleCDUMP(currentLine, correspondingLineNumber);
 		caseFound = true;
 		foundFirstLineAfterDIM = true;
 	}
-	if (!(strncmp(currentLine.c_str(), "CLS", 3))){
+	if ((!caseFound) && (!(strncmp(currentLine.c_str(), "CLS", 3)))){
 		// cout << "\t[Compiler]: Found CLS Command\n";
 		numErrors += mainCLSHandler.handleCLS(currentLine, correspondingLineNumber);
 		caseFound = true;
 		foundFirstLineAfterDIM = true;
 	}
-	if (!(strncmp(currentLine.c_str(), "DIM", 3))){
+	if ((!caseFound) && (!(strncmp(currentLine.c_str(), "DIM", 3)))){
 		// cout << "\t[Compiler]: Found DIM Command\n";
 		if (foundFirstLineAfterDIM) {
 			cerr << "\t[Compiler]: ERROR: Found DIM Command not at top of file on line " << correspondingLineNumber << ": " <<  currentLine << endl << endl << endl;
@@ -158,13 +164,13 @@ void BREN_Compiler::handleCommand(string currentLine, int correspondingLineNumbe
 		}
 		caseFound = true;
 	}
-	if (!(strncmp(currentLine.c_str(), "GOTO", 4))){
+	if ((!caseFound) && (!(strncmp(currentLine.c_str(), "GOTO", 4)))){
 		// cout << "\t[Compiler]: Found GOTO Command\n";
 		numErrors += mainGOTOHandler.handleGOTO(currentLine, correspondingLineNumber);
 		caseFound = true;
 		foundFirstLineAfterDIM = true;
 	}
-	if (!(strncmp(currentLine.c_str(), "IFA", 3))){
+	if ((!caseFound) && (!(strncmp(currentLine.c_str(), "IFA", 3)))){
 		// cout << "\t[Compiler]: Found IFA Command\n";
 		numErrors += mainIFAHandler.handleIFA(currentLine, correspondingLineNumber);
 		caseFound = true;
@@ -178,13 +184,13 @@ void BREN_Compiler::handleCommand(string currentLine, int correspondingLineNumbe
 			foundFirstLineAfterDIM = true;
 		}
 	}
-	if (!(strncmp(currentLine.c_str(), "LISTO", 5))){
+	if ((!caseFound) && (!(strncmp(currentLine.c_str(), "LISTO", 5)))){
 		// cout << "\t[Compiler]: Found LISTO Command\n";
 		numErrors += mainLISTOHandler.handleLISTO(currentLine, correspondingLineNumber);
 		caseFound = true;
 		foundFirstLineAfterDIM = true;
 	}
-	if (!(strncmp(currentLine.c_str(), "LOOP-END", 8))){
+	if ((!caseFound) && (!(strncmp(currentLine.c_str(), "LOOP-END", 8)))){
 		// cout << "\t[Compiler]: Found LOOPEND Command\n";
 		numErrors += mainLOOPENDHandler.handleLOOPEND(currentLine, correspondingLineNumber);
 		caseFound = true;
@@ -198,43 +204,43 @@ void BREN_Compiler::handleCommand(string currentLine, int correspondingLineNumbe
 			foundFirstLineAfterDIM = true;
 		}
 	}
-	if (!(strncmp(currentLine.c_str(), "LREAD", 5))){
+	if ((!caseFound) && (!(strncmp(currentLine.c_str(), "LREAD", 5)))){
 		// cout << "\t[Compiler]: Found lREAD Command\n";
 		numErrors += mainLREADHandler.handleLREAD(currentLine, correspondingLineNumber);
 		caseFound = true;
 		foundFirstLineAfterDIM = true;
 	}
-	if (!(strncmp(currentLine.c_str(), "LWRITE", 6))){
+	if ((!caseFound) && (!(strncmp(currentLine.c_str(), "LWRITE", 6)))){
 		// cout << "\t[Compiler]: Found lWRITE Command\n";
 		numErrors += mainLWRITEHandler.handleLWRITE(currentLine, correspondingLineNumber);
 		caseFound = true;
 		foundFirstLineAfterDIM = true;
 	}
-	if (!(strncmp(currentLine.c_str(), "NOP", 3))){
+	if ((!caseFound) && (!(strncmp(currentLine.c_str(), "NOP", 3)))){
 		// cout << "\t[Compiler]: Found NOP Command\n";
 		numErrors += mainNOPHandler.handleNOP(currentLine, correspondingLineNumber);
 		caseFound = true;
 		foundFirstLineAfterDIM = true;
 	}
-	if (!(strncmp(currentLine.c_str(), "READ", 4))){
+	if ((!caseFound) && (!(strncmp(currentLine.c_str(), "READ", 4)))){
 		// cout << "\t[Compiler]: Found READ Command\n";
 		numErrors += mainREADHandler.handleREAD(currentLine, correspondingLineNumber);
 		caseFound = true;
 		foundFirstLineAfterDIM = true;
 	}
-	if (!(strncmp(currentLine.c_str(), "STOP", 4))){
+	if ((!caseFound) && (!(strncmp(currentLine.c_str(), "STOP", 4)))){
 		// cout << "\t[Compiler]: Found STOP Command\n";
 		numErrors += mainSTOPHandler.handleSTOP(currentLine, correspondingLineNumber);
 		caseFound = true;
 		foundFirstLineAfterDIM = true;
 	}
-	if (!(strncmp(currentLine.c_str(), "SUBP", 4))){
+	if ((!caseFound) && (!(strncmp(currentLine.c_str(), "SUBP", 4)))){
 		// cout << "\t[Compiler]: Found SUBP Command\n";
 		numErrors += mainSUBPHandler.handleSUBP(currentLine, correspondingLineNumber);
 		caseFound = true;
 		foundFirstLineAfterDIM = true;
 	}
-	if (!(strncmp(currentLine.c_str(), "WRITE", 5))){
+	if ((!caseFound) && (!(strncmp(currentLine.c_str(), "WRITE", 5)))){
 		// cout << "\t[Compiler]: Found WRITE Command\n";
 		numErrors += mainWRITEHandler.handleWRITE(currentLine, correspondingLineNumber);
 		caseFound = true;
@@ -244,6 +250,33 @@ void BREN_Compiler::handleCommand(string currentLine, int correspondingLineNumbe
 	if (!caseFound){
 		cerr << "\t[Compiler]: ERROR: Failed to interpret command in line " << correspondingLineNumber << ": " <<  currentLine << endl << endl << endl;
 	}
+}
+
+// iterates through the line one character at a time returns whether or not it was assignment;
+bool BREN_Compiler::checkForAssignment(string currentLine, int correspondingLineNumber){
+	char currentCharacter;
+	bool foundEquals = false;
+	bool foundComma = false;
+	bool isAssignment = false;
+
+	for (int characterIterator = 0; characterIterator < currentLine.size(); characterIterator++){
+		currentCharacter = currentLine[characterIterator];
+
+		if (currentCharacter == '='){
+			foundEquals = true;
+		}
+
+		if (currentCharacter == ','){
+			foundComma = true;
+		}
+	}
+
+	if (foundEquals && (!foundComma)){
+		isAssignment = true;
+
+	}
+
+	return isAssignment;
 }
 
 // instantiates objects for handling commands by passing the FileManager, MemoryManager, SymbolTable, LineLabelTable, and/or LiteralTable by reference
@@ -269,4 +302,6 @@ void BREN_Compiler::instantiateCommandObjects(){
 	mainCLSHandler.prepareCLS(&globalFileManager);
 	mainCDUMPHandler.prepareCDUMP(&globalFileManager, &globalMemoryManager);
 	mainSUBPHandler.prepareSUBP(&globalFileManager, &globalMemoryManager);
+
+	// mainASSIGNMENTHandler.prepareASSIGNMENT();
 }
