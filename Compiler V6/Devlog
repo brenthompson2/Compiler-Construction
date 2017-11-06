@@ -120,6 +120,12 @@ V) Log Of Activity:
 	- Comparison was only checking variableName against the literalString
 	- Created different functions depending if looking at a literal string or literal variable name
 
+- Prepared to Handle Assignment
+	- Created tASSIGNMENT files as duplicates of tLOOP
+	- Implemented In Compiler
+		- Created checkForAssignment()
+
+
 =========================================================
 =========================================================
 

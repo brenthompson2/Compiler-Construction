@@ -105,7 +105,7 @@ void BREN_Compiler::compile(){
 	// Output Core & Literal Files
 	// globalMemoryManager.printSymbolTable();
 	globalMemoryManager.outputCoreFile();
-	globalLiteralManager.printLiteralTable();
+	// globalLiteralManager.printLiteralTable();
 	globalLiteralManager.outputLiteralFile();
 	// globalLineManager.printLineLabelTable();
 	// globalLineManager.printLineMapping();
@@ -124,7 +124,7 @@ void BREN_Compiler::handleCommand(string currentLine, int correspondingLineNumbe
 
 	if (checkForAssignment(currentLine, correspondingLineNumber)){
 		// cout << "\t[Compiler]: Found Assignment Command\n";
-		// numErrors += mainASSIGNMENTHandler.handleASSIGNMENT(currentLine, correspondingLineNumber);
+		numErrors += mainASSIGNMENTHandler.handleASSIGNMENT(currentLine, correspondingLineNumber);
 		caseFound = true;
 		foundFirstLineAfterDIM = true;
 	}
@@ -303,5 +303,5 @@ void BREN_Compiler::instantiateCommandObjects(){
 	mainCDUMPHandler.prepareCDUMP(&globalFileManager, &globalMemoryManager);
 	mainSUBPHandler.prepareSUBP(&globalFileManager, &globalMemoryManager);
 
-	// mainASSIGNMENTHandler.prepareASSIGNMENT();
+	mainASSIGNMENTHandler.prepareASSIGNMENT(&globalFileManager, &globalMemoryManager);
 }

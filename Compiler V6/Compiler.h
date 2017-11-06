@@ -45,7 +45,7 @@
 #include "tCLS.h"
 #include "tCDUMP.h"
 #include "tSUBP.h"
-// #include "tASSIGNMENT.h"
+#include "tASSIGNMENT.h"
 
 
 using std::cin;
@@ -120,7 +120,7 @@ private:
 	tCLS mainCLSHandler;
 	tCDUMP mainCDUMPHandler;
 	tSUBP mainSUBPHandler;
-	// tASSIGNMENT mainASSIGNMENTHandler;
+	tASSIGNMENT mainASSIGNMENTHandler;
 
 	/* ==============================================================================
 		Private Methods
