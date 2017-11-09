@@ -1,5 +1,5 @@
 # Brendan Thompson
-# 11/05/17
+# 11/08/17
 # Makefile for Compiler V6
 
 # "make main" = Compile and Link
@@ -105,7 +105,7 @@ tSUBP.o: tSUBP.cpp tSUBP.h
 ###### Commands V6 #####
 ########################
 
-tASSIGNMENT.o: tASSIGNMENT.cpp tASSIGNMENT.h
+tASSIGNMENT.o: tASSIGNMENT.cpp tASSIGNMENT.h ExpressionParsingMatrix.h
 	g++ -c tASSIGNMENT.cpp
 
 #####################
