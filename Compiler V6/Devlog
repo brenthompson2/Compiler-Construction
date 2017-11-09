@@ -16,22 +16,37 @@ Brendan Thompson
 I) Summary of Work:
 	- Continued ExpressionParsingMatrix
 
+	- Theorized about implementation options
+		- Option 1: Make it a Prefix to Postfix Converter and Manage the Stacks
+			- string preToPostConvert(string prefixExpression)
+			"Make the PreToPostConverter an object of its own, instead of part of assignment"
+		- Option 2: Make it just be the matrix and let tASSIGNMENT handle the stacks/conversion
+			- actionToken getActionToken(valueToken inputValue, valueToken topSTwo)
+			- typedef unsigned int valueToken
+			- typedef unsigned int actionToken
+			"It is already pretty big and ugly"
+			"Leave the conversion to be part of assignment since the other Commands were pretty much just parsers too"
+			"Abstract the actual matrix implementation away from the strings"
+		- Option 3: Make the PreToPostConverter, tASSIGNMENT, and ExpressionParsingMatrix all be their own object
+			"That is 3 whole classes just for assignment, 2 of which are for preToPostConverting"
+		- Currently Thinking:
+			"It would be real nice if assignment can just say postFixString = convertToPostFix(preFixString) and get on with the parsing after"
+
+
 II) Still Need to Implement:
 	- Assignment
 		- ExpressionParsingMatrix
 		- Infix to Postfix Converter
 
 III) Thoughts:
-	- I implemented CDUMP with a comma separating the two indexes because how else would you differentiate between the twp
-	- Need to test what happens when a line label is on a blank line
-		- which line of object code does the label then point to
 	- Each command has a parser function and they are all super similar
 		- Could possibly abstract them away into less function
 		- aread & awrite = identical
 		- read & write = identical
 		**** tIF has most of them if I ever want to abstract away the functions into a ParserObject
 	- What was the limit to the length of a variable name supposed to be?
-	- Is their a built in way of doing exception handling other than creating bool functions and testing them upon return
+		- 128 characters
+	- Is there a built in way of doing exception handling other than creating bool functions and testing them upon return
 		- bools force more pointers when unable to give actual return values
 		- try {} catch
 	- FileManger write<TYPE>ToObj() functions should probably become a template function
@@ -67,6 +82,10 @@ IV) Status:
 	- LineLabelTable:
 		- manages Line Label names and their associated .obj & .transy line numbers
 		- Max 1000 lines in the program
+
+	- ExpressionParsingMatrix
+		- Matrix relating Input items and TopSTWO items with action Tokens
+
 	- tCommands:
 		1) READ:
 			- handles read command, tells parent FileManager to write op code to .obj, and tells MemoryManager to manage variables
@@ -121,7 +140,14 @@ V) Log Of Activity:
 - Continued ExpressionParsingMatrix
 	- Synced with tASSIGNMENT
 	- Created both Array Struct Object
-
+	- Decided to turn into a Class in order to Populate the Matrix
+		- Should this manage the Stacks?
+		- Should this be a "Prefix to Postfix Converter"?
+			- string preToPostConvert(string prefixExpression)
+		- Should this just be the matrix and let tASSIGNMENT handle the stacks/conversion?
+			- actionToken getActionToken(valueToken inputValue, valueToken topSTwo)
+			- typedef unsigned int valueToken
+			- typedef unsigned int actionToken
 
 =========================================================
 =========================================================
