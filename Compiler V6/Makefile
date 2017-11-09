@@ -10,8 +10,8 @@
 ### Main Components ###
 #######################
 
-main: CompilerDriver.o Compiler.o FileManager.o SymbolTable.o LiteralTable.o LineLabelTable.o tREAD.o tWRITE.o tSTOP.o tDIM.o taREAD.o taWRITE.o tGOTO.o tLOOP.o tLOOPEND.o tIFA.o tNOP.o tLISTO.o tlREAD.o tlWRITE.o tIF.o tCLS.o tCDUMP.o tSUBP.o tASSIGNMENT.o
-	g++ -o Compiler CompilerDriver.o Compiler.o FileManager.o SymbolTable.o LiteralTable.o LineLabelTable.o tREAD.o tWRITE.o tSTOP.o tDIM.o taREAD.o taWRITE.o tGOTO.o tLOOP.o tLOOPEND.o tIFA.o tNOP.o tLISTO.o tlREAD.o tlWRITE.o tIF.o tCLS.o tCDUMP.o tSUBP.o tASSIGNMENT.o
+main: CompilerDriver.o Compiler.o FileManager.o SymbolTable.o LiteralTable.o LineLabelTable.o ExpressionParsingMatrix.o tREAD.o tWRITE.o tSTOP.o tDIM.o taREAD.o taWRITE.o tGOTO.o tLOOP.o tLOOPEND.o tIFA.o tNOP.o tLISTO.o tlREAD.o tlWRITE.o tIF.o tCLS.o tCDUMP.o tSUBP.o tASSIGNMENT.o
+	g++ -o Compiler CompilerDriver.o Compiler.o FileManager.o SymbolTable.o LiteralTable.o LineLabelTable.o ExpressionParsingMatrix.o tREAD.o tWRITE.o tSTOP.o tDIM.o taREAD.o taWRITE.o tGOTO.o tLOOP.o tLOOPEND.o tIFA.o tNOP.o tLISTO.o tlREAD.o tlWRITE.o tIF.o tCLS.o tCDUMP.o tSUBP.o tASSIGNMENT.o
 
 CompilerDriver.o: CompilerDriver.cpp Compiler.o
 	g++ -c CompilerDriver.cpp
@@ -30,6 +30,9 @@ LiteralTable.o: LiteralTable.cpp LiteralTable.h FileManager.h
 
 LineLabelTable.o: LineLabelTable.cpp LineLabelTable.h
 	g++ -c LineLabelTable.cpp
+
+ExpressionParsingMatrix.o: ExpressionParsingMatrix.cpp ExpressionParsingMatrix.h
+	g++ -c ExpressionParsingMatrix.cpp
 
 ########################
 ###### Commands V2 #####
