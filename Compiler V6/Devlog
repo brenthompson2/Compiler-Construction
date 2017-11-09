@@ -11,15 +11,16 @@ Brendan Thompson
 =========================================================
 =========================================================
 
-11/08/17
+11/09/17
 
 I) Summary of Work:
-	- Continued ExpressionParsingMatrix
+	- Continued ExpressionConvertingMatrix
+	- Decided to Implement infixToPostFixConverter
 
 	- Theorized about implementation options
-		- Option 1: Make it a Prefix to Postfix Converter and Manage the Stacks
-			- string preToPostConvert(string prefixExpression)
-			"Make the PreToPostConverter an object of its own, instead of part of assignment"
+		- Option 1: Make it a Infix to Postfix Converter and Manage the Stacks
+			- string inToPostConvert(string infixExpression)
+			"Make the inToPostConverter an object of its own, instead of part of assignment"
 		- Option 2: Make it just be the matrix and let tASSIGNMENT handle the stacks/conversion
 			- actionToken getActionToken(valueToken inputValue, valueToken topSTwo)
 			- typedef unsigned int valueToken
@@ -27,15 +28,73 @@ I) Summary of Work:
 			"It is already pretty big and ugly"
 			"Leave the conversion to be part of assignment since the other Commands were pretty much just parsers too"
 			"Abstract the actual matrix implementation away from the strings"
-		- Option 3: Make the PreToPostConverter, tASSIGNMENT, and ExpressionParsingMatrix all be their own object
-			"That is 3 whole classes just for assignment, 2 of which are for preToPostConverting"
+		- Option 3: Make the inToPostConverter, tASSIGNMENT, and ExpressionConvertingMatrix all be their own object
+			"That is 3 whole classes just for assignment, 2 of which are for inToPostConverting"
 		- Currently Thinking:
-			"It would be real nice if assignment can just say postFixString = convertToPostFix(preFixString) and get on with the parsing after"
+			"It would be real nice if assignment can just say postFixString = convertToPostFix(inFixString) and get on with the parsing after"
 
 
 II) Still Need to Implement:
 	- Assignment
-		- ExpressionParsingMatrix
+		- ExpressionConvertingMatrix
+		- Infix to Postfix Converter
+
+III) Thoughts:
+	- Each command has a parser function and they are all super similar
+		- Could possibly abstract them away into less function
+		- aread & awrite = identical
+		- read & write = identical
+		**** tIF has most of them if I ever want to abstract away the functions into a ParserObject
+	- What was the limit to the length of a variable name supposed to be?
+		- 128 characters
+	- Is there a built in way of doing exception handling other than creating bool functions and testing them upon return
+		- bools force more pointers when unable to give actual return values
+		- try {} catch
+	- FileManger write<TYPE>ToObj() functions should probably become a template function
+	- Symbol Table can't get sorted or it would throw off the sync between the .obj file and the variable's memory location
+		- or would it be possible since I am using a struct that has "memoryLocation" as a field.
+		-  I have to look into that more
+			- I could still sort the Data Structure alphabetically by VariableName and not mess with the memoryLocations
+
+IV) Status:
+
+- Fixed Construction of Matrix & Created Print Fn
+	- Print had to invert the axis since it is easier to print out a row at a time
+		- the topSTwoArray is a like a row (an array) inside each inputArray Object
+		- Closer to the implementation
+
+- Decided to implement a infixToPostFixConverter
+	- uses ExpressionConvertingMatrix
+	- used by tASSIGNMENT
+
+=========================================================
+=========================================================
+
+11/08/17
+
+I) Summary of Work:
+	- Continued ExpressionConvertingMatrix
+
+	- Theorized about implementation options
+		- Option 1: Make it a Infix to Postfix Converter and Manage the Stacks
+			- string inToPostConvert(string infixExpression)
+			"Make the inToPostConverter an object of its own, instead of part of assignment"
+		- Option 2: Make it just be the matrix and let tASSIGNMENT handle the stacks/conversion
+			- actionToken getActionToken(valueToken inputValue, valueToken topSTwo)
+			- typedef unsigned int valueToken
+			- typedef unsigned int actionToken
+			"It is already pretty big and ugly"
+			"Leave the conversion to be part of assignment since the other Commands were pretty much just parsers too"
+			"Abstract the actual matrix implementation away from the strings"
+		- Option 3: Make the inToPostConverter, tASSIGNMENT, and ExpressionConvertingMatrix all be their own object
+			"That is 3 whole classes just for assignment, 2 of which are for inToPostConverting"
+		- Currently Thinking:
+			"It would be real nice if assignment can just say postFixString = convertToPostFix(inFixString) and get on with the parsing after"
+
+
+II) Still Need to Implement:
+	- Assignment
+		- ExpressionConvertingMatrix
 		- Infix to Postfix Converter
 
 III) Thoughts:
@@ -83,7 +142,7 @@ IV) Status:
 		- manages Line Label names and their associated .obj & .transy line numbers
 		- Max 1000 lines in the program
 
-	- ExpressionParsingMatrix
+	- ExpressionConvertingMatrix
 		- Matrix relating Input items and TopSTWO items with action Tokens
 
 	- tCommands:
@@ -137,13 +196,13 @@ IV) Status:
 
 V) Log Of Activity:
 
-- Continued ExpressionParsingMatrix
+- Continued ExpressionConvertingMatrix
 	- Synced with tASSIGNMENT
 	- Created both Array Struct Object
 	- Decided to turn into a Class in order to Populate the Matrix
 		- Should this manage the Stacks?
-		- Should this be a "Prefix to Postfix Converter"?
-			- string preToPostConvert(string prefixExpression)
+		- Should this be a "Infix to Postfix Converter"?
+			- string inToPostConvert(string infixExpression)
 		- Should this just be the matrix and let tASSIGNMENT handle the stacks/conversion?
 			- actionToken getActionToken(valueToken inputValue, valueToken topSTwo)
 			- typedef unsigned int valueToken
@@ -156,11 +215,11 @@ V) Log Of Activity:
 
 I) Summary of Work:
 	- Began Implementing tASSIGNMENT
-		- ExpressionParsingMatrix
+		- ExpressionConvertingMatrix
 
 II) Still Need to Implement:
 	- Assignment
-		- ExpressionParsingMatrix
+		- ExpressionConvertingMatrix
 		- Infix to Postfix Converter
 
 III) Thoughts:
@@ -267,7 +326,7 @@ V) Log Of Activity:
 	- Array to hold operators
 		- #define MAX_NUM_OPERATORS 20
 
-- Began Implementing ExpressionParsingMatrix
+- Began Implementing ExpressionConvertingMatrix
 	- an array of possible inputs each with their own array of possible topS2 array
 
 =========================================================

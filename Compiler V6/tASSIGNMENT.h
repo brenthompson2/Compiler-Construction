@@ -23,7 +23,6 @@
 
 #include "SymbolTable.h"
 #include "FileManager.h"
-#include "ExpressionParsingMatrix.h"
 
 using std::cin;
 using std::cout;
@@ -89,9 +88,6 @@ private:
 	// Parent's Objects
 	FileManager *currentFileManager; // pointer to the Compiler's (parent's) FileManager
 	SymbolTable *currentMemoryManager; // pointer to the Compiler's (parent's) SymbolTable
-
-	InputObject objectForTesting;
-
 
 	/* ==============================================================================
 		Private Manipulator Methods
