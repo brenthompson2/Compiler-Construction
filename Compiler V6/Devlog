@@ -16,6 +16,7 @@ Brendan Thompson
 I) Summary of Work:
 	- Continued ExpressionConvertingMatrix
 	- Decided to Implement ExpressionFixConvert for infix to postfix
+	- Created Testing Environment for Infix to Postfix Converter
 
 	- Theorized about implementation options
 		- Option 1: Make it a Infix to Postfix Converter and Manage the Stacks
@@ -155,8 +156,11 @@ V) Log Of Activity:
 
 
 - Created Testing Environment for Infix to Postfix Converter
+	- /Infix to Postfix
+		- new Main & Makefile
 	- Should implement stacks as their own class
 		- push, pop, and get are the same regardless of if S1 or S2
+	- Working Decently Well
 
 
 =========================================================
