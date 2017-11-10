@@ -1,14 +1,12 @@
-/*
-  ==============================================================================
+/*==============================================================================
 
 	File: tASSIGNMENT.h
 	Author: Brendan Thompson
-	Updated: 11/05/17
+	Updated: 11/09/17
 
-	Description: Interface for Functions for processing LOOP command for Compiler object made for Transylvania University University Fall Term 2017 Compiler Construction class
+	Description: Interface for Functions for processing ASSIGNMENT command for Compiler object made for Transylvania University University Fall Term 2017 Compiler Construction class
 
-  ==============================================================================
-*/
+==============================================================================*/
 
 #pragma once
 
@@ -17,12 +15,11 @@
 ============================================================================== */
 
 #include <iostream>	// Console IO
-#include <stdlib.h>	// Exit()
 #include <string.h> // strcpy & strcat
-// #include <sstream> // std::stringstream str(" ")
 
 #include "SymbolTable.h"
 #include "FileManager.h"
+#include "ExpressionFixConverter.h"
 
 using std::cin;
 using std::cout;
@@ -34,13 +31,13 @@ using std::string;
 	Symbolic Constants
 ============================================================================== */
 
-#define MAX_STRING_LENGTH 50
-#define MAX_VARIABLE_NAME_LENGTH 128	// currently using strings which may or may not allow for 128 characters
-#define MAX_ARGUMENTS 7
-#define INDEX_FIRST_CHAR_AFTER_ASSIGNMENT_COMMAND 4
-
-#define MAX_NUM_OPERATORS 40
-#define MAX_NUM_ID 20
+#define OBJ_VALUE_EQUALS -1
+#define OBJ_VALUE_LEFT_BRACKET -2
+#define OBJ_VALUE_EXPONENT -3
+#define OBJ_VALUE_TIMES -4
+#define OBJ_VALUE_DIVIDE -5
+#define OBJ_VALUE_PLUS -6
+#define OBJ_VALUE_MINUS -7
 
 const string ASSIGNMENT_OP_CODE = "14";
 
@@ -76,41 +73,32 @@ private:
 	/* ==============================================================================
 		Private Members
 	============================================================================== */
-	string globalCurrentLine;
 	int globalNumErrors;
 
+	// Infix to Postfix Conversion
+	ExpressionFixConverter mainExpressionConverter;
+
 	// Arguments
-	int globalNumIDs;
-	int globalNumOperators;
-	memoryTableObject *globalIDArray[MAX_NUM_OPERATORS];
-	int *globalOperatorArray[MAX_NUM_ID];
+	memoryTableObject globalVariableArray[MAX_NUM_INPUT_VALUES]; // memoryTableObject declared in SymbolTable
+	unsigned int globalNumVariablesInArray;
 
 	// Parent's Objects
 	FileManager *currentFileManager; // pointer to the Compiler's (parent's) FileManager
 	SymbolTable *currentMemoryManager; // pointer to the Compiler's (parent's) SymbolTable
 
 	/* ==============================================================================
-		Private Manipulator Methods
+		Private Accessor Methods
 	============================================================================== */
 
-	// iteratively calls parseVariable() to get arrayName, and then parseSize() to get the ASSIGNMENTensions
-	void parseParameters();
-
-	// parses through a line one character at a time, manages the global member variable associated with the parameterNumber, and returns whether or not there are any more parameters to parse
-	bool parseVariable(int *currentCharIterator, int parameterNumber);
-
-	// parses through a line one character at a time, manages the global member variable associated with the parameterNumber, and returns whether or not there are any more parameters to parse
-	bool parseConstant(int *currentCharIterator, int parameterNumber);
+	// Conditionally adds the postfix input values to the globalVariableArray
+	void syncExpressionToVariableArray(string newExpression[], int numValsInNewExpression);
 
 	// tells the memoryManager to conditionally add the global memoryTableObject arguments to the symbol table
 	void syncVariablesToSymbolTable();
 
 	// tells the FileManager to print the object code for the command, which includes the command op code and the variable memoryLocations
-	void outputASSIGNMENTCommand();
+	void outputASSIGNMENTCommand(string newExpression[], int numValsInNewExpression);
 
-
-
-	/* ==============================================================================
-		Private Accessor Methods
-	============================================================================== */
+	// Takes in an operator and returns the appropriate token for the obj file
+	int getObjectCodeMapping(string currentInputValue);
 };

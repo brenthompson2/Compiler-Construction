@@ -31,12 +31,12 @@ ExpressionConvertingMatrix::~ExpressionConvertingMatrix(){
 
 // Takes in the two Matrix Indexes and returns the corresponding Action Token
 ActionToken ExpressionConvertingMatrix::getActionToken(ValueToken currentInputValue, ValueToken currentTopSTwo){
-	cout << "\t\t\t\t\t[ExpressionConvertingMatrix]: Input Value Token: " << currentInputValue << endl;
-	cout << "\t\t\t\t\t[ExpressionConvertingMatrix]: Top S2 Token: " << currentTopSTwo << endl;
+	// cout << "\t\t\t\t\t[ExpressionConver	tingMatrix]: Input Value Token: " << currentInputValue << endl;
+	// cout << "\t\t\t\t\t[ExpressionConver	tingMatrix]: Top S2 Token: " << currentTopSTwo << endl;
 
 	ActionToken currentActionToken;
 	currentActionToken = inputArray[currentInputValue].topSTwoArray[currentTopSTwo];
-	cout << "\t\t\t\t\t[ExpressionConvertingMatrix]: Action to Take: " << currentActionToken << endl;
+	// cout << "\t\t\t\t\t[ExpressionConvert	ingMatrix]: Action to Take: " << currentActionToken << endl;
 	return currentActionToken;
 }
 

@@ -63,8 +63,8 @@ public:
 		Converters
 	============================================================================== */
 
-	// takes in an expression in infix and returns an expression in postfix
-	string infixToPostfix(string currentExpression);
+	// takes in an infix expression, converts it to postfix and puts it into newExpression, and also manipulates numValsInNewExpression
+	void infixToPostfix(string currentExpression, string newExpression[], int *numValsInNewExpression);
 
 
 
@@ -73,12 +73,13 @@ private:
 	/* ==============================================================================
 		Private Members
 	============================================================================== */
+	int globalNumErrors;
 
 	ExpressionConvertingMatrix conversionMatrix;
 
-	int numTokensInSOne, numTokensInSTwo;
+	int indexTopSOne, indexTopSTwo;
 	string sOneArray[MAX_NUM_INPUT_VALUES];
-	ValueToken sTwoArray[MAX_NUM_INPUT_VALUES];
+	string sTwoArray[MAX_NUM_INPUT_VALUES];
 
 	/* ==============================================================================
 		Private Parsing Methods
@@ -87,13 +88,57 @@ private:
 	// parses through the expression one character at a time and returns the next InputValue
 	string getNextInputValue(int *currentCharIterator, string currentLine);
 
+	/* ==============================================================================
+		Private Handler Methods
+	============================================================================== */
+
 	// Gets ActionToken from ExpressionConvertingMatrix then takes the appropriate action
 	void handleInputValue_In_Post(string currentInputValue);
 
-	// Returns ValueToken related to currentInputValue
-	ValueToken getValueToken(string currentInputValue);
+	// Handles executing the action referred to be currentAction
+	void handleAction(ActionToken currentAction, string currentInputValue);
+
+	// Handles executing the U1 action
+	void handleUOne(string currentInputValue);
+
+	// Handles executing the U2 action
+	void handleUTwo(string currentInputValue);
+
+	// Handles executing the U3 action
+	void handleUThree(string currentInputValue);
+
+	// Handles executing the U4 action
+	void handleUFour(string currentInputValue);
+
+	/* ==============================================================================
+		Private Manipulator Methods
+	============================================================================== */
+
+	// Pushes newValue onto the S1 stack
+	void pushSOne(string newValue);
+
+	// Pops top off S1
+	void popSOne();
+
+	// Pushes newValue onto the S2 stack
+	void pushSTwo(string newValue);
+
+	// Pops top off S2
+	void popSTwo();
 
 	/* ==============================================================================
 		Private Accessor Methods
 	============================================================================== */
+
+	void printStacks();
+
+	// Gets the top of S1
+	string getTopSOne();
+
+	// Gets the top of S2
+	string getTopSTwo();
+
+	// Gets ValueToken related to currentInputValue
+	ValueToken getValueToken(string currentInputValue);
+
 };

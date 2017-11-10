@@ -41,10 +41,10 @@ void ExpressionFixConverter::infixToPostfix(string currentExpression, string new
 
 	while (continueParsingParameters){
 		currentInputValue = getNextInputValue(&currentCharIterator, currentExpression);
-		cout << "\t\t\t\t[ExpressionFixConverter]: Got Input Value " << currentInputValue << endl;
+		// cout << "\t\t\t\t[ExpressionFixConverter]: Got Input Value " << currentInputValue << endl;
 		handleInputValue_In_Post(currentInputValue);
 
-		printStacks();
+		// printStacks();
 
 		if (currentInputValue[0] == END_OF_LINE_SENTINEL){
 			continueParsingParameters = false;
@@ -145,10 +145,10 @@ void ExpressionFixConverter::handleInputValue_In_Post(string currentInputValue){
 
 	topSTwo = getTopSTwo();
 	topSTwoToken = getValueToken(topSTwo);
-	cout << "\t\t\t\t[ExpressionFixConverter]: Top S2: " << topSTwo << endl;
+	// cout << "\t\t\t\t[ExpressionFixConverter]: Top S2: " << topSTwo << endl;
 
 	inputValueToken = getValueToken(currentInputValue);
-	cout << "\t\t\t\t[ExpressionFixConverter]: Input Value: " << currentInputValue << endl;
+	// cout << "\t\t\t\t[ExpressionFixConverter]: Input Value: " << currentInputValue << endl;
 
 	nextAction = conversionMatrix.getActionToken(inputValueToken ,topSTwoToken);
 	// cout << "\t\t\t\t[ExpressionFixConverter]: Got Action Token " << nextAction << endl;
@@ -196,7 +196,7 @@ void ExpressionFixConverter::handleUOne(string currentInputValue){
 
 // Handles executing the U2 action
 void ExpressionFixConverter::handleUTwo(string currentInputValue){
-	bool openContainer;
+	bool openContainer = true;
 	string tempValue;
 	while (openContainer) {
 		tempValue = getTopSTwo();
@@ -218,7 +218,6 @@ void ExpressionFixConverter::handleUThree(string currentInputValue){
 		tempValue = getTopSTwo();
 		popSTwo();
 		pushSOne(tempValue);
-		printStacks();
 	}
 	return;
 }
@@ -249,7 +248,7 @@ void ExpressionFixConverter::handleUFour(string currentInputValue){
 void ExpressionFixConverter::pushSOne(string newValue){
 	indexTopSOne++;
 	sOneArray[indexTopSOne] = newValue;
-	cout << "\t\t\t\t[ExpressionFixConverter]: Pushed " << sOneArray[indexTopSOne] << " to top S1\n";
+	// cout << "\t\t\t\t[ExpressionFixConverter]: Pushed " << sOneArray[indexTopSOne] << " to top S1\n";
 	return;
 }
 
@@ -263,7 +262,7 @@ void ExpressionFixConverter::popSOne(){
 void ExpressionFixConverter::pushSTwo(string newValue){
 	indexTopSTwo++;
 	sTwoArray[indexTopSTwo] = newValue;
-	cout << "\t\t\t\t[ExpressionFixConverter]: Pushed " << sTwoArray[indexTopSTwo] << " to top S2\n";
+	// cout << "\t\t\t\t[ExpressionFixConverter]: Pushed " << sTwoArray[indexTopSTwo] << " to top S2\n";
 	return;
 }
 

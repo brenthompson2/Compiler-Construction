@@ -30,12 +30,27 @@ int main(){
 
 	string infixExpression;
 	string postfixExpression[MAX_NUM_INPUT_VALUES];
+
 	int numInputValues;
 
+	// Convert
 	infixExpression = "apple=1+(2/3)*5";
 	mainExpressionConverter.infixToPostfix(infixExpression, postfixExpression, &numInputValues);
 	cout << "Infix:\t\t" << infixExpression << endl;
 
+	// Print
+	cout << "Postfix:\t";
+	for (int i = 0; i <= numInputValues; i++){
+		cout << postfixExpression[i];
+	}
+	cout << endl;
+
+	// Convert
+	infixExpression = "banana=1^2[3]*5";
+	mainExpressionConverter.infixToPostfix(infixExpression, postfixExpression, &numInputValues);
+	cout << "Infix:\t\t" << infixExpression << endl;
+
+	// Print
 	cout << "Postfix:\t";
 	for (int i = 0; i <= numInputValues; i++){
 		cout << postfixExpression[i];

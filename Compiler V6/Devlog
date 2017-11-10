@@ -18,27 +18,9 @@ I) Summary of Work:
 	- Decided to Implement ExpressionFixConvert for infix to postfix
 	- Created Testing Environment for Infix to Postfix Converter
 
-	- Theorized about implementation options
-		- Option 1: Make it a Infix to Postfix Converter and Manage the Stacks
-			- string inToPostConvert(string infixExpression)
-			"Make the inToPostConverter an object of its own, instead of part of assignment"
-		- Option 2: Make it just be the matrix and let tASSIGNMENT handle the stacks/conversion
-			- actionToken getActionToken(valueToken inputValue, valueToken topSTwo)
-			- typedef unsigned int valueToken
-			- typedef unsigned int actionToken
-			"It is already pretty big and ugly"
-			"Leave the conversion to be part of assignment since the other Commands were pretty much just parsers too"
-			"Abstract the actual matrix implementation away from the strings"
-		- Option 3: Make the inToPostConverter, tASSIGNMENT, and ExpressionConvertingMatrix all be their own object
-			"That is 3 whole classes just for assignment, 2 of which are for inToPostConverting"
-		- Currently Thinking:
-			"It would be real nice if assignment can just say postFixString = convertToPostFix(inFixString) and get on with the parsing after"
-
-
 II) Still Need to Implement:
 	- Assignment
-		- ExpressionConvertingMatrix
-		- Infix to Postfix Converter
+	- Double Check Conversion Matrix for ^
 
 III) Thoughts:
 	- Each command has a parser function and they are all super similar
@@ -138,6 +120,8 @@ IV) Status:
 		19) ASSIGNMENT:
 			- (= : -1)  ([ : -2)  (^ : -3)  (* : -4)  (/ : -5)  (+ : -6)  (- : -7)
 			- handles ASSIGNMENT command, tells parent FileManager to write op code to .obj and tells MemoryManager to manage IDs
+			- MAX_NUM_INPUT_VALUES = 40
+				- from ExpressionFixConverter
 
 V) Log Of Activity:
 
@@ -162,6 +146,7 @@ V) Log Of Activity:
 		- push, pop, and get are the same regardless of if S1 or S2
 	- Working Decently Well
 
+- Implemented tASSIGNMENT
 
 =========================================================
 =========================================================
