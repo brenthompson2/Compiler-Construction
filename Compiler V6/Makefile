@@ -1,5 +1,5 @@
 # Brendan Thompson
-# 11/08/17
+# 11/09/17
 # Makefile for Compiler V6
 
 # "make main" = Compile and Link
@@ -10,8 +10,8 @@
 ### Main Components ###
 #######################
 
-main: CompilerDriver.o Compiler.o FileManager.o SymbolTable.o LiteralTable.o LineLabelTable.o ExpressionConvertingMatrix.o tREAD.o tWRITE.o tSTOP.o tDIM.o taREAD.o taWRITE.o tGOTO.o tLOOP.o tLOOPEND.o tIFA.o tNOP.o tLISTO.o tlREAD.o tlWRITE.o tIF.o tCLS.o tCDUMP.o tSUBP.o tASSIGNMENT.o
-	g++ -o Compiler CompilerDriver.o Compiler.o FileManager.o SymbolTable.o LiteralTable.o LineLabelTable.o ExpressionConvertingMatrix.o tREAD.o tWRITE.o tSTOP.o tDIM.o taREAD.o taWRITE.o tGOTO.o tLOOP.o tLOOPEND.o tIFA.o tNOP.o tLISTO.o tlREAD.o tlWRITE.o tIF.o tCLS.o tCDUMP.o tSUBP.o tASSIGNMENT.o
+main: CompilerDriver.o Compiler.o FileManager.o SymbolTable.o LiteralTable.o LineLabelTable.o tREAD.o tWRITE.o tSTOP.o tDIM.o taREAD.o taWRITE.o tGOTO.o tLOOP.o tLOOPEND.o tIFA.o tNOP.o tLISTO.o tlREAD.o tlWRITE.o tIF.o tCLS.o tCDUMP.o tSUBP.o tASSIGNMENT.o
+	g++ -o Compiler CompilerDriver.o Compiler.o FileManager.o SymbolTable.o LiteralTable.o LineLabelTable.o tREAD.o tWRITE.o tSTOP.o tDIM.o taREAD.o taWRITE.o tGOTO.o tLOOP.o tLOOPEND.o tIFA.o tNOP.o tLISTO.o tlREAD.o tlWRITE.o tIF.o tCLS.o tCDUMP.o tSUBP.o tASSIGNMENT.o
 
 CompilerDriver.o: CompilerDriver.cpp Compiler.o
 	g++ -c CompilerDriver.cpp
@@ -31,8 +31,15 @@ LiteralTable.o: LiteralTable.cpp LiteralTable.h FileManager.h
 LineLabelTable.o: LineLabelTable.cpp LineLabelTable.h
 	g++ -c LineLabelTable.cpp
 
+#######################################
+###### Infix To Postfix Converter #####
+#######################################
+
 ExpressionConvertingMatrix.o: ExpressionConvertingMatrix.cpp ExpressionConvertingMatrix.h
 	g++ -c ExpressionConvertingMatrix.cpp
+
+ExpressionFixConverter.o: ExpressionFixConverter.cpp ExpressionFixConverter.h ExpressionConvertingMatrix.o
+	g++ -c ExpressionFixConverter.cpp
 
 ########################
 ###### Commands V2 #####
@@ -108,7 +115,7 @@ tSUBP.o: tSUBP.cpp tSUBP.h
 ###### Commands V6 #####
 ########################
 
-tASSIGNMENT.o: tASSIGNMENT.cpp tASSIGNMENT.h ExpressionConvertingMatrix.h
+tASSIGNMENT.o: tASSIGNMENT.cpp tASSIGNMENT.h ExpressionFixConverter.o
 	g++ -c tASSIGNMENT.cpp
 
 #####################

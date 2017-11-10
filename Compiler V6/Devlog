@@ -15,7 +15,7 @@ Brendan Thompson
 
 I) Summary of Work:
 	- Continued ExpressionConvertingMatrix
-	- Decided to Implement infixToPostFixConverter
+	- Decided to Implement ExpressionFixConvert for infix to postfix
 
 	- Theorized about implementation options
 		- Option 1: Make it a Infix to Postfix Converter and Manage the Stacks
@@ -57,15 +57,107 @@ III) Thoughts:
 			- I could still sort the Data Structure alphabetically by VariableName and not mess with the memoryLocations
 
 IV) Status:
+	- Compiler Driver:
+		- creates an instance of Compiler, tells it to prepare for compilation, tells it to compile, and shutdowns the compiler
+		- takes in flags and a fileName as a parameter
+	- Compiler:
+		- creates an instance of FileManager, SymbolTable, LiteralTable, and LineLabelTable
+		- gets one line at a time and manages commands with command handling objects
+	- FileManager:
+		- opens .transy, .obj, .noblanks, .literal, and .core files
+		- syncs lineLabels with LineLabelTable
+		- preprocesses .transy into .noblanks
+		- upon request hands the compiler one line at a time from the preprocessed file
+		- writes char/string/int to .obj file
+		- writes one literal at a time to .literal
+		- writes one ID at a time to .core
+		- compiler command flags determine what files are kept (-n -o -l -c)
+	- SymbolTable:
+		- manages IDs (variables or Constants) and their associated values and virtual memory locations
+		- sets all initial values to 0.123456789
+		- coreMemoryArray[1000] = (bool) failedCompilation; (0 = success, 1 = failed)
+		- calls on the FileManager to output .core file
+	- LiteralTable:
+		- manages literal phrases and their associated virtual memory locations
+		- calls on the FileManager to output .literal file
+	- LineLabelTable:
+		- manages Line Label names and their associated .obj & .transy line numbers
+		- Max 1000 lines in the program
+	- ExpressionFixConverter
+		- infix to postfix converter
+		- uses ExpressionConvertingMatrix
+		- Max IDs & Operators per assignment statement = MAX_NUM_INPUT_VALUES(40)
+	- ExpressionConvertingMatrix
+		- Matrix relating Input items and TopSTWO items with action Tokens
+	- tCommands:
+		1) READ:
+			- handles read command, tells parent FileManager to write op code to .obj, and tells MemoryManager to manage variables
+		2) WRITE:
+			- handles write command, tells parent FileManager to write op code to .obj, and tells MemoryManager to manage variables
+		3) STOP:
+			- handles stop command, tells parent FileManager to write op code to .obj
+		4) DIM:
+			- handles write command, tells parent FileManager to write op code to .obj, and tells MemoryManager to manage variables
+			- Can't DIM an array with the same name
+			- All DIM statements must be at the top of the file
+		5) aREAD:
+			- handles aREAD command, tells parent FileManager to write op code to .obj, and tells MemoryManager to manage variables
+			- arrays must have already been declared by a dim command
+		6) aWRITE:
+			- handles aWRITE command, tells parent FileManager to write op code to .obj, and tells MemoryManager to manage variables
+			- arrays must have already been declared by a dim command
+		7) GOTO:
+			- handles GOTO command, tells parent FileManager to write op code to .obj, and gets Line Label Location from LineLabelTable
+		8) LOOP:
+			- handles LOOP command, tells parent FileManager to write op code to .obj, and tells MemoryManager to manage variables
+		9) LOOPEND:
+			- handles LOOPEND command, tells parent FileManager to write op code to .obj
+		10) IFA:
+			- handles IFA command, tells parent FileManager to write op code to .obj, tells MemoryManager to manage variables, and gets Line Label Location from LineLabelTable
+		11) NOP:
+			- handles NOP command, tells parent FileManager to write op code to .obj
+		12) LISTO:
+			- handles LISTO command, tells parent FileManager to write op code to .obj
+		13) lREAD:
+			- handles lREAD command, tells parent FileManager to write op code to .obj, tells MemoryManager to manage variables, and tells LiteralTable to manage literals
+		14) lWRITE:
+			- handles lWRITE command, tells parent FileManager to write op code to .obj and tells LiteralTable to manage literals
+		15) IF:
+			- (<  : -1)	 (<= : -2)  (=  : -3)  (>  : -4)  (>= : -5)  (!  : -6)
+			- handles IF command, tells parent FileManager to write op code to .obj, tells MemoryManager to manage variables, and gets Line Label Location from LineLabelTable
+		16) CLS
+			- handles CLS command, tells parent FileManager to write op code to .obj
+		17) CDUMP:
+			- handles CDUMP command, tells parent FileManager to write op code to .obj and tells MemoryManager to manage variables
+		18) SUBP:
+			- (sin : -10)  (cos : -11)  (exp : -12)  (abs : -13)  (alg : -14)  (aln : -15)  (log : -16)  (sqr : -17)
+			- handles SUBP command, tells parent FileManager to write op code to .obj and tells MemoryManager to manage variables
+
+	To Implement:
+		19) ASSIGNMENT:
+			- (= : -1)  ([ : -2)  (^ : -3)  (* : -4)  (/ : -5)  (+ : -6)  (- : -7)
+			- handles ASSIGNMENT command, tells parent FileManager to write op code to .obj and tells MemoryManager to manage IDs
+
+V) Log Of Activity:
 
 - Fixed Construction of Matrix & Created Print Fn
 	- Print had to invert the axis since it is easier to print out a row at a time
 		- the topSTwoArray is a like a row (an array) inside each inputArray Object
 		- Closer to the implementation
 
-- Decided to implement a infixToPostFixConverter
-	- uses ExpressionConvertingMatrix
+- Decided to Implement ExpressionFixConvert
+	- Only handles infix to postfix
 	- used by tASSIGNMENT
+	- uses ExpressionConvertingMatrix for ActionTokens
+	- Max num Input Values = 40
+		- If the coder has over 40 input values (IDs and Operators) in an assignment statement they need to calm down
+		- 10 would be a more realistic number, but I don't want to limit anyone's creativity
+
+
+- Created Testing Environment for Infix to Postfix Converter
+	- Should implement stacks as their own class
+		- push, pop, and get are the same regardless of if S1 or S2
+
 
 =========================================================
 =========================================================
