@@ -1,6 +1,6 @@
 c* Brendan Thompson
 c* test2.transy
-c* Updated 10/30/17
+c* Updated 11/06/17
 C* Test File for Compiler V5
 C* Tests each command and the known possible Syntax Errors
 
@@ -152,22 +152,22 @@ c* ======= Compiler V5 ========
 c* ============================
 
 c* ======= lREAD COMMAND =======
-lread $variableName
-lread $variableName							// Duplicate variable
+// lread $variableName
+// lread $variableName							// Duplicate variable
 // lread 									// missing variable name
 // lread $apple,							// Extra Characters after first Var
-lread missingDollarSign					// Missing $
+// lread missingDollarSign					// Missing $
 // lread $apple, banana						// Extra Characters after first Var
 // lread $_failure  						// variable names can't start with _
 // lread $illegal#Char*  					// variable names can't have other random chars
 // lread $2bad							  	// 2bad invalid variable name
 
 c* ======= lWRITE COMMAND =======
-lwrite "Hello World"
-lwrite "Hello World"						// Duplicate Literal
-lwrite $variableName
+// lwrite "Hello World"
+// lwrite "Hello World"						// Duplicate Literal
+// lwrite $variableName
 // lwrite 									// Missing literal
-lwrite missingDollarSign						// Missing $
+// lwrite missingDollarSign						// Missing $
 // lwrite missingLeftQuote"					// Missing first quote
 // lwrite "missingRightQuote					// Missing end quote
 // lwrite "firstLit", "secondLit"			// Extra Characters after first Var
@@ -220,3 +220,26 @@ c* ======= SUBP COMMAND =======
 // subp cos (varName,			// Missing ID
 // subp cos (varName, id 		// Missing )
 // subp cos (varName id) 		// Missing ,
+
+c* ============================
+c* ======= Compiler V6 ========
+c* ============================
+
+c* ======= ASSIGNMENT COMMAND =======
+// red0 = blue0 + orange0
+// red1 = blue1 - orange1
+// red2 = blue2 * orange2
+// red3 = blue3 / orange3
+// red4 = blue4 ^ orange4
+// red5 = blue5[3]
+// red6 = 1 + 2
+// red7 = (blue7 + orange7)
+// red8 = 12 ^ 5 / (blue8 + orange8) * 4
+// red9[0] = blue9
+C* Assignment Errors:
+// brown = tan[red * green
+// black = (cyan + 4 * 5
+// magenta = teal[]
+yellow / indigo = rainbow
+green1 = pink = purple
+gold =

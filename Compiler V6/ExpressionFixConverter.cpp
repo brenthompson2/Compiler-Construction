@@ -2,7 +2,7 @@
 
 	File: ExpressionFixConverter.cpp
 	Author: Brendan Thompson
-	Updated: 11/09/17
+	Updated: 11/10/17
 
 	Description: Implementation of Functions for ExpressionFixConverter for Compiler object made for Transylvania University University Fall Term 2017 Compiler Construction class
 		- only implemented infix to postfix
@@ -27,8 +27,8 @@ ExpressionFixConverter::~ExpressionFixConverter(){
 	Converters
 ============================================================================== */
 
-// takes in an infix expression, converts it to postfix and puts it into newExpression, and also manipulates numValsInNewExpression
-void ExpressionFixConverter::infixToPostfix(string currentExpression, string newExpression[], int *numValsInNewExpression){
+// takes in an infix expression, converts it to postfix and puts it into newExpression, and also manipulates numValsInNewExpression. Returns num errors
+int ExpressionFixConverter::infixToPostfix(string currentExpression, string newExpression[], int *numValsInNewExpression){
 	bool continueParsingParameters = true;
 	int currentCharIterator = 0;
 	string currentInputValue;
@@ -36,8 +36,6 @@ void ExpressionFixConverter::infixToPostfix(string currentExpression, string new
 	indexTopSOne = -1;
 	indexTopSTwo = -1;
 	globalNumErrors = 0;
-
-	int tempCounter = 0;
 
 	while (continueParsingParameters){
 		currentInputValue = getNextInputValue(&currentCharIterator, currentExpression);
@@ -49,11 +47,6 @@ void ExpressionFixConverter::infixToPostfix(string currentExpression, string new
 		if (currentInputValue[0] == END_OF_LINE_SENTINEL){
 			continueParsingParameters = false;
 		}
-
-		if (tempCounter > 10) {
-			continueParsingParameters = false;
-		}
-		tempCounter++;
 	}
 
 	// Deep Copy S1 into newExpression
@@ -62,7 +55,7 @@ void ExpressionFixConverter::infixToPostfix(string currentExpression, string new
 	}
 	(*numValsInNewExpression) = indexTopSOne;
 
-	return;
+	return globalNumErrors;
 }
 
 /* ==============================================================================
@@ -224,11 +217,12 @@ void ExpressionFixConverter::handleUThree(string currentInputValue){
 
 // Handles executing the U4 action
 void ExpressionFixConverter::handleUFour(string currentInputValue){
-	bool openContainer;
+	bool openContainer = true;
 	string tempValue;
 	while (openContainer) {
 		tempValue = getTopSTwo();
 		popSTwo();
+		cout << "yo " << tempValue << endl;
 		if (tempValue != "[") {
 			pushSOne(tempValue);
 		}
@@ -363,6 +357,10 @@ ValueToken ExpressionFixConverter::getValueToken(string currentInputValue){
 	}
 	if (currentInputValue == "]"){
 		currentValueToken = VALUE_TOKEN_RIGHT_BRACKET;
+		caseFound = true;
+	}
+	if (currentInputValue == "^"){
+		currentValueToken = VALUE_TOKEN_EXPONENT;
 		caseFound = true;
 	}
 	if (currentInputValue[0] == END_OF_LINE_SENTINEL){

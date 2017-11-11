@@ -2,7 +2,7 @@
 
 	File: tASSIGNMENT.cpp
 	Author: Brendan Thompson
-	Updated: 11/09/17
+	Updated: 11/10/17
 
 	Description: Implementation of Functions for processing ASSIGNMENT command for Compiler object made for Transylvania University University Fall Term 2017 Compiler Construction class
 
@@ -43,13 +43,15 @@ int tASSIGNMENT::handleASSIGNMENT(string currentLine, int correspondingLineNumbe
 	string postfixExpression[MAX_NUM_INPUT_VALUES];
 	int numInputValues;
 
-	mainExpressionConverter.infixToPostfix(currentLine, postfixExpression, &numInputValues);
+	globalNumErrors += mainExpressionConverter.infixToPostfix(currentLine, postfixExpression, &numInputValues);
+	// printPostfixExpression(postfixExpression, numInputValues);
 
 	syncExpressionToVariableArray(postfixExpression, numInputValues);
 	syncVariablesToSymbolTable();
 
+	outputASSIGNMENTCommand(postfixExpression, numInputValues);
+
 	if (globalNumErrors == 0){
-		outputASSIGNMENTCommand(postfixExpression, numInputValues);
 		cout << "\t\t[ASSIGNMENT]: Successfully completed ASSIGNMENT command\n";
 	}
 	else {
@@ -74,6 +76,7 @@ void tASSIGNMENT::syncExpressionToVariableArray(string newExpression[], int numV
 			globalNumVariablesInArray++;
 		}
 	}
+	return;
 }
 
 /* ==============================================================================
@@ -84,10 +87,12 @@ void tASSIGNMENT::syncExpressionToVariableArray(string newExpression[], int numV
 void tASSIGNMENT::syncVariablesToSymbolTable(){
 // 	// cout << "\t\t[ASSIGNMENT]: Attempting to Add Arguments to Lookup Table...\n";
 	for (int i = 0; i < globalNumVariablesInArray; i++){
+		globalVariableArray[i].isArray = false;
+		globalVariableArray[i].size = 1;
 		(*currentMemoryManager).manageMemoryTableObject(&globalVariableArray[i]);
 	}
 	// (*currentMemoryManager).printSymbolTable();
-// 	return;
+	return;
 }
 
 // tells the FileManager to print the object code for the command, which includes the command op code and the variable memoryLocations
@@ -97,17 +102,18 @@ void tASSIGNMENT::outputASSIGNMENTCommand(string newExpression[], int numValsInN
 	int valueToOutput;
 
 	(*currentFileManager).writeStringToObj(ASSIGNMENT_OP_CODE);
+	(*currentFileManager).writeStringToObj(" ");
 
 	for (int i = 0; i <= numValsInNewExpression; i++){
 		firstChar = (newExpression[i])[0];
 		if ((isalpha(firstChar)) || (isdigit(firstChar))){
 			valueToOutput = (globalVariableArray[idCounter]).memoryLocation;
-			(*currentFileManager).writeNumToObj((float) valueToOutput);
 			idCounter++;
 		}
 		else {
 			valueToOutput = getObjectCodeMapping(newExpression[i]);
 		}
+		(*currentFileManager).writeNumToObj((float) valueToOutput);
 		(*currentFileManager).writeStringToObj(" ");
 	}
 	(*currentFileManager).writeStringToObj("\n");
@@ -148,9 +154,19 @@ int tASSIGNMENT::getObjectCodeMapping(string currentInputValue){
 		caseFound = true;
 	}
 	if (!caseFound) {
-		cout << "\t\t[ASSIGNMENT]: Failed to map operator to obj code ->" << currentInputValue << "<-\n";
+		cout << "\t\t[ASSIGNMENT]: Failed to map operator to obj code \"" << currentInputValue << "\". Unclosed Container?\n";
 		currentValueToken = -1;
+		globalNumErrors++;
 	}
 
 	return currentValueToken;
+}
+
+// Prints out the postfix array
+void tASSIGNMENT::printPostfixExpression(string newExpression[], int numValsInNewExpression){
+	cout << "\t\t[ASSIGNMENT]: Postfix:\t";
+	for (int i = 0; i <= numValsInNewExpression; i++){
+		cout << newExpression[i] << " ";
+	}
+	cout << endl;
 }

@@ -101,4 +101,7 @@ private:
 
 	// Takes in an operator and returns the appropriate token for the obj file
 	int getObjectCodeMapping(string currentInputValue);
+
+	// Prints out the postfix array
+	void printPostfixExpression(string newExpression[], int numValsInNewExpression);
 };

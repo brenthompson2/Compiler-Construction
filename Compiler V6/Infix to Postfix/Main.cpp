@@ -46,7 +46,7 @@ int main(){
 	cout << endl;
 
 	// Convert
-	infixExpression = "banana=1^2[3]*5";
+	infixExpression = "banana=1^2";
 	mainExpressionConverter.infixToPostfix(infixExpression, postfixExpression, &numInputValues);
 	cout << "Infix:\t\t" << infixExpression << endl;
 

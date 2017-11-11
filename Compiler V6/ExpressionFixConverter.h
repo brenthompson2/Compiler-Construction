@@ -3,7 +3,7 @@
 
 	File: ExpressionFixConverter.h
 	Author: Brendan Thompson
-	Updated: 11/09/17
+	Updated: 11/10/17
 
 	Description: Interface for Functions for processing LOOP command for Compiler object made for Transylvania University University Fall Term 2017 Compiler Construction class
 		- only implemented infix to postfix
@@ -63,8 +63,8 @@ public:
 		Converters
 	============================================================================== */
 
-	// takes in an infix expression, converts it to postfix and puts it into newExpression, and also manipulates numValsInNewExpression
-	void infixToPostfix(string currentExpression, string newExpression[], int *numValsInNewExpression);
+	// takes in an infix expression, converts it to postfix and puts it into newExpression, and also manipulates numValsInNewExpression. Returns num errors
+	int infixToPostfix(string currentExpression, string newExpression[], int *numValsInNewExpression);
 
 
 
