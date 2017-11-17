@@ -26,9 +26,8 @@ eASSIGNMENT::~eASSIGNMENT(){
 	Public Manipulator Methods
 ============================================================================== */
 
-// Connects local pointer to FileManager & SymbolTable with the parent's (compiler's) versions
-void eASSIGNMENT::prepareASSIGNMENT(FileManager *parentFileManager, SymbolTable *parentMemoryManager){
-	currentFileManager = parentFileManager;
+// Connects local pointer to SymbolTable with the parent's (compiler's) versions
+void eASSIGNMENT::prepareASSIGNMENT(SymbolTable *parentMemoryManager){
 	currentMemoryManager = parentMemoryManager;
 }
 
@@ -97,26 +96,26 @@ void eASSIGNMENT::syncVariablesToSymbolTable(){
 
 // tells the FileManager to print the object code for the command, which includes the command op code and the variable memoryLocations
 void eASSIGNMENT::outputASSIGNMENTCommand(string newExpression[], int numValsInNewExpression){
-	char firstChar;
-	int idCounter = 0;
-	int valueToOutput;
+	// char firstChar;
+	// int idCounter = 0;
+	// int valueToOutput;
 
-	(*currentFileManager).writeStringToObj(ASSIGNMENT_OP_CODE);
-	(*currentFileManager).writeStringToObj(" ");
+	// (*currentFileManager).writeStringToObj(ASSIGNMENT_OP_CODE);
+	// (*currentFileManager).writeStringToObj(" ");
 
-	for (int i = 0; i <= numValsInNewExpression; i++){
-		firstChar = (newExpression[i])[0];
-		if ((isalpha(firstChar)) || (isdigit(firstChar))){
-			valueToOutput = (globalVariableArray[idCounter]).memoryLocation;
-			idCounter++;
-		}
-		else {
-			valueToOutput = getObjectCodeMapping(newExpression[i]);
-		}
-		(*currentFileManager).writeNumToObj((float) valueToOutput);
-		(*currentFileManager).writeStringToObj(" ");
-	}
-	(*currentFileManager).writeStringToObj("\n");
+	// for (int i = 0; i <= numValsInNewExpression; i++){
+	// 	firstChar = (newExpression[i])[0];
+	// 	if ((isalpha(firstChar)) || (isdigit(firstChar))){
+	// 		valueToOutput = (globalVariableArray[idCounter]).memoryLocation;
+	// 		idCounter++;
+	// 	}
+	// 	else {
+	// 		valueToOutput = getObjectCodeMapping(newExpression[i]);
+	// 	}
+	// 	(*currentFileManager).writeNumToObj((float) valueToOutput);
+	// 	(*currentFileManager).writeStringToObj(" ");
+	// }
+	// (*currentFileManager).writeStringToObj("\n");
 	return;
 }
 

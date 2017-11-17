@@ -10,29 +10,26 @@
 ### Main Components ###
 #######################
 
-main: ExecutorDriver.o Executor.o FileManager.o SymbolTable.o LiteralTable.o LineLabelTable.o ExpressionConvertingMatrix.o ExpressionFixConverter.o eREAD.o eWRITE.o eSTOP.o eDIM.o eaREAD.o eaWRITE.o eGOTO.o eLOOP.o eLOOPEND.o eIFA.o eNOP.o eLISTO.o elREAD.o elWRITE.o eIF.o eCLS.o eCDUMP.o eSUBP.o eASSIGNMENT.o
-	g++ -o Executor ExecutorDriver.o Executor.o FileManager.o SymbolTable.o LiteralTable.o LineLabelTable.o ExpressionConvertingMatrix.o ExpressionFixConverter.o eREAD.o eWRITE.o eSTOP.o eDIM.o eaREAD.o eaWRITE.o eGOTO.o eLOOP.o eLOOPEND.o eIFA.o eNOP.o eLISTO.o elREAD.o elWRITE.o eIF.o eCLS.o eCDUMP.o eSUBP.o eASSIGNMENT.o
+main: ExecutorDriver.o Executor.o EFileManager.o SymbolTable.o LiteralTable.o ProgramLineTable.o ExpressionConvertingMatrix.o ExpressionFixConverter.o eREAD.o eWRITE.o eSTOP.o eDIM.o eaREAD.o eaWRITE.o eNOP.o eLISTO.o elREAD.o elWRITE.o eCLS.o eCDUMP.o eSUBP.o eASSIGNMENT.o
+	g++ -o Executor ExecutorDriver.o Executor.o EFileManager.o SymbolTable.o LiteralTable.o ProgramLineTable.o ExpressionConvertingMatrix.o ExpressionFixConverter.o eREAD.o eWRITE.o eSTOP.o eDIM.o eaREAD.o eaWRITE.o eNOP.o eLISTO.o elREAD.o elWRITE.o eCLS.o eCDUMP.o eSUBP.o eASSIGNMENT.o
 
 ExecutorDriver.o: ExecutorDriver.cpp Executor.o
 	g++ -c ExecutorDriver.cpp
 
-Executor.o: Executor.cpp Executor.h FileManager.o SymbolTable.o LiteralTable.o LineLabelTable.o ExpressionConvertingMatrix.o ExpressionFixConverter.o eREAD.o eWRITE.o eSTOP.o eDIM.o eaREAD.o eaWRITE.o eGOTO.o eLOOP.o eLOOPEND.o eIFA.o eNOP.o eLISTO.o elREAD.o elWRITE.o eIF.o eCLS.o eCDUMP.o eSUBP.o eASSIGNMENT.o
+Executor.o: Executor.cpp Executor.h EFileManager.o SymbolTable.o LiteralTable.o ProgramLineTable.o ExpressionConvertingMatrix.o ExpressionFixConverter.o eREAD.o eWRITE.o eSTOP.o eDIM.o eaREAD.o eaWRITE.o eNOP.o eLISTO.o elREAD.o elWRITE.o eCLS.o eCDUMP.o eSUBP.o eASSIGNMENT.o
 	g++ -c Executor.cpp
 
-FileManager.o: FileManager.cpp FileManager.h LiteralTable.h LineLabelTable.h
-	g++ -c FileManager.cpp
+EFileManager.o: EFileManager.cpp EFileManager.h LiteralTable.h
+	g++ -c EFileManager.cpp
 
-SymbolTable.o: SymbolTable.cpp SymbolTable.h FileManager.h
+SymbolTable.o: SymbolTable.cpp SymbolTable.h EFileManager.h
 	g++ -c SymbolTable.cpp
 
-LiteralTable.o: LiteralTable.cpp LiteralTable.h FileManager.h
+LiteralTable.o: LiteralTable.cpp LiteralTable.h EFileManager.h
 	g++ -c LiteralTable.cpp
 
-LineLabelTable.o: LineLabelTable.cpp LineLabelTable.h
-	g++ -c LineLabelTable.cpp
-
-# ProgramLineTable.o: ProgramLineTable.cpp ProgramLineTable.h
-# 	g++ -c ProgramLineTable.cpp
+ProgramLineTable.o: ProgramLineTable.cpp ProgramLineTable.h
+	g++ -c ProgramLineTable.cpp
 
 #######################################
 ###### Infix To Postfix Converter #####
@@ -74,17 +71,17 @@ eaWRITE.o: eaWRITE.cpp eaWRITE.h
 ###### Commands V4 #####
 ########################
 
-eGOTO.o: eGOTO.cpp eGOTO.h
-	g++ -c eGOTO.cpp
+# eGOTO.o: eGOTO.cpp eGOTO.h
+# 	g++ -c eGOTO.cpp
 
-eLOOP.o: eLOOP.cpp eLOOP.h
-	g++ -c eLOOP.cpp
+# eLOOP.o: eLOOP.cpp eLOOP.h
+# 	g++ -c eLOOP.cpp
 
-eLOOPEND.o: eLOOPEND.cpp eLOOPEND.h
-	g++ -c eLOOPEND.cpp
+# eLOOPEND.o: eLOOPEND.cpp eLOOPEND.h
+# 	g++ -c eLOOPEND.cpp
 
-eIFA.o: eIFA.cpp eIFA.h
-	g++ -c eIFA.cpp
+# eIFA.o: eIFA.cpp eIFA.h
+# 	g++ -c eIFA.cpp
 
 eNOP.o: eNOP.cpp eNOP.h
 	g++ -c eNOP.cpp
@@ -102,8 +99,8 @@ elREAD.o: elREAD.cpp elREAD.h
 elWRITE.o: elWRITE.cpp elWRITE.h
 	g++ -c elWRITE.cpp
 
-eIF.o: eIF.cpp eIF.h
-	g++ -c eIF.cpp
+# eIF.o: eIF.cpp eIF.h
+# 	g++ -c eIF.cpp
 
 eCLS.o: eCLS.cpp eCLS.h
 	g++ -c eCLS.cpp

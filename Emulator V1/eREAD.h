@@ -2,9 +2,9 @@
 
 	File: eREAD.h
 	Author: Brendan Thompson
-	Updated: 10/09/17
+	Updated: 11/16/17
 
-	Description: Interface for Functions for processing READ command for Compiler object made for Transylvania University University Fall Term 2017 Compiler Construction class
+	Description: Interface  READ handler for Executor object made for Transylvania University University Fall Term 2017 Compiler Construction class
 
 ============================================================================== */
 
@@ -19,7 +19,6 @@
 #include <string.h> // strcpy & strcat
 
 #include "SymbolTable.h"
-#include "FileManager.h"
 
 using std::cin;
 using std::cout;
@@ -34,9 +33,7 @@ using std::string;
 #define MAX_STRING_LENGTH 50
 #define MAX_VARIABLE_NAME_LENGTH 128	// currently using strings which may or may not allow for 128 characters
 #define MAX_ARGUMENTS 7
-#define INDEX_FIRST_CHAR_AFTER_READ_COMMAND 4
-
-const string READ_OP_CODE = "1";
+#define INDEX_FIRST_CHAR_AFTER_READ_COMMAND 2
 
 /* ==============================================================================
 	Type Definitions
@@ -58,48 +55,38 @@ public:
 		Public Manipulator Methods
 	============================================================================== */
 
-	// Connects local pointer to FileManager & SymbolTable with the parent's (compiler's) versions
-	void prepareREAD(FileManager *parentFileManager, SymbolTable *parentMemoryManager);
+	// Connects local pointer to ParentMemoryManager
+	void prepareREAD(SymbolTable *currentMemoryManager);
 
-	// calls the functions necessary to parse the line, sync the variables with the SymbolTable, and print the object code to the file while counting errors
-	// returns number of errors
-	int handleREAD(string currentLine, int actualLineNumber);
+	// calls the functions necessary to parse and execute the read command
+	void handleREAD(string currentLine, int correspondingLineNumber);
 
 private:
 
 	/* ==============================================================================
 		Private Members
 	============================================================================== */
-	memoryTableObject variableArray[MAX_ARGUMENTS]; // memoryTableObject declared in SymbolTable
-	unsigned int numVariablesInArray;
+	int variableArray[MAX_ARGUMENTS];
+	int globalNumVariablesInArray;
 	string globalCurrentLine;
-	unsigned int globalNumErrors;
+	int globalNumErrors;
 
-	FileManager *currentFileManager; // pointer to the Compiler's (parent's) FileManager
-	SymbolTable *currentMemoryManager; // pointer to the Compiler's (parent's) SymbolTable
-
+	SymbolTable *ParentMemoryManager; // pointer to the Executor's (parent's) SymbolTable
 
 	/* ==============================================================================
 		Private Manipulator Methods
 	============================================================================== */
 
-
-	// calls parseVariable until no more variable to parse
 	void parseParameters();
 
-	// parses through a line one character at a time, adds complete variables to VariableArray, and returns whether or not there are any more variables to parse
-	bool parseVariable(int *currentCharIterator);
-
-	// adds the currentVariableName to the variableArray and increments numVariablesInArray
+	// adds the currentVariableName to the variableArray and increments globalNumVariablesInArray
 	void addToVariableArray(string currentVariableName);
 
 	// iterates through the variableArray and asks the memoryManager to conditionally add them to the symbol table
 	void syncVariableArrayToSymbolTable();
 
-	// tells the FileManager to print the object code for the command, which includes the command op code and the variable memoryLocations
-	void outputREADCommand();
-
-
+	// Executes the Command
+	void executeREADCommand();
 
 	/* ==============================================================================
 		Private Accessor Methods

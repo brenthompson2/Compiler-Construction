@@ -28,9 +28,8 @@ eIF::~eIF(){
 	Public Manipulator Methods
 ============================================================================== */
 
-// Connects local pointer to FileManager, SymbolTable, and LineLabelTable with the parent's (compiler's) versions
-void eIF::prepareIF(FileManager *parentFileManager, SymbolTable *parentMemoryManager, LineLabelTable *parentLineManager){
-	currentFileManager = parentFileManager;
+// Connects local pointer to SymbolTable, and LineLabelTable with the parent's (compiler's) versions
+void eIF::prepareIF(SymbolTable *parentMemoryManager, LineLabelTable *parentLineManager){
 	currentMemoryManager = parentMemoryManager;
 	currentLineManager = parentLineManager;
 }
@@ -91,20 +90,20 @@ void eIF::syncVariablesToSymbolTable(){
 void eIF::outputIFCommand(){
 	// cout << "\t\t[IF]: Attempting to Print Object code to .obj...\n";
 
-	(*currentFileManager).writeStringToObj(IF_OP_CODE);
-	(*currentFileManager).writeStringToObj(" ");
+	// (*currentFileManager).writeStringToObj(IF_OP_CODE);
+	// (*currentFileManager).writeStringToObj(" ");
 
-	(*currentFileManager).writeNumToObj((float) firstID.memoryLocation);
-	(*currentFileManager).writeStringToObj(" ");
+	// (*currentFileManager).writeNumToObj((float) firstID.memoryLocation);
+	// (*currentFileManager).writeStringToObj(" ");
 
-	(*currentFileManager).writeNumToObj((float) secondID.memoryLocation);
-	(*currentFileManager).writeStringToObj(" ");
+	// (*currentFileManager).writeNumToObj((float) secondID.memoryLocation);
+	// (*currentFileManager).writeStringToObj(" ");
 
-	(*currentFileManager).writeNumToObj((float) testCondition);
-	(*currentFileManager).writeStringToObj(" ");
+	// (*currentFileManager).writeNumToObj((float) testCondition);
+	// (*currentFileManager).writeStringToObj(" ");
 
-	(*currentFileManager).writeNumToObj((float) globalLineLabel.memoryLocation);
-	(*currentFileManager).writeStringToObj("\n");
+	// (*currentFileManager).writeNumToObj((float) globalLineLabel.memoryLocation);
+	// (*currentFileManager).writeStringToObj("\n");
 
 	return;
 }

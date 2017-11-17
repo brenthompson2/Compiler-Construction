@@ -20,7 +20,6 @@
 #include <stdlib.h>	// Exit()
 #include <string.h> // strcpy & strcat
 
-#include "FileManager.h"
 
 using std::cin;
 using std::cout;
@@ -56,7 +55,7 @@ public:
 	============================================================================== */
 
 	// Connects local pointer to FileManager & SymbolTable with the parent's (compiler's) versions
-	void prepareLISTO(FileManager *parentFileManager);
+	void prepareLISTO();
 
 	// calls the functions necessary to parse the line and print the object code to the file while counting errors
 	// returns num errors
@@ -69,9 +68,6 @@ private:
 	============================================================================== */
 	string globalCurrentLine;
 	unsigned int globalNumErrors;
-
-	FileManager *currentFileManager; // pointer to the Compiler's (parent's) FileManager
-
 
 	/* ==============================================================================
 		Private Manipulator Methods

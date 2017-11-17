@@ -19,7 +19,6 @@
 #include <string.h> // strcpy & strcat
 
 #include "LiteralTable.h"
-#include "FileManager.h"
 
 using std::cin;
 using std::cout;
@@ -35,8 +34,6 @@ using std::string;
 #define MAX_VARIABLE_NAME_LENGTH 128	// currently using strings which may or may not allow for 128 characters
 #define MAX_ARGUMENTS 7
 #define INDEX_FIRST_CHAR_AFTER_LREAD_COMMAND 5
-
-const string LREAD_OP_CODE = "16";
 
 /* ==============================================================================
 	Type Definitions
@@ -58,8 +55,8 @@ public:
 		Public Manipulator Methods
 	============================================================================== */
 
-	// Connects local pointer to FileManager & LiteralTable with the parent's (compiler's) versions
-	void prepareLREAD(FileManager *parentFileManager, LiteralTable *parentLiteralManager);
+	// Connects local pointer to LiteralTable with the parent's (compiler's) versions
+	void prepareLREAD(LiteralTable *parentLiteralManager);
 
 	// calls the functions necessary to parse the line, sync the variables with the LiteralTable, and print the object code to the file while counting errors
 	// returns number of errors
@@ -74,7 +71,6 @@ private:
 	string globalCurrentLine;
 	int globalNumErrors;
 
-	FileManager *currentFileManager; // pointer to the Compiler's (parent's) FileManager
 	LiteralTable *currentliteralManager; // pointer to the Compiler's (parent's) LiteralTable
 
 

@@ -29,8 +29,7 @@ eCLS::~eCLS(){
 ============================================================================== */
 
 // Connects local pointer to FileManager & SymbolTable with the parent's (compiler's) versions
-void eCLS::prepareCLS(FileManager *parentFileManager){
-	currentFileManager = parentFileManager;
+void eCLS::prepareCLS(){
 }
 
 // calls the functions necessary to parse the line and print the object code to the file while counting errors
@@ -72,8 +71,8 @@ void eCLS::checkSyntax(){
 void eCLS::outputCLSCommand(){
 	// cout << "\t\t[CLS]: Attempting to Print Object code to .obj...\n";
 
-	(*currentFileManager).writeStringToObj(CLS_OP_CODE);
-	(*currentFileManager).writeStringToObj("\n");
+	// (*currentFileManager).writeStringToObj(CLS_OP_CODE);
+	// (*currentFileManager).writeStringToObj("\n");
 	return;
 }
 

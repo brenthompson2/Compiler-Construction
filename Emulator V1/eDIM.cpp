@@ -28,9 +28,8 @@ eDIM::~eDIM(){
 	Public Manipulator Methods
 ============================================================================== */
 
-// Connects local pointer to FileManager & SymbolTable with the parent's (compiler's) versions
-void eDIM::prepareDIM(FileManager *parentFileManager, SymbolTable *parentMemoryManager){
-	currentFileManager = parentFileManager;
+// Connects local pointer to SymbolTable with the parent's (compiler's) versions
+void eDIM::prepareDIM(SymbolTable *parentMemoryManager){
 	currentMemoryManager = parentMemoryManager;
 }
 
@@ -50,7 +49,6 @@ int eDIM::handleDIM(string currentLine, int correspondingLineNumber){
 	syncVariableArrayToSymbolTable();
 
 	if (globalNumErrors == 0){
-		outputDIMCommand();
 		cout << "\t\t[DIM]: Successfully completed DIM command\n";
 	}
 	else {
@@ -345,28 +343,6 @@ void eDIM::syncVariableArrayToSymbolTable(){
 	// (*currentMemoryManager).printSymbolTable();
 	return;
 }
-
-// tells the FileManager to print the object code for the command, which includes the command op code and the variable memoryLocations
-void eDIM::outputDIMCommand(){
-	unsigned int currentMemoryLocation;
-	unsigned int size;
-	// cout << "\t\t[DIM]: Attempting to Print Object code to .obj...\n";
-
-	(*currentFileManager).writeStringToObj(DIM_OP_CODE);
-
-	for (int i = 0; i < numVariablesInArray; i++){
-		(*currentFileManager).writeStringToObj(" ");
-		currentMemoryLocation = (variableArray[i]).memoryLocation;
-		(*currentFileManager).writeNumToObj((float) currentMemoryLocation);
-		(*currentFileManager).writeStringToObj(" ");
-		size = (variableArray[i]).size;
-		(*currentFileManager).writeNumToObj((float) size);
-	}
-
-	(*currentFileManager).writeStringToObj("\n");
-	return;
-}
-
 
 /* ==============================================================================
 	Private Accessor Methods

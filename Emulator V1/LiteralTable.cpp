@@ -3,7 +3,7 @@
 
 	File: LiteralTable.cpp
 	Author: Brendan Thompson
-	Updated: 11/05/17
+	Updated: 11/16/17
 
 	Description: Implementation for LiteralTable for Compiler object made for Transylvania University University Fall Term 2017 Compiler Construction class
 		- manages literal phrases and their associated virtual memory locations
@@ -34,6 +34,18 @@ LiteralTable::~LiteralTable(){
 	Public Manipulator Methods
 ============================================================================== */
 
+// adds a new line of core to the LiteralTable
+void LiteralTable::loadLine(string newLine){
+	// cout << "\t\t\t[LiteralTable]: Adding " << newLine << " to Core Memory Manager\n";
+
+	if (newLine[0] != '\0'){
+		globalLiteralArray[globalSizeLiteralArray] = newLine;
+		globalSizeLiteralArray++;
+	}
+
+	return;
+}
+
 // if the Literal doesn't already exist, calls insertInto(), and regardless sets the memoryLocation for the currentLiteralObject
 void LiteralTable::manageLiteralObject(literalTableObject *currentLiteralObject){
 	// cout << "\t\t\t[LiteralTable]: Managing Memory for " << (*currentLiteralObject).literalString << endl;
@@ -58,11 +70,6 @@ void LiteralTable::manageLiteralObject(literalTableObject *currentLiteralObject)
 	}
 
 	return;
-}
-
-// sets the global currentFileManager to point to the Compiler's parentFileManager
-void LiteralTable::linkWithParentFileManager(FileManager *parentFileManager){
-	currentFileManager = parentFileManager;
 }
 
 /* ==============================================================================
@@ -142,26 +149,12 @@ int LiteralTable::getLiteralTableIndex(string literalToFind){
 
 // iterates through the LiteralTable and prints the variableName & memoryLocation
 void LiteralTable::printLiteralTable(){
-	cout << "\t\t\t[LiteralTable]: Literal Table currently has " << numObjectsInArray << " literals\n";
+	cout << "\t\t\t[LiteralTable]: Literal Table currently has " << globalSizeLiteralArray << " literals\n";
 
-	for (int i = 0; i < numObjectsInArray; i++){
-		cout << "\t\t\t\t" << i << ": Name: " << LiteralTableArray[i].variableName << "\tLiteral: \"" << LiteralTableArray[i].literalString << "\"\n";
+	for (int i = 0; i < globalSizeLiteralArray; i++){
+		cout << "\t\t\t\t" << i << ": " << globalLiteralArray[i] << endl;
 	}
 
-	return;
-}
-
-// iterates through the LiteralTable and outputs the literalString & memoryLocation to .literal file
-void LiteralTable::outputLiteralFile(){
-	if (numObjectsInArray > 0) {
-		cout << "\t\t\t[LiteralTable]: Writing .literal file...\n";
-		for (int i = 0; i < numObjectsInArray; i++){
-			(*currentFileManager).writeStringToLiteral(LiteralTableArray[i].variableName);
-			(*currentFileManager).writeStringToLiteral("\t");
-			(*currentFileManager).writeStringToLiteral(LiteralTableArray[i].literalString);
-			(*currentFileManager).writeStringToLiteral("\n");
-		}
-	}
 	return;
 }
 

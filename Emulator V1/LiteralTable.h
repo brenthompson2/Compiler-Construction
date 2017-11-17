@@ -1,24 +1,19 @@
-/*
-  ==============================================================================
+/* ==============================================================================
 
 	File: LiteralTable.cpp
 	Author: Brendan Thompson
-	Updated: 11/05/17
+	Updated: 11/16/17
 
 	Description: Interface for LiteralTable for Compiler object made for Transylvania University University Fall Term 2017 Compiler Construction class
 		- manages literal phrases and their associated virtual memory locations
-		- calls on the FileManager to output .literal file
 
-  ==============================================================================
-*/
+============================================================================== */
 
 #pragma once
 
 /* ==============================================================================
 	File Includes
 ============================================================================== */
-
-#include "FileManager.h"
 
 #include <iostream>	// Console IO
 // using std::cin;
@@ -65,11 +60,11 @@ public:
 		Public Manipulator Methods
 	============================================================================== */
 
+	// adds a new line of core to the LiteralTable
+	void loadLine(string newLine);
+
 	// if the Literal doesn't already exist, calls insertInto(), and regardless sets the memoryLocation for the currentLiteralObject
 	void manageLiteralObject(literalTableObject *currentLiteralObject);
-
-	// sets the global currentFileManager to point to the Compiler's parentFileManager
-	void linkWithParentFileManager(FileManager *parentFileManager);
 
 	/* ==============================================================================
 		Public Accessor Methods
@@ -101,10 +96,11 @@ protected:
 	/* ==============================================================================
 		Private Members
 	============================================================================== */
+	string globalLiteralArray[MAX_NUM_LITERALS];
+	int globalSizeLiteralArray;
+
 	literalTableObject LiteralTableArray[MAX_NUM_LITERALS]; // LiteralTable implemented as array of memoryTableObjects
 	unsigned int numObjectsInArray;
-
-	FileManager *currentFileManager;
 
 	/* ==============================================================================
 		Private Methods

@@ -2,7 +2,7 @@
 
 	File: eWRITE.cpp
 	Author: Brendan Thompson
-	Updated: 11/13/17
+	Updated: 11/16/17
 
 	Description: Implementation of Functions for processing WRITE command for Compiler object made for Transylvania University University Fall Term 2017 Compiler Construction class
 
@@ -26,9 +26,8 @@ eWRITE::~eWRITE(){
 	Public Manipulator Methods
 ============================================================================== */
 
-// Connects local pointer to FileManager & SymbolTable with the compiler's (parent's) versions
-void eWRITE::prepareWRITE(FileManager *parentFileManager, SymbolTable *parentMemoryManager){
-	currentFileManager = parentFileManager;
+// Connects local pointer to SymbolTable with the compiler's (parent's) versions
+void eWRITE::prepareWRITE(SymbolTable *parentMemoryManager){
 	currentMemoryManager = parentMemoryManager;
 }
 
@@ -47,7 +46,6 @@ int eWRITE::handleWRITE(string currentLine, int correspondingLineNumber){
 	syncVariableArrayToSymbolTable();
 
 	if (globalNumErrors == 0){
-		outputWRITECommand();
 		cout << "\t\t[eWRITE]: Successfully completed eWRITE command\n";
 	}
 	else {
@@ -196,25 +194,6 @@ void eWRITE::syncVariableArrayToSymbolTable(){
 	// (*currentMemoryManager).printSymbolTable();
 	return;
 }
-
-// tells the FileManager to print the object code for the command, which includes the command op code and the variable memoryLocations
-void eWRITE::outputWRITECommand(){
-	unsigned int currentMemoryLocation;
-	// cout << "\t\t[eWRITE]: Attempting to Print Object code to .obj...\n";
-
-	(*currentFileManager).writeStringToObj(WRITE_OP_CODE);
-
-	for (int i = 0; i < numVariablesInArray; i++){
-		(*currentFileManager).writeStringToObj(" ");
-		currentMemoryLocation = (variableArray[i]).memoryLocation;
-		(*currentFileManager).writeNumToObj((float) currentMemoryLocation);
-	}
-
-	(*currentFileManager).writeStringToObj("\n");
-	return;
-}
-
-
 
 /* ==============================================================================
 	Private Accessor Methods

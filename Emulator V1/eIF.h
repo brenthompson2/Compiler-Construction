@@ -21,7 +21,6 @@
 #include <string.h> // strcpy & strcat
 #include <sstream> //std::stringstream str(" ")
 
-#include "FileManager.h"
 #include "LineLabelTable.h"
 #include "SymbolTable.h"
 
@@ -72,8 +71,8 @@ public:
 		Public Manipulator Methods
 	============================================================================== */
 
-	// Connects local pointer to FileManager, SymbolTable, and LineLabelTable with the parent's (compiler's) versions
-	void prepareIF(FileManager *parentFileManager, SymbolTable *parentMemoryManager, LineLabelTable *parentLineManager);
+	// Connects local pointer to SymbolTable and LineLabelTable with the parent's (compiler's) versions
+	void prepareIF(SymbolTable *parentMemoryManager, LineLabelTable *parentLineManager);
 
 	// calls the functions necessary to parse the line, sync the variables with the SymbolTable, and print the object code to the file while counting errors
 	// returns num errors
@@ -94,7 +93,6 @@ private:
 	memoryTableObject globalLineLabel;
 
 	// Parent's Objects
-	FileManager *currentFileManager; // pointer to the Compiler's (parent's) FileManager
 	SymbolTable *currentMemoryManager; // pointer to the Compiler's (parent's) SymbolTable
 	LineLabelTable *currentLineManager; // pointer to the Compiler's (parent's) LineLabelTable
 

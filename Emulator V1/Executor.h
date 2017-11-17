@@ -25,11 +25,10 @@ using std::ifstream;
 using std::ofstream;
 using std::string;
 
-#include "FileManager.h"
+#include "EFileManager.h"
 #include "SymbolTable.h"
 #include "LiteralTable.h"
-#include "LineLabelTable.h"
-// #include "ProgramLineTable.h"
+#include "ProgramLineTable.h"
 
 #include "eREAD.h"
 #include "eWRITE.h"
@@ -37,15 +36,15 @@ using std::string;
 #include "eDIM.h"
 #include "eaREAD.h"
 #include "eaWRITE.h"
-#include "eGOTO.h"
-#include "eLOOP.h"
-#include "eLOOPEND.h"
-#include "eIFA.h"
+// #include "eGOTO.h"
+// #include "eLOOP.h"
+// #include "eLOOPEND.h"
+// #include "eIFA.h"
 #include "eNOP.h"
 #include "eLISTO.h"
 #include "elREAD.h"
 #include "elWRITE.h"
-#include "eIF.h"
+// #include "eIF.h"
 #include "eCLS.h"
 #include "eCDUMP.h"
 #include "eSUBP.h"
@@ -88,15 +87,13 @@ private:
 	/* ==============================================================================
 		Private Member Variables
 	============================================================================== */
-	// string globalFileName;
-	int numErrors;
+	int globalNumErrors;
 
 	// Global Helper Objects
-	FileManager globalFileManager;
+	EFileManager globalFileManager;
 	SymbolTable globalMemoryManager;
 	LiteralTable globalLiteralManager;
-	LineLabelTable globalLineManager;
-	// ProgramLineTable globalProgramManager;
+	ProgramLineTable globalProgramManager;
 
 	// objects for handling (executing) commands
 	eREAD mainREADHandler;
@@ -105,15 +102,15 @@ private:
 	eDIM mainDIMHandler;
 	eaREAD mainAREADHandler;
 	eaWRITE mainAWRITEHandler;
-	eGOTO mainGOTOHandler;
-	eLOOP mainLOOPHandler;
-	eLOOPEND mainLOOPENDHandler;
-	eIFA mainIFAHandler;
+	// eGOTO mainGOTOHandler;
+	// eLOOP mainLOOPHandler;
+	// eLOOPEND mainLOOPENDHandler;
+	// eIFA mainIFAHandler;
 	eNOP mainNOPHandler;
 	eLISTO mainLISTOHandler;
 	elREAD mainLREADHandler;
 	elWRITE mainLWRITEHandler;
-	eIF mainIFHandler;
+	// eIF mainIFHandler;
 	eCLS mainCLSHandler;
 	eCDUMP mainCDUMPHandler;
 	eSUBP mainSUBPHandler;
@@ -124,7 +121,7 @@ private:
 	============================================================================== */
 
 	// tells the appropriate object to handle the command in the line
-	void handleCommand(string currentLine, int correspondingLineNumber);
+	void handleCommand(string currentLine, int *currentProgramCounter);
 
 	// instantiates objects for handling commands by passing the FileManager, MemoryManager, SymbolTable, LineLabelTable, and/or LiteralTable by reference
 	void instantiateCommandObjects();

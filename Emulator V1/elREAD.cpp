@@ -26,9 +26,8 @@ elREAD::~elREAD(){
 	Public Manipulator Methods
 ============================================================================== */
 
-// Connects local pointer to FileManager & LiteralTable with the compiler's (parent's) versions
-void elREAD::prepareLREAD(FileManager *parentFileManager, LiteralTable *parentLiteralManager){
-	currentFileManager = parentFileManager;
+// Connects local pointer to LiteralTable with the compiler's (parent's) versions
+void elREAD::prepareLREAD(LiteralTable *parentLiteralManager){
 	currentliteralManager = parentLiteralManager;
 }
 
@@ -197,13 +196,13 @@ void elREAD::outputLREADCommand(){
 	unsigned int currentMemoryLocation;
 	// cout << "\t\t[elREAD]: Attempting to Print Object code to .obj...\n";
 
-	(*currentFileManager).writeStringToObj(LREAD_OP_CODE);
+	// (*currentFileManager).writeStringToObj(LREAD_OP_CODE);
 
-	(*currentFileManager).writeStringToObj(" ");
-	currentMemoryLocation = globalLiteralObject.memoryLocation;
-	(*currentFileManager).writeNumToObj((float) currentMemoryLocation);
+	// (*currentFileManager).writeStringToObj(" ");
+	// currentMemoryLocation = globalLiteralObject.memoryLocation;
+	// (*currentFileManager).writeNumToObj((float) currentMemoryLocation);
 
-	(*currentFileManager).writeStringToObj("\n");
+	// (*currentFileManager).writeStringToObj("\n");
 	return;
 }
 

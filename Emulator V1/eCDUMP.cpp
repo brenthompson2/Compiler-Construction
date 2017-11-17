@@ -26,9 +26,8 @@ eCDUMP::~eCDUMP(){
 	Public Manipulator Methods
 ============================================================================== */
 
-// Connects local pointer to FileManager & SymbolTable with the parent's (compiler's) versions
-void eCDUMP::prepareCDUMP(FileManager *parentFileManager, SymbolTable *parentMemoryManager){
-	currentFileManager = parentFileManager;
+// Connects local pointer to SymbolTable with the parent's (compiler's) versions
+void eCDUMP::prepareCDUMP(SymbolTable *parentMemoryManager){
 	currentMemoryManager = parentMemoryManager;
 }
 
@@ -339,14 +338,14 @@ void eCDUMP::outputCDUMPCommand(){
 	unsigned int size;
 	// cout << "\t\t[CDUMP]: Attempting to Print Object code to .obj...\n";
 
-	(*currentFileManager).writeStringToObj(CDUMP_OP_CODE);
-	(*currentFileManager).writeStringToObj(" ");
+	// (*currentFileManager).writeStringToObj(CDUMP_OP_CODE);
+	// (*currentFileManager).writeStringToObj(" ");
 
-	(*currentFileManager).writeNumToObj((float) globalStartIndex.memoryLocation);
-	(*currentFileManager).writeStringToObj(" ");
+	// (*currentFileManager).writeNumToObj((float) globalStartIndex.memoryLocation);
+	// (*currentFileManager).writeStringToObj(" ");
 
-	(*currentFileManager).writeNumToObj((float) globalEndIndex.memoryLocation);
-	(*currentFileManager).writeStringToObj("\n");
+	// (*currentFileManager).writeNumToObj((float) globalEndIndex.memoryLocation);
+	// (*currentFileManager).writeStringToObj("\n");
 
 	return;
 }

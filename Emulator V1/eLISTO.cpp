@@ -28,9 +28,8 @@ eLISTO::~eLISTO(){
 	Public Manipulator Methods
 ============================================================================== */
 
-// Connects local pointer to FileManager & SymbolTable with the parent's (compiler's) versions
-void eLISTO::prepareLISTO(FileManager *parentFileManager){
-	currentFileManager = parentFileManager;
+// Connects local pointer to  parent's (compiler's) versions
+void eLISTO::prepareLISTO(){
 }
 
 // calls the functions necessary to parse the line and print the object code to the file while counting errors
@@ -72,9 +71,9 @@ void eLISTO::checkSyntax(){
 void eLISTO::outputLISTOCommand(){
 	// cout << "\t\t[LISTO]: Attempting to Print Object code to .obj...\n";
 
-	(*currentFileManager).writeStringToObj(LISTO_OP_CODE);
-	(*currentFileManager).writeStringToObj("\n");
-	return;
+	// (*currentFileManager).writeStringToObj(LISTO_OP_CODE);
+	// (*currentFileManager).writeStringToObj("\n");
+	// return;
 }
 
 

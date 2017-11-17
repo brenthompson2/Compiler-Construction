@@ -26,9 +26,8 @@ eSUBP::~eSUBP(){
 	Public Manipulator Methods
 ============================================================================== */
 
-// Connects local pointer to FileManager and SymbolTable with the parent's (compiler's) versions
-void eSUBP::prepareSUBP(FileManager *parentFileManager, SymbolTable *parentMemoryManager){
-	currentFileManager = parentFileManager;
+// Connects local pointer to SymbolTable with the parent's (compiler's) versions
+void eSUBP::prepareSUBP(SymbolTable *parentMemoryManager){
 	currentMemoryManager = parentMemoryManager;
 }
 
@@ -81,17 +80,17 @@ void eSUBP::syncVariablesToSymbolTable(){
 void eSUBP::outputSUBPCommand(){
 	// cout << "\t\t[SUBP]: Attempting to Print Object code to .obj...\n";
 
-	(*currentFileManager).writeStringToObj(SUBP_OP_CODE);
-	(*currentFileManager).writeStringToObj(" ");
+	// (*currentFileManager).writeStringToObj(SUBP_OP_CODE);
+	// (*currentFileManager).writeStringToObj(" ");
 
-	(*currentFileManager).writeNumToObj(globalOperation);
-	(*currentFileManager).writeStringToObj(" ");
+	// (*currentFileManager).writeNumToObj(globalOperation);
+	// (*currentFileManager).writeStringToObj(" ");
 
-	(*currentFileManager).writeNumToObj((float) globalVariable.memoryLocation);
-	(*currentFileManager).writeStringToObj(" ");
+	// (*currentFileManager).writeNumToObj((float) globalVariable.memoryLocation);
+	// (*currentFileManager).writeStringToObj(" ");
 
-	(*currentFileManager).writeNumToObj((float) secondID.memoryLocation);
-	(*currentFileManager).writeStringToObj("\n");
+	// (*currentFileManager).writeNumToObj((float) secondID.memoryLocation);
+	// (*currentFileManager).writeStringToObj("\n");
 
 	return;
 }

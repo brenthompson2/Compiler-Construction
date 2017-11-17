@@ -26,9 +26,8 @@ eaWRITE::~eaWRITE(){
 	Public Manipulator Methods
 ============================================================================== */
 
-// Connects local pointer to FileManager & SymbolTable with the parent's (compiler's) versions
-void eaWRITE::prepareAWRITE(FileManager *parentFileManager, SymbolTable *parentMemoryManager){
-	currentFileManager = parentFileManager;
+// Connects local pointer to SymbolTable with the parent's (compiler's) versions
+void eaWRITE::prepareAWRITE(SymbolTable *parentMemoryManager){
 	currentMemoryManager = parentMemoryManager;
 }
 
@@ -47,7 +46,6 @@ int eaWRITE::handleAWRITE(string currentLine, int correspondingLineNumber){
 	getMemoryLocation();
 
 	if (globalNumErrors == 0){
-		outputAWRITECommand();
 		cout << "\t\t[aWRITE]: Successfully compiled aWRITE command\n";
 	}
 	else {
@@ -359,22 +357,6 @@ void eaWRITE::getMemoryLocation(){
 	return;
 }
 
-// tells the FileManager to print the object code for the command, which includes the command op code and the variable memoryLocations
-void eaWRITE::outputAWRITECommand(){
-	// cout << "\t\t[aWRITE]: Attempting to Print Object code to .obj...\n";
-
-	(*currentFileManager).writeStringToObj(AWRITE_OP_CODE);
-	(*currentFileManager).writeStringToObj(" ");
-	(*currentFileManager).writeNumToObj((float) globalArrayObject.memoryLocation);
-	(*currentFileManager).writeStringToObj(" ");
-	(*currentFileManager).writeNumToObj((float) globalStartIndex.memoryLocation);
-	(*currentFileManager).writeStringToObj(" ");
-	(*currentFileManager).writeNumToObj((float) globalEndIndex.memoryLocation);
-
-	(*currentFileManager).writeStringToObj("\n");
-	// cout << "\t\t[aWRITE]: Wrote to .obj\n";
-	return;
-}
 
 /* ==============================================================================
 	Private Accessor Methods

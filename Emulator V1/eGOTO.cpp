@@ -28,9 +28,8 @@ eGOTO::~eGOTO(){
 	Public Manipulator Methods
 ============================================================================== */
 
-// Connects local pointer to FileManager & SymbolTable with the parent's (compiler's) versions
-void eGOTO::prepareGOTO(FileManager *parentFileManager, LineLabelTable *parentLineManager){
-	currentFileManager = parentFileManager;
+// Connects local pointer to SymbolTable with the parent's (compiler's) versions
+void eGOTO::prepareGOTO(LineLabelTable *parentLineManager){
 	currentLineManager = parentLineManager;
 }
 
@@ -176,12 +175,12 @@ void eGOTO::outputGOTOCommand(){
 	unsigned int currentMemoryLocation;
 	// cout << "\t\t[GOTO]: Attempting to Print Object code to .obj...\n";
 
-	(*currentFileManager).writeStringToObj(GOTO_OP_CODE);
-	(*currentFileManager).writeStringToObj(" ");
-	(*currentFileManager).writeNumToObj((float) globalLineLabelLineNumber);
+	// (*currentFileManager).writeStringToObj(GOTO_OP_CODE);
+	// (*currentFileManager).writeStringToObj(" ");
+	// (*currentFileManager).writeNumToObj((float) globalLineLabelLineNumber);
 
-	(*currentFileManager).writeStringToObj("\n");
-	return;
+	// (*currentFileManager).writeStringToObj("\n");
+	// return;
 }
 
 

@@ -128,8 +128,8 @@ void SymbolTable::outputCoreFile(){
 	cout << "\t\t\t[SymbolTable]: Writing .core file...\n";
 	for (int i = 0; i < MAX_NUM_VARIABLES; i++){
 		// cout << "\t\t\t[SymbolTable]: Outputting data for " << symbolTableArray[i].variableName << endl;;
-		(*currentFileManager).writeStringToCore(symbolTableArray[i].variableName);
-		(*currentFileManager).writeStringToCore("\t");
+		// (*currentFileManager).writeStringToCore(symbolTableArray[i].variableName);
+		// (*currentFileManager).writeStringToCore("\t");
 		(*currentFileManager).writeNumToCore(symbolTableArray[i].value);
 		(*currentFileManager).writeStringToCore("\n");
 	}

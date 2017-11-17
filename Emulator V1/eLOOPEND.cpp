@@ -27,8 +27,7 @@ eLOOPEND::~eLOOPEND(){
 ============================================================================== */
 
 // Connects local pointer to FileManager & SymbolTable with the parent's (compiler's) versions
-void eLOOPEND::prepareLOOPEND(FileManager *parentFileManager){
-	currentFileManager = parentFileManager;
+void eLOOPEND::prepareLOOPEND(){
 }
 
 // calls the functions necessary to parse the line and print the object code to the file while counting errors
@@ -71,8 +70,8 @@ void eLOOPEND::checkSyntax(){
 void eLOOPEND::outputLOOPENDCommand(){
 	// cout << "\t\t[LOOPEND]: Attempting to Print Object code to .obj...\n";
 
-	(*currentFileManager).writeStringToObj(LOOPEND_OP_CODE);
-	(*currentFileManager).writeStringToObj("\n");
+	// (*currentFileManager).writeStringToObj(LOOPEND_OP_CODE);
+	// (*currentFileManager).writeStringToObj("\n");
 	return;
 }
 

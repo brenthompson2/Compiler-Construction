@@ -2,7 +2,7 @@
 
 	File: SymbolTable.cpp
 	Author: Brendan Thompson
-	Updated: 11/11/17
+	Updated: 11/16/17
 
 	Description: Interface for SymbolTable for Compiler object made for Transylvania University University Fall Term 2017 Compiler Construction class
 		- manages IDs (variables or Constants) and their associated values and virtual memory locations
@@ -17,8 +17,6 @@
 /* ==============================================================================
 	File Includes
 ============================================================================== */
-
-#include "FileManager.h"
 
 #include <iostream>	// Console IO
 #include <sstream> // used in convertToFloat()
@@ -72,15 +70,14 @@ public:
 	/* ==============================================================================
 		Public Manipulator Methods
 	============================================================================== */
+	// adds a new line of core to the SymbolTable
+	void loadLine(string newLine);
 
 	// if the variable doesn't already exist, calls insertInto(), and regardless sets the memoryLocation for the currentMemoryObject
 	void manageMemoryTableObject(memoryTableObject *currentMemoryObject);
 
 	// sets coreMemory boolean regarding the result of compilation
 	void setCompilationResult(bool completedSuccessfully);
-
-	// sets the global currentFileManager to point to the Compiler's parentFileManager
-	void linkWithParentFileManager(FileManager *parentFileManager);
 
 	/* ==============================================================================
 		Public Accessor Methods
@@ -95,11 +92,11 @@ public:
 	// returns the lookup table index for the variable
 	int getSymbolTableIndex(string variableNameToGet);
 
+	// prints out the value for every value in CoreMemory
+	void printCoreMemory();
+
 	// iterates through the SymbolTable and prints the variableName & memoryLocation
 	void printSymbolTable();
-
-	// iterates through the SymbolTable and outputs the variableName & memoryLocation to .core file
-	void outputCoreFile();
 
 	// takes in currentString, sets the numberAsFloat, and returns if successful
 	bool convertToFloat(string currentString, float &numberAsFloat);
@@ -109,10 +106,12 @@ protected:
 	/* ==============================================================================
 		Private Members
 	============================================================================== */
+
+	string globalCoreMemoryArray[MAX_NUM_VARIABLES];
+	int globalSizeCoreMemory;
+
 	memoryTableObject symbolTableArray[MAX_NUM_VARIABLES]; // SymbolTable implemented as array of memoryTableObjects
 	unsigned int numObjectsInArray;
-
-	FileManager *currentFileManager;
 
 	/* ==============================================================================
 		Private Methods

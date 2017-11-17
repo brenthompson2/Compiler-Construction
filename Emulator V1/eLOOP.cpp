@@ -28,9 +28,8 @@ eLOOP::~eLOOP(){
 	Public Manipulator Methods
 ============================================================================== */
 
-// Connects local pointer to FileManager & SymbolTable with the parent's (compiler's) versions
-void eLOOP::prepareLOOP(FileManager *parentFileManager, SymbolTable *parentMemoryManager){
-	currentFileManager = parentFileManager;
+// Connects local pointer to SymbolTable with the parent's (compiler's) versions
+void eLOOP::prepareLOOP(SymbolTable *parentMemoryManager){
 	currentMemoryManager = parentMemoryManager;
 }
 
@@ -390,26 +389,26 @@ void eLOOP::syncVariablesToSymbolTable(){
 
 // tells the FileManager to print the object code for the command, which includes the command op code and the variable memoryLocations
 void eLOOP::outputLOOPCommand(){
-	unsigned int currentMemoryLocation;
-	unsigned int size;
-	// cout << "\t\t[LOOP]: Attempting to Print Object code to .obj...\n";
+	// unsigned int currentMemoryLocation;
+	// unsigned int size;
+	// // cout << "\t\t[LOOP]: Attempting to Print Object code to .obj...\n";
 
-	(*currentFileManager).writeStringToObj(LOOP_OP_CODE);
-	(*currentFileManager).writeStringToObj(" ");
+	// (*currentFileManager).writeStringToObj(LOOP_OP_CODE);
+	// (*currentFileManager).writeStringToObj(" ");
 
-	(*currentFileManager).writeNumToObj((float) indexVariable.memoryLocation);
-	(*currentFileManager).writeStringToObj(" ");
+	// (*currentFileManager).writeNumToObj((float) indexVariable.memoryLocation);
+	// (*currentFileManager).writeStringToObj(" ");
 
-	(*currentFileManager).writeNumToObj((float) startIndex.memoryLocation);
-	(*currentFileManager).writeStringToObj(" ");
+	// (*currentFileManager).writeNumToObj((float) startIndex.memoryLocation);
+	// (*currentFileManager).writeStringToObj(" ");
 
-	(*currentFileManager).writeNumToObj((float) endIndex.memoryLocation);
-	(*currentFileManager).writeStringToObj(" ");
+	// (*currentFileManager).writeNumToObj((float) endIndex.memoryLocation);
+	// (*currentFileManager).writeStringToObj(" ");
 
-	(*currentFileManager).writeNumToObj((float) incrementAmount.memoryLocation);
-	(*currentFileManager).writeStringToObj("\n");
+	// (*currentFileManager).writeNumToObj((float) incrementAmount.memoryLocation);
+	// (*currentFileManager).writeStringToObj("\n");
 
-	return;
+	// return;
 }
 
 

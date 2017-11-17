@@ -26,9 +26,8 @@ eaREAD::~eaREAD(){
 	Public Manipulator Methods
 ============================================================================== */
 
-// Connects local pointer to FileManager & SymbolTable with the parent's (compiler's) versions
-void eaREAD::prepareAREAD(FileManager *parentFileManager, SymbolTable *parentMemoryManager){
-	currentFileManager = parentFileManager;
+// Connects local pointer to SymbolTable with the parent's (compiler's) versions
+void eaREAD::prepareAREAD(SymbolTable *parentMemoryManager){
 	currentMemoryManager = parentMemoryManager;
 }
 
@@ -46,7 +45,6 @@ int eaREAD::handleAREAD(string currentLine, int correspondingLineNumber){
 	getMemoryLocation();
 
 	if (globalNumErrors == 0){
-		outputAREADCommand();
 		cout << "\t\t[aREAD]: Successfully compiled aREAD command\n";
 	}
 	else {
@@ -357,24 +355,6 @@ void eaREAD::getMemoryLocation(){
 	(*currentMemoryManager).manageMemoryTableObject(&globalEndIndex);
 	return;
 }
-
-// tells the FileManager to print the object code for the command, which includes the command op code and the variable memoryLocations
-void eaREAD::outputAREADCommand(){
-	// cout << "\t\t[aREAD]: Attempting to Print Object code to .obj...\n";
-
-	(*currentFileManager).writeStringToObj(AREAD_OP_CODE);
-	(*currentFileManager).writeStringToObj(" ");
-	(*currentFileManager).writeNumToObj((float) globalArrayObject.memoryLocation);
-	(*currentFileManager).writeStringToObj(" ");
-	(*currentFileManager).writeNumToObj((float) globalStartIndex.memoryLocation);
-	(*currentFileManager).writeStringToObj(" ");
-	(*currentFileManager).writeNumToObj((float) globalEndIndex.memoryLocation);
-
-	(*currentFileManager).writeStringToObj("\n");
-	// cout << "\t\t[aREAD]: Wrote to .obj\n";
-	return;
-}
-
 
 /* ==============================================================================
 	Private Accessor Methods

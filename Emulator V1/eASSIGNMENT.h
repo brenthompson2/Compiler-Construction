@@ -18,7 +18,6 @@
 #include <string.h> // strcpy & strcat
 
 #include "SymbolTable.h"
-#include "FileManager.h"
 #include "ExpressionFixConverter.h"
 
 using std::cin;
@@ -61,8 +60,8 @@ public:
 		Public Manipulator Methods
 	============================================================================== */
 
-	// Connects local pointer to FileManager & SymbolTable with the parent's (compiler's) versions
-	void prepareASSIGNMENT(FileManager *parentFileManager, SymbolTable *parentMemoryManager);
+	// Connects local pointer to SymbolTable with the parent's (compiler's) versions
+	void prepareASSIGNMENT(SymbolTable *parentMemoryManager);
 
 	// calls the functions necessary to parse the line, sync the variables with the SymbolTable, and print the object code to the file while counting errors
 	// returns num errors
@@ -83,7 +82,6 @@ private:
 	unsigned int globalNumVariablesInArray;
 
 	// Parent's Objects
-	FileManager *currentFileManager; // pointer to the Compiler's (parent's) FileManager
 	SymbolTable *currentMemoryManager; // pointer to the Compiler's (parent's) SymbolTable
 
 	/* ==============================================================================

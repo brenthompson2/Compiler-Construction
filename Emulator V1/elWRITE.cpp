@@ -26,9 +26,8 @@ elWRITE::~elWRITE(){
 	Public Manipulator Methods
 ============================================================================== */
 
-// Connects local pointer to FileManager & LiteralTable with the compiler's (parent's) versions
-void elWRITE::prepareLWRITE(FileManager *parentFileManager, LiteralTable *parentLiteralManager){
-	currentFileManager = parentFileManager;
+// Connects local pointer to LiteralTable with the compiler's (parent's) versions
+void elWRITE::prepareLWRITE(LiteralTable *parentLiteralManager){
 	currentliteralManager = parentLiteralManager;
 }
 
@@ -273,13 +272,13 @@ void elWRITE::outputLWRITECommand(){
 	unsigned int currentMemoryLocation;
 	// cout << "\t\t[elWRITE]: Attempting to Print Object code to .obj...\n";
 
-	(*currentFileManager).writeStringToObj(LWRITE_OP_CODE);
+	// (*currentFileManager).writeStringToObj(LWRITE_OP_CODE);
 
-	(*currentFileManager).writeStringToObj(" ");
-	currentMemoryLocation = globalLiteralObject.memoryLocation;
-	(*currentFileManager).writeNumToObj((float) currentMemoryLocation);
+	// (*currentFileManager).writeStringToObj(" ");
+	// currentMemoryLocation = globalLiteralObject.memoryLocation;
+	// (*currentFileManager).writeNumToObj((float) currentMemoryLocation);
 
-	(*currentFileManager).writeStringToObj("\n");
+	// (*currentFileManager).writeStringToObj("\n");
 	return;
 }
 

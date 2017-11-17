@@ -27,8 +27,7 @@ eNOP::~eNOP(){
 ============================================================================== */
 
 // Connects local pointer to FileManager & SymbolTable with the parent's (compiler's) versions
-void eNOP::prepareNOP(FileManager *parentFileManager){
-	currentFileManager = parentFileManager;
+void eNOP::prepareNOP(){
 }
 
 // calls the functions necessary to parse the line and print the object code to the file while counting errors
@@ -70,8 +69,8 @@ void eNOP::checkSyntax(){
 void eNOP::outputNOPCommand(){
 	// cout << "\t\t[NOP]: Attempting to Print Object code to .obj...\n";
 
-	(*currentFileManager).writeStringToObj(NOP_OP_CODE);
-	(*currentFileManager).writeStringToObj("\n");
+	// (*currentFileManager).writeStringToObj(NOP_OP_CODE);
+	// (*currentFileManager).writeStringToObj("\n");
 	return;
 }
 

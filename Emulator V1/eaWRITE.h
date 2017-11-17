@@ -20,7 +20,6 @@
 #include <sstream> //std::stringstream str(" ")
 
 #include "SymbolTable.h"
-#include "FileManager.h"
 
 using std::cin;
 using std::cout;
@@ -63,8 +62,8 @@ public:
 		Public Manipulator Methods
 	============================================================================== */
 
-	// Connects local pointer to FileManager & SymbolTable with the parent's (compiler's) versions
-	void prepareAWRITE(FileManager *parentFileManager, SymbolTable *parentMemoryManager);
+	// Connects local pointer to SymbolTable with the parent's (compiler's) versions
+	void prepareAWRITE(SymbolTable *parentMemoryManager);
 
 	// calls the functions necessary to parse the line, sync the variables with the SymbolTable, and print the object code to the file while counting errors
 	// returns number of errors
@@ -82,7 +81,6 @@ private:
 	string globalCurrentLine;
 	unsigned int globalNumErrors;
 
-	FileManager *currentFileManager; // pointer to the Compiler's (parent's) FileManager
 	SymbolTable *currentMemoryManager; // pointer to the Compiler's (parent's) SymbolTable
 
 
@@ -101,11 +99,6 @@ private:
 
 	// gets the memory location for the array
 	void getMemoryLocation();
-
-	// tells the FileManager to print the object code for the command, which includes the command op code and the variable memoryLocations
-	void outputAWRITECommand();
-
-
 
 	/* ==============================================================================
 		Private Accessor Methods

@@ -26,11 +26,6 @@ eSTOP::~eSTOP(){
 	Public Manipulator Methods
 ============================================================================== */
 
-// Connects local pointer to FileManager & SymbolTable with the parent's (compiler's) versions
-void eSTOP::prepareSTOP(FileManager *parentFileManager){
-	currentFileManager = parentFileManager;
-}
-
 // calls the functions necessary to parse the line and print the object code to the file while counting errors
 // returns num errors
 int eSTOP::handleSTOP(string currentLine, int correspondingLineNumber){
@@ -42,7 +37,6 @@ int eSTOP::handleSTOP(string currentLine, int correspondingLineNumber){
 	checkSyntax();
 
 	if (globalNumErrors == 0){
-		outputSTOPCommand();
 		cout << "\t\t[STOP]: Successfully completed STOP command\n";
 	}
 	else {
@@ -65,17 +59,6 @@ void eSTOP::checkSyntax(){
 	}
 	return;
 }
-
-// tells the FileManager to print the object code for the command, which includes the command op code
-void eSTOP::outputSTOPCommand(){
-	// cout << "\t\t[STOP]: Attempting to Print Object code to .obj...\n";
-
-	(*currentFileManager).writeStringToObj(STOP_OP_CODE);
-	(*currentFileManager).writeStringToObj("\n");
-	return;
-}
-
-
 
 /* ==============================================================================
 	Private Accessor Methods

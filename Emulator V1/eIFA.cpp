@@ -28,9 +28,8 @@ eIFA::~eIFA(){
 	Public Manipulator Methods
 ============================================================================== */
 
-// Connects local pointer to FileManager, SymbolTable, and LineLabelTable with the parent's (compiler's) versions
-void eIFA::prepareIFA(FileManager *parentFileManager, SymbolTable *parentMemoryManager, LineLabelTable *parentLineManager){
-	currentFileManager = parentFileManager;
+// Connects local pointer to SymbolTable and LineLabelTable with the parent's (compiler's) versions
+void eIFA::prepareIFA(SymbolTable *parentMemoryManager, LineLabelTable *parentLineManager){
 	currentMemoryManager = parentMemoryManager;
 	currentLineManager = parentLineManager;
 }
@@ -373,20 +372,20 @@ void eIFA::outputIFACommand(){
 	unsigned int size;
 	// cout << "\t\t[IFA]: Attempting to Print Object code to .obj...\n";
 
-	(*currentFileManager).writeStringToObj(IFA_OP_CODE);
-	(*currentFileManager).writeStringToObj(" ");
+	// (*currentFileManager).writeStringToObj(IFA_OP_CODE);
+	// (*currentFileManager).writeStringToObj(" ");
 
-	(*currentFileManager).writeNumToObj(conditionVariable.memoryLocation);
-	(*currentFileManager).writeStringToObj(" ");
+	// (*currentFileManager).writeNumToObj(conditionVariable.memoryLocation);
+	// (*currentFileManager).writeStringToObj(" ");
 
-	(*currentFileManager).writeNumToObj(LineLabel1.memoryLocation);
-	(*currentFileManager).writeStringToObj(" ");
+	// (*currentFileManager).writeNumToObj(LineLabel1.memoryLocation);
+	// (*currentFileManager).writeStringToObj(" ");
 
-	(*currentFileManager).writeNumToObj(LineLabel2.memoryLocation);
-	(*currentFileManager).writeStringToObj(" ");
+	// (*currentFileManager).writeNumToObj(LineLabel2.memoryLocation);
+	// (*currentFileManager).writeStringToObj(" ");
 
-	(*currentFileManager).writeNumToObj(LineLabel3.memoryLocation);
-	(*currentFileManager).writeStringToObj("\n");
+	// (*currentFileManager).writeNumToObj(LineLabel3.memoryLocation);
+	// (*currentFileManager).writeStringToObj("\n");
 
 	return;
 }

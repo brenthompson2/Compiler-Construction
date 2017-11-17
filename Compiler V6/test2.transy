@@ -9,7 +9,7 @@ c* ======= Compiler V2 ========
 c* ============================
 
 c* ======= READ COMMAND =======
-// read apple
+read apple
 // read 									// missing variable name
 // read apple,								// Extra Comma
 // read apple, banana
@@ -152,7 +152,7 @@ c* ======= Compiler V5 ========
 c* ============================
 
 c* ======= lREAD COMMAND =======
-// lread $variableName
+lread $variableName
 // lread $variableName							// Duplicate variable
 // lread 									// missing variable name
 // lread $apple,							// Extra Characters after first Var
@@ -240,6 +240,6 @@ C* Assignment Errors:
 // brown = tan[red * green
 // black = (cyan + 4 * 5
 // magenta = teal[]
-yellow / indigo = rainbow
-green1 = pink = purple
-gold =
+// yellow / indigo = rainbow
+// green1 = pink = purple
+// gold =

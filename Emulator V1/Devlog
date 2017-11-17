@@ -14,6 +14,137 @@ Brendan Thompson
 11/13/17
 
 I) Summary of Work:
+	- Implemented Program line Table
+	- Implemented Executor & ExecutorDriver
+	- Implemented EFileManager
+	- Successfully Loaded Program, Core, & Literals into their appropriate data structures
+
+II) Still Need to Implement:
+	- Handle Each Command
+
+III) Thoughts:
+	- Each command has a parser function and they are all super similar
+		- Could possibly abstract them away into less function
+		- aread & awrite = identical
+		- read & write = identical
+		**** tIF has most of them if I ever want to abstract away the functions into a ParserObject
+	- What was the limit to the length of a variable name supposed to be?
+		- 128 characters
+	- Is there a built in way of doing exception handling other than creating bool functions and testing them upon return
+		- bools force more pointers when unable to give actual return values
+		- try {} catch
+	- FileManger write<TYPE>ToObj() functions should probably become a template function (or at least overloaded)
+	- Symbol Table can't get sorted or it would throw off the sync between the .obj file and the variable's memory location
+		- or would it be possible since I am using a struct that has "memoryLocation" as a field.
+			- I could still sort the Data Structure alphabetically by VariableName and not mess with the memoryLocations
+		- The Executor would rather have them in order by memory location
+			- The executor doesn't need variable names at all
+
+IV) Status:
+	- Executor Driver:
+		- creates an instance of Executor, tells it to prepare for execution, tells it to execute, and shutdowns the Executor
+		- takes in flags and a fileName as a parameter
+	- Executor:
+		- creates an instance of EFileManager, SymbolTable, LiteralTable, and ProgramLineTable
+		- gets one line at a time and manages commands with command handling objects
+	- EFileManager:
+		- opens .obj, .literal, and .core files
+		- syncs objInputFile with ParentProgramManager
+		- syncs literalInputFile with ParentLiteralManager
+		- syncs coreInputFile with ParentMemoryManager
+	- SymbolTable:
+		- manages IDs (variables or Constants) and their associated values and virtual memory locations
+		- sets all initial values to 0.123456789
+		- coreMemoryArray[1000] = (bool) failedCompilation; (0 = success, 1 = failed)
+		- calls on the FileManager to output .core file
+		- loads coreMemory from .core file
+	- LiteralTable:
+		- manages literal phrases and their associated virtual memory locations
+		- calls on the FileManager to output .literal file
+	- ProgramLineTable
+		- loads every line from .obj file
+	- ExpressionFixConverter
+		- infix to postfix converter
+		- uses ExpressionConvertingMatrix
+		- Max IDs & Operators per assignment statement = MAX_NUM_INPUT_VALUES(40)
+	- ExpressionConvertingMatrix
+		- Matrix relating Input items and TopSTWO items with action Tokens
+
+	- eCommands Not Yet Implemented:
+		1) READ:
+			- handles read command, tells parent FileManager to write op code to .obj, and tells MemoryManager to manage variables
+		2) WRITE:
+			- handles write command, tells parent FileManager to write op code to .obj, and tells MemoryManager to manage variables
+		3) STOP:
+			- handles stop command, tells parent FileManager to write op code to .obj
+		4) DIM:
+			- handles write command, tells parent FileManager to write op code to .obj, and tells MemoryManager to manage variables
+			- Can't DIM an array with the same name
+			- All DIM statements must be at the top of the file
+		5) aREAD:
+			- handles aREAD command, tells parent FileManager to write op code to .obj, and tells MemoryManager to manage variables
+			- arrays must have already been declared by a dim command
+		6) aWRITE:
+			- handles aWRITE command, tells parent FileManager to write op code to .obj, and tells MemoryManager to manage variables
+			- arrays must have already been declared by a dim command
+		7) GOTO:
+			- handles GOTO command, tells parent FileManager to write op code to .obj, and gets Line Label Location from LineLabelTable
+		8) LOOP:
+			- handles LOOP command, tells parent FileManager to write op code to .obj, and tells MemoryManager to manage variables
+		9) LOOPEND:
+			- handles LOOPEND command, tells parent FileManager to write op code to .obj
+		10) IFA:
+			- handles IFA command, tells parent FileManager to write op code to .obj, tells MemoryManager to manage variables, and gets Line Label Location from LineLabelTable
+		11) NOP:
+			- handles NOP command, tells parent FileManager to write op code to .obj
+		12) LISTO:
+			- handles LISTO command, tells parent FileManager to write op code to .obj
+		13) lREAD:
+			- handles lREAD command, tells parent FileManager to write op code to .obj, tells MemoryManager to manage variables, and tells LiteralTable to manage literals
+		14) lWRITE:
+			- handles lWRITE command, tells parent FileManager to write op code to .obj and tells LiteralTable to manage literals
+		15) IF:
+			- (<  : -1)	 (<= : -2)  (=  : -3)  (>  : -4)  (>= : -5)  (!  : -6)
+			- handles IF command, tells parent FileManager to write op code to .obj, tells MemoryManager to manage variables, and gets Line Label Location from LineLabelTable
+		16) CLS
+			- handles CLS command, tells parent FileManager to write op code to .obj
+		17) CDUMP:
+			- handles CDUMP command, tells parent FileManager to write op code to .obj and tells MemoryManager to manage variables
+		18) SUBP:
+			- (sin : -10)  (cos : -11)  (exp : -12)  (abs : -13)  (alg : -14)  (aln : -15)  (log : -16)  (sqr : -17)
+			- handles SUBP command, tells parent FileManager to write op code to .obj and tells MemoryManager to manage variables
+		19) ASSIGNMENT:
+			- (= : -1)  ([ : -2)  (^ : -3)  (* : -4)  (/ : -5)  (+ : -6)  (- : -7)
+			- handles ASSIGNMENT command, tells parent FileManager to write op code to .obj and tells MemoryManager to manage IDs
+			- MAX_NUM_INPUT_VALUES = 40
+				- from ExpressionFixConverter
+
+V) Log Of Activity:
+
+- Implemented ProgramLineTable
+	- Replaced LineLabelTable
+	- Removed LineLabelTable from jumpy commands
+
+- Turned Compiler code into Executor
+	- Ready to Handle Commands
+	- Will need to keep an eye on incrementing the programCounter
+
+- Turned FileManager into EFileManager
+	- Changed or Erased Every Function
+	- Loads Files into their ADTs
+		- ProgramLineManager = .obj
+		- MemoryManager = .core
+		- LiteralManager = .literal
+	- Removed FileManager from every command
+
+- Successfully Loaded Program, Core, & Literals into their appropriate data structures
+
+=========================================================
+=========================================================
+
+11/13/17
+
+I) Summary of Work:
 	- Started Executor Project
 
 II) Still Need to Implement:
@@ -35,6 +166,7 @@ III) Thoughts:
 		-  I have to look into that more
 			- I could still sort the Data Structure alphabetically by VariableName and not mess with the memoryLocations
 		- The Executor would rather have them in order by memory location
+
 
 IV) Status:
 	- Compiler Driver:
@@ -131,7 +263,7 @@ V) Log Of Activity:
 	- Turned Compiler into Executor
 	- Turned CompilerDriver into ExecutorDriver
 	- Makefile
-		- changes soooo many t to e for the commands
+	- Changed soooo many t to e for the commands
 
 - Will need a ProgramLineTable
 	- Stores every line of .obj in a data structure

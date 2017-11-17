@@ -19,7 +19,6 @@
 #include <string.h> // strcpy & strcat
 
 #include "SymbolTable.h"
-#include "FileManager.h"
 
 using std::cin;
 using std::cout;
@@ -58,8 +57,8 @@ public:
 		Public Manipulator Methods
 	============================================================================== */
 
-	// Connects local pointer to FileManager & SymbolTable with the parent's (compiler's) versions
-	void prepareWRITE(FileManager *parentFileManager, SymbolTable *parentMemoryManager);
+	// Connects local pointer to SymbolTable with the parent's (compiler's) versions
+	void prepareWRITE(SymbolTable *parentMemoryManager);
 
 	// calls the functions necessary to parse the line, sync the variables with the SymbolTable, and print the object code to the file while counting errors
 	// returns number of errors
@@ -75,7 +74,6 @@ private:
 	string globalCurrentLine;
 	unsigned int globalNumErrors;
 
-	FileManager *currentFileManager; // pointer to the Compiler's (parent's) FileManager
 	SymbolTable *currentMemoryManager; // pointer to the Compiler's (parent's) SymbolTable
 
 
@@ -95,9 +93,6 @@ private:
 
 	// iterates through the variableArray and asks the memoryManager to conditionally add them to the symbol table
 	void syncVariableArrayToSymbolTable();
-
-	// tells the FileManager to print the object code for the command, which includes the command op code and the variable memoryLocations
-	void outputWRITECommand();
 
 
 

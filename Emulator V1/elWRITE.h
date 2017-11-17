@@ -19,7 +19,6 @@
 #include <string.h> // strcpy & strcat
 
 #include "LiteralTable.h"
-#include "FileManager.h"
 
 using std::cin;
 using std::cout;
@@ -58,8 +57,8 @@ public:
 		Public Manipulator Methods
 	============================================================================== */
 
-	// Connects local pointer to FileManager & LiteralTable with the parent's (compiler's) versions
-	void prepareLWRITE(FileManager *parentFileManager, LiteralTable *parentLiteralManager);
+	// Connects local pointer to LiteralTable with the parent's (compiler's) versions
+	void prepareLWRITE(LiteralTable *parentLiteralManager);
 
 	// calls the functions necessary to parse the line, sync the literal with the LiteralTable, and print the object code to the file while counting errors
 	// returns number of errors
@@ -74,7 +73,6 @@ private:
 	string globalCurrentLine;
 	int globalNumErrors;
 
-	FileManager *currentFileManager; // pointer to the Compiler's (parent's) FileManager
 	LiteralTable *currentliteralManager; // pointer to the Compiler's (parent's) LiteralTable
 
 

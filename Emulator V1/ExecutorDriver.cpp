@@ -58,10 +58,10 @@ int main (int argc, char**argv){
 		exit(1);
 	}
 
-	cout << "\n\n[Driver]: Compiling...\n";
-	mainExecutor.execute();
+	// cout << "\n\n[Driver]: Executing...\n";
+	// mainExecutor.execute();
 
-	cout << "\n\n[Driver]: Finished Execution\n";
+	// cout << "\n\n[Driver]: Finished Execution\n";
 
 	return 0;
 }
@@ -114,7 +114,7 @@ bool parseArguments(int numArguments, char* *arrayOfArgs, char *arrayOfFlags, st
 	}
 
 	if (!gotFilename){
-		(*fileName) = "test1.transy";
+		(*fileName) = "test1.obj";
 	}
 
 	cout << "[Driver]: Got Filename: " << (*fileName) << endl;

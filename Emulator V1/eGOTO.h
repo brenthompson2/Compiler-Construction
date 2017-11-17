@@ -21,7 +21,6 @@
 #include <string.h> // strcpy & strcat
 
 #include "LineLabelTable.h"
-#include "FileManager.h"
 
 using std::cin;
 using std::cout;
@@ -60,8 +59,8 @@ public:
 		Public Manipulator Methods
 	============================================================================== */
 
-	// Connects local pointer to FileManager & LineLabelTable with the parent's (compiler's) versions
-	void prepareGOTO(FileManager *parentFileManager, LineLabelTable *parentLineManager);
+	// Connects local pointer to LineLabelTable with the parent's (compiler's) versions
+	void prepareGOTO(LineLabelTable *parentLineManager);
 
 	// calls the functions necessary to parse the line, sync the variables with the SymbolTable, and print the object code to the file while counting errors
 	// returns number of errors
@@ -77,7 +76,6 @@ private:
 	int globalLineLabelLineNumber;
 	int globalNumErrors;
 
-	FileManager *currentFileManager; // pointer to the Compiler's (parent's) FileManager
 	LineLabelTable *currentLineManager; // pointer to the Compiler's (parent's) SymbolTable
 
 	/* ==============================================================================
