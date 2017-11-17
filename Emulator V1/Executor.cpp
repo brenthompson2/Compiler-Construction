@@ -45,7 +45,7 @@ bool BREN_Executor::prepareForExecution(string fileToExecute, char *arrayOfFlags
 	successfullyPrepared = globalFileManager.prepareForExecution(fileToExecute, &globalProgramManager, &globalMemoryManager, &globalLiteralManager);
 
 	// Print Program, Core, & Literal Tables
-	globalProgramManager.printProgramLineTable();
+	// globalProgramManager.printProgramLineTable();
 	// globalMemoryManager.printCoreMemory();
 	// globalLiteralManager.printLiteralTable();
 
@@ -54,17 +54,16 @@ bool BREN_Executor::prepareForExecution(string fileToExecute, char *arrayOfFlags
 
 // Executes the .obj file by getting a line from globalProgramManager and calling handleCommand()
 void BREN_Executor::execute(){
-	string currentLine;
+	ProgramLineObject *currentProgramLine;
 	bool continueCompiling = true;
 	int linesRunCount = 0;
 	int programCounter = 0;
 
 	while (continueCompiling){
-		currentLine = globalProgramManager.getNextLine(programCounter);
-		if (currentLine != END_OF_PROGRAM){
-			handleCommand(currentLine, &programCounter);
+		currentProgramLine = globalProgramManager.getCopyOfNextProgramObject(programCounter);
+		if ((*currentProgramLine).numElementsInLine != NOT_VALID_PROGRAM){
+			handleCommand((*currentProgramLine), &programCounter);
 			linesRunCount++;
-			programCounter++;
 		}
 		else {
 			continueCompiling = false;
@@ -87,11 +86,8 @@ void BREN_Executor::execute(){
 ============================================================================== */
 
 // tells the appropriate object to handle the command in the line
-void BREN_Executor::handleCommand(string currentLine, int *currentProgramCounter){
-	char currentCharacter = currentLine[0];
-	bool caseFound = false;
-
-	int currentOpCode = globalProgramManager.getOpCode(*currentProgramCounter);
+void BREN_Executor::handleCommand(ProgramLineObject currentLineObject, int *currentProgramCounter){
+	int currentOpCode = currentLineObject.opCode;
 
 	switch (currentOpCode){
 	// 	case DIM_OP_CODE: // 0
@@ -100,7 +96,8 @@ void BREN_Executor::handleCommand(string currentLine, int *currentProgramCounter
 	// 		break;
 		case READ_OP_CODE: // 1
 			cout << "\t[Executor]: Found READ Command\n";
-			// mainREADHandler.handleREAD(currentLine, *currentProgramCounter);
+			mainREADHandler.handleREAD(&currentLineObject, (*currentProgramCounter));
+			(*currentProgramCounter)++;
 			break;
 	// 	case WRITE_OP_CODE: // 2
 	// 		// cout << "\t[Executor]: Found WRITE Command\n";
@@ -160,7 +157,8 @@ void BREN_Executor::handleCommand(string currentLine, int *currentProgramCounter
 	// 		break;
 		case LREAD_OP_CODE: // 16
 			cout << "\t[Executor]: Found LREAD Command\n";
-			// mainLREADHandler.handleLREAD(currentLine, *currentProgramCounter);
+			// mainLREADHandler.handleLREAD(currentLineObject, *currentProgramCounter);
+			(*currentProgramCounter)++;
 			break;
 	// 	case LWRITE_OP_CODE: // 17
 	// 		// cout << "\t[Executor]: Found LWRITE Command\n";
@@ -179,15 +177,16 @@ void BREN_Executor::handleCommand(string currentLine, int *currentProgramCounter
 	// 		mainASSIGNMENTHandler.handleASSIGNMENT(currentLine, *currentProgramCounter);
 	// 		break;
 		default:
-			cout << "\t[Executor]: Error: Found Invalid Op Code \"" << currentOpCode << "\"\n";
+			cout << "\t[Executor]: Error: Invalid Op Code \"" << currentOpCode << "\"\n";
 			globalNumErrors++;
+			(*currentProgramCounter)++;
 			break;
 	}
 }
 
 // instantiates objects for handling commands by passing the FileManager, MemoryManager, SymbolTable, LineLabelTable, and/or LiteralTable by reference
 void BREN_Executor::instantiateCommandObjects(){
-	// mainREADHandler.prepareREAD(&globalFileManager, &globalMemoryManager);
+	mainREADHandler.prepareREAD(&globalMemoryManager);
 	// mainWRITEHandler.prepareWRITE(&globalFileManager, &globalMemoryManager);
 	// mainSTOPHandler.prepareSTOP(&globalFileManager);
 

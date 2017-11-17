@@ -121,7 +121,7 @@ private:
 	============================================================================== */
 
 	// tells the appropriate object to handle the command in the line
-	void handleCommand(string currentLine, int *currentProgramCounter);
+	void handleCommand(ProgramLineObject currentLineObject, int *currentProgramCounter);
 
 	// instantiates objects for handling commands by passing the FileManager, MemoryManager, SymbolTable, LineLabelTable, and/or LiteralTable by reference
 	void instantiateCommandObjects();

@@ -1,17 +1,17 @@
 # Brendan Thompson
-# 11/13/17
+# 11/16/17
 # Makefile for Executor V1
 
-# "make main" = Compile and Link
-# "make clean" = removes all created files (Executor, *.o)
-# "./Executor <fileName.transy>" = Execute the fileName
+# "make" = Compile and Link
+# "make clean" = removes all created files (Execute, *.o)
+# "./Execute <fileName.transy>" = Execute the fileName
 
 #######################
 ### Main Components ###
 #######################
 
 main: ExecutorDriver.o Executor.o EFileManager.o SymbolTable.o LiteralTable.o ProgramLineTable.o ExpressionConvertingMatrix.o ExpressionFixConverter.o eREAD.o eWRITE.o eSTOP.o eDIM.o eaREAD.o eaWRITE.o eNOP.o eLISTO.o elREAD.o elWRITE.o eCLS.o eCDUMP.o eSUBP.o eASSIGNMENT.o
-	g++ -o Executor ExecutorDriver.o Executor.o EFileManager.o SymbolTable.o LiteralTable.o ProgramLineTable.o ExpressionConvertingMatrix.o ExpressionFixConverter.o eREAD.o eWRITE.o eSTOP.o eDIM.o eaREAD.o eaWRITE.o eNOP.o eLISTO.o elREAD.o elWRITE.o eCLS.o eCDUMP.o eSUBP.o eASSIGNMENT.o
+	g++ -o Execute ExecutorDriver.o Executor.o EFileManager.o SymbolTable.o LiteralTable.o ProgramLineTable.o ExpressionConvertingMatrix.o ExpressionFixConverter.o eREAD.o eWRITE.o eSTOP.o eDIM.o eaREAD.o eaWRITE.o eNOP.o eLISTO.o elREAD.o elWRITE.o eCLS.o eCDUMP.o eSUBP.o eASSIGNMENT.o
 
 ExecutorDriver.o: ExecutorDriver.cpp Executor.o
 	g++ -c ExecutorDriver.cpp
@@ -123,4 +123,4 @@ eASSIGNMENT.o: eASSIGNMENT.cpp eASSIGNMENT.h ExpressionFixConverter.o
 #####################
 
 clean:
-	rm Executor *.o
+	rm Execute *.o

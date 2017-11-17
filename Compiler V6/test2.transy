@@ -1,6 +1,6 @@
 c* Brendan Thompson
 c* test2.transy
-c* Updated 11/06/17
+c* Updated 11/16/17
 C* Test File for Compiler V5
 C* Tests each command and the known possible Syntax Errors
 
@@ -9,12 +9,12 @@ c* ======= Compiler V2 ========
 c* ============================
 
 c* ======= READ COMMAND =======
-read apple
+// read apple
 // read 									// missing variable name
 // read apple,								// Extra Comma
 // read apple, banana
 // read apple, banana,						// Extra Comma
-// read apple, banana, carrot
+read apple, banana, carrot
 // read apple, banana, carrot,				// Extra Comma
 // read one, two, three, four, five, six, seven, eight			// Too Many Variables
 // read _failure  							// variable names can't start with _

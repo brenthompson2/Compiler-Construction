@@ -53,9 +53,9 @@ using std::string;
 ============================================================================== */
 
 #define MAX_NUM_LINES 1000
+#define INDEX_NOT_VALID_PROGRAM (MAX_NUM_LINES + 1)
 #define MAX_NUM_PARAMETERS 40
-
-const string END_OF_PROGRAM = "@@";
+#define NOT_VALID_PROGRAM -1
 
 /* ==============================================================================
 	Type Definitions
@@ -93,8 +93,11 @@ public:
 	// Turns the currentLine into a ProgramLineObject
 	void tokenizeLine(string currentLine, ProgramLineObject *currentProgramLine);
 
-	// Returns the next line for execution
-	string getNextLine(int lineToGet);
+	// Returns a pointer to a copy of the ProgramLineObject for the next line indexed at nextProgramCounter
+	ProgramLineObject* getCopyOfNextProgramObject(int nextProgramCounter);
+
+	// Returns a pointer to a copy of the programObjectToCopy
+	ProgramLineObject* getCopyOfProgramObject(ProgramLineObject programObjectToCopy);
 
 	// returns the op code for the line at objLineNumber
 	int getOpCode(int objLineNumber);
@@ -107,7 +110,7 @@ private:
 	/* ==============================================================================
 		Private Members
 	============================================================================== */
-	ProgramLineObject programLineArray[MAX_NUM_LINES]; // array of code indexed in order of objLineNumber
+	ProgramLineObject programLineArray[MAX_NUM_LINES + 1]; // array of code indexed in order of objLineNumber
 	int globalNumLinesOfCode;
 
 	/* ==============================================================================

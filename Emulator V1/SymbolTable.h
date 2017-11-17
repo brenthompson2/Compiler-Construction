@@ -73,6 +73,9 @@ public:
 	// adds a new line of core to the SymbolTable
 	void loadLine(string newLine);
 
+	// Sets the RValue at memoryLocation to newValue
+	void setValue(int memoryLocation, string newValue);
+
 	// if the variable doesn't already exist, calls insertInto(), and regardless sets the memoryLocation for the currentMemoryObject
 	void manageMemoryTableObject(memoryTableObject *currentMemoryObject);
 
@@ -94,6 +97,9 @@ public:
 
 	// prints out the value for every value in CoreMemory
 	void printCoreMemory();
+
+	// prints out the Rvalue for every memoryLocation in CoreMemory from startIndex to endIndex
+	void printCoreMemory(int startIndex, int endIndex);
 
 	// iterates through the SymbolTable and prints the variableName & memoryLocation
 	void printSymbolTable();

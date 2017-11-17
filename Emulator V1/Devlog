@@ -20,7 +20,10 @@ I) Summary of Work:
 	- Successfully Loaded Program, Core, & Literals into their appropriate data structures
 
 II) Still Need to Implement:
-	- Handle Each Command
+	- Handle Every eCommand Except
+		- Implemented: READ,
+		- Executor V2 = Loop, Loopend, Goto, ifa, if
+		- Executor V3 = Assignment
 
 III) Thoughts:
 	- Each command has a parser function and they are all super similar
@@ -69,10 +72,11 @@ IV) Status:
 		- Max IDs & Operators per assignment statement = MAX_NUM_INPUT_VALUES(40)
 	- ExpressionConvertingMatrix
 		- Matrix relating Input items and TopSTWO items with action Tokens
+	- eCommands:
+		1) READ:
+			- Reads in strings & sets the associated RValues in MemoryManager
 
 	- eCommands Not Yet Implemented:
-		1) READ:
-			- handles read command, tells parent FileManager to write op code to .obj, and tells MemoryManager to manage variables
 		2) WRITE:
 			- handles write command, tells parent FileManager to write op code to .obj, and tells MemoryManager to manage variables
 		3) STOP:
@@ -138,6 +142,18 @@ V) Log Of Activity:
 	- Removed FileManager from every command
 
 - Successfully Loaded Program, Core, & Literals into their appropriate data structures
+
+- Implemented eREAD
+	- Moved Tokenizing to ProgramLineTable::loadLine()
+		- table of ProgramLineObjects
+			- lineOfCodeArray[MAX_NUM_PARAMETERS]
+			- numElementsInLine
+			- opCode
+	- nothing like tREAD
+
+- Implemented CoreMemory
+	- Currently Part of Symbol Table
+		- Doesn't use any Symbol Table functions
 
 =========================================================
 =========================================================

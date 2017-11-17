@@ -50,6 +50,15 @@ void SymbolTable::loadLine(string newLine){
 	return;
 }
 
+// Sets the RValue at memoryLocation to newValue
+void SymbolTable::setValue(int memoryLocation, string newValue){
+	if ((memoryLocation >= 0) && (memoryLocation < MAX_NUM_VARIABLES)){
+		globalCoreMemoryArray[memoryLocation] = newValue;
+		// cout << "\t\t[Core Memory]: Set RValue of location " << memoryLocation << " to \""  << globalCoreMemoryArray[memoryLocation] << "\"\n";
+	}
+	return;
+}
+
 // if the variable doesn't already exist, calls insertInto(), and regardless returns the index for the currentMemoryObject
 void SymbolTable::manageMemoryTableObject(memoryTableObject *currentMemoryObject){
 	// cout << "\t\t\t[SymbolTable]: Managing Memory for " << (*currentMemoryObject).variableName <<endl;
@@ -119,6 +128,15 @@ void SymbolTable::printCoreMemory(){
 	cout << "\t\t\t[SymbolTable]: Symbol Table currently has " << globalSizeCoreMemory << " declared locations\n";
 	for (int i = 0; i < globalSizeCoreMemory; i++){
 		cout << "\t\t\t\t" << i << ": " << globalCoreMemoryArray[i] << endl;
+	}
+}
+
+// prints out the Rvalue for every memoryLocation in CoreMemory from startIndex to endIndex
+void SymbolTable::printCoreMemory(int startIndex, int endIndex){
+	if ((startIndex < endIndex) && (startIndex >= 0) && (endIndex <= MAX_NUM_VARIABLES)){
+		for (int i = startIndex; i <= endIndex; i++){
+			cout << "\t\t\t\t" << i << ": " << globalCoreMemoryArray[i] << endl;
+		}
 	}
 }
 

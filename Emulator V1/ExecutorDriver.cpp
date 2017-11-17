@@ -3,7 +3,7 @@
 
 	File: ExecutorDriver.cpp
 	Author: Brendan Thompson
-	Updated: 11/13/17
+	Updated: 11/16/17
 
 	Description: Driver for Main Executor Object made for Transylvania University University Fall Term 2017 Compiler Construction class
 		- creates an instance of Executor, tells it to prepare for execution, tells it to execute, and shutdowns the Executor
@@ -58,11 +58,10 @@ int main (int argc, char**argv){
 		exit(1);
 	}
 
-	// cout << "\n\n[Driver]: Executing...\n";
-	// mainExecutor.execute();
+	cout << "\n\n[Driver]: Executing...\n";
+	mainExecutor.execute();
 
-	// cout << "\n\n[Driver]: Finished Execution\n";
-
+	cout << "\n\n[Driver]: Finished Execution\n";
 	return 0;
 }
 
