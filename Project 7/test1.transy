@@ -1,0 +1,13 @@
+c* Brendan Thompson
+c* test1.transy
+c* Updated 11/20/17
+C* Test File for Project 7 - Compiler & Executor
+C* Compiles Commands for the Executor
+
+c* ===============================
+c* ======= Read / Write ==========
+c* ===============================
+
+read apple, banana, carrot
+write apple, banana, carrot
+stop

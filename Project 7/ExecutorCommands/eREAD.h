@@ -16,8 +16,8 @@
 
 #include <iostream>	// Console IO
 
-#include "SymbolTable.h"
-#include "ProgramLineTable.h"
+#include "../SymbolTable.h"
+#include "../ProgramLineTable.h"
 
 using std::cin;
 using std::cout;

@@ -1,6 +1,6 @@
 /* ==============================================================================
 
-	File: eREAD.h
+	File: eWRITE.h
 	Author: Brendan Thompson
 	Updated: 11/20/17
 
@@ -16,8 +16,8 @@
 
 #include <iostream>	// Console IO
 
-#include "SymbolTable.h"
-#include "ProgramLineTable.h"
+#include "../SymbolTable.h"
+#include "../ProgramLineTable.h"
 
 using std::cin;
 using std::cout;
@@ -25,26 +25,26 @@ using std::endl;
 using std::string;
 
 /* ==============================================================================
-	eREAD Class Interface
+	eWRITE Class Interface
 ============================================================================== */
 
-class eREAD {
+class eWRITE {
 public:
 	/* ==============================================================================
 	Constructor & Destructor
 	============================================================================== */
-	eREAD();
-	~eREAD();
+	eWRITE();
+	~eWRITE();
 
-	// Connects local pointer to ParentMemoryManager
-	void prepareREAD(SymbolTable *currentMemoryManager);
+	// Connects global pointer to ParentMemoryManager
+	void prepareWRITE(SymbolTable *currentMemoryManager);
 
 	/* ==============================================================================
 		Public Manipulator Methods
 	============================================================================== */
 
-	// calls the functions necessary to execute the read command
-	void handleREAD(ProgramLineObject *currentLine, int correspondingLineNumber);
+	// calls the functions necessary to execute the command
+	void handleWRITE(ProgramLineObject *currentLine, int correspondingLineNumber);
 
 private:
 
@@ -60,5 +60,5 @@ private:
 	============================================================================== */
 
 	// Executes the Command
-	void executeREADCommand();
+	void executeWRITECommand();
 };

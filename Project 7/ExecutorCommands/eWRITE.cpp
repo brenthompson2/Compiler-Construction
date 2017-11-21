@@ -1,6 +1,6 @@
 /* ==============================================================================
 
-	File: eREAD.cpp
+	File: eWRITE.cpp
 	Author: Brendan Thompson
 	Updated: 11/20/17
 
@@ -8,22 +8,22 @@
 
 ============================================================================== */
 
-#include "eREAD.h"
+#include "eWRITE.h"
 
 /* ==============================================================================
 	Constructor & Destructor
 ============================================================================== */
 
-eREAD::eREAD(){
+eWRITE::eWRITE(){
 	return;
 }
 
-eREAD::~eREAD(){
+eWRITE::~eWRITE(){
 	return;
 }
 
-// Connects global pointer to ParentMemoryManager
-void eREAD::prepareREAD(SymbolTable *currentMemoryManager){
+// Connects local pointer to ParentMemoryManager
+void eWRITE::prepareWRITE(SymbolTable *currentMemoryManager){
 	ParentMemoryManager = currentMemoryManager;
 }
 
@@ -31,12 +31,12 @@ void eREAD::prepareREAD(SymbolTable *currentMemoryManager){
 	Public Manipulator Methods
 ============================================================================== */
 
-// calls the functions necessary to execute the read command
-void eREAD::handleREAD(ProgramLineObject *currentLine, int correspondingLineNumber){
+// calls the functions necessary to execute the command
+void eWRITE::handleWRITE(ProgramLineObject *currentLine, int correspondingLineNumber){
 	globalCurrentLine = currentLine;
-	cout << "\t\t[READ]: Executing Line " << correspondingLineNumber << "...\n";
+	cout << "\t\t[eWRITE]: Executing Line " << correspondingLineNumber << "...\n";
 
-	executeREADCommand();
+	executeWRITECommand();
 
 	return;
 }
@@ -46,17 +46,17 @@ void eREAD::handleREAD(ProgramLineObject *currentLine, int correspondingLineNumb
 ============================================================================== */
 
 // executes the command
-void eREAD::executeREADCommand(){
+void eWRITE::executeWRITECommand(){
 	int currentMemoryLocation;
 	string tempValue;
-	// cout << "\t\t[eREAD]: Attempting to Execute Object Code...\n";
+	cout << "\t\t[eWRITE]: Attempting to Execute Object Code...\n";
 
 	for (int i = 1; i < (*globalCurrentLine).numElementsInLine; i++){
-		cin >> tempValue;
 		currentMemoryLocation = (*globalCurrentLine).lineOfCodeArray[i];
-		(*ParentMemoryManager).setValue(currentMemoryLocation, tempValue);
-		// cout << "\t\t[eREAD]: Saved \"" << tempValue << "\" to location " << currentMemoryLocation << endl;
+		tempValue = (*ParentMemoryManager).getValue(currentMemoryLocation);
+		cout << tempValue << " ";
 	}
+	cout << endl;
 
 	return;
 }

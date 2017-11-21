@@ -63,7 +63,7 @@ void SymbolTable::setValue(int memoryLocation, string newValue){
 string SymbolTable::getValue(int memoryLocation){
 	string currentValue;
 	if ((memoryLocation >= 0) && (memoryLocation < MAX_NUM_VARIABLES)){
-		strcpy(currentValue, globalCoreMemoryArray[memoryLocation]);
+		currentValue = globalCoreMemoryArray[memoryLocation];
 		// cout << "\t\t[Core Memory]: Set RValue of location " << memoryLocation << " to \""  << globalCoreMemoryArray[memoryLocation] << "\"\n";
 	}
 	else {
@@ -95,6 +95,11 @@ void SymbolTable::setCompilationResult(bool completedSuccessfully){
 	symbolTableArray[INDEX_COMPILATION_RESULT].memoryLocation = 1000;
 	symbolTableArray[INDEX_COMPILATION_RESULT].isArray = false;
 	symbolTableArray[INDEX_COMPILATION_RESULT].size = 1;
+}
+
+// sets the global currentFileManager to point to the Compiler's parentFileManager
+void SymbolTable::linkWithParentFileManager(FileManager *parentFileManager){
+	currentFileManager = parentFileManager;
 }
 
 /* ==============================================================================
@@ -167,6 +172,19 @@ void SymbolTable::printSymbolTable(){
 
 	cout << "\t\t\t\t" << INDEX_COMPILATION_RESULT << ":\t" << symbolTableArray[INDEX_COMPILATION_RESULT].variableName << ": " << symbolTableArray[INDEX_COMPILATION_RESULT].value << endl;
 
+	return;
+}
+
+// iterates through the SymbolTable and outputs the variableName & memoryLocation to .core file
+void SymbolTable::outputCoreFile(){
+	cout << "\t\t\t[SymbolTable]: Writing .core file...\n";
+	for (int i = 0; i < MAX_NUM_VARIABLES; i++){
+		// cout << "\t\t\t[SymbolTable]: Outputting data for " << symbolTableArray[i].variableName << endl;;
+		// (*currentFileManager).writeStringToCore(symbolTableArray[i].variableName);
+		// (*currentFileManager).writeStringToCore("\t");
+		(*currentFileManager).writeNumToCore(symbolTableArray[i].value);
+		(*currentFileManager).writeStringToCore("\n");
+	}
 	return;
 }
 

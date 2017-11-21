@@ -1,0 +1,245 @@
+c* Brendan Thompson
+c* test2.transy
+c* Updated 11/16/17
+C* Test File for Compiler V5
+C* Tests the Compiler for each command and the known possible Syntax Errors
+
+c* ============================
+c* ======= Compiler V2 ========
+c* ============================
+
+c* ======= READ COMMAND =======
+// read apple
+// read 									// missing variable name
+// read apple,								// Extra Comma
+// read apple, banana
+// read apple, banana,						// Extra Comma
+read apple, banana, carrot
+// read apple, banana, carrot,				// Extra Comma
+// read one, two, three, four, five, six, seven, eight			// Too Many Variables
+// read _failure  							// variable names can't start with _
+// read illegal#Char*  						// variable names can't have other random chars
+// read 2bad, soSad45, ShouldThisBeValid_  	// 2bad invalid variable name
+
+c* ======= WRITE COMMAND =======
+// write apple
+// write 									// missing variable name
+// write apple,								// Extra Comma
+// write apple, banana
+// write apple, banana,						// Extra Comma
+// write apple, banana, carrot
+// write apple, banana, carrot,				// Extra Comma
+// write one, two, three, four, five, six, seven, eight			// Too Many Variables
+// write _failure  							// variable names can't start with _
+// write illegal#Char*  						// variable names can't have other random chars
+// write 2bad, soSad45, ShouldThisBeValid_  	// 2bad invalid variable name
+
+c* ======= STOP COMMAND =======
+// stop
+// stop,				// characters after stop command
+// stop apple			// characters after stop command
+
+c* ============================
+c* ======= Compiler V3 ========
+c* ============================
+
+c* ======= DIM COMMAND =======
+// dim firstArray[10]
+// dim firstArray[10]						// Redeclared Array
+// dim 										// missing array names
+// dim secondArray[20], 					// extra comma
+// dim thirdArray[3], fourthArray[7]
+// dim fifthArray[3], sixthArray[7], 		// extra comma
+// dim fifthArray								// missing index & brackets
+// dim fifthArray[							// missing index & Unclosed Bracket
+// dim fifthArray[5							// Unclosed Bracket
+// dim fifthArray[]							// missing index
+
+c* ======= AREAD COMMAND =======
+// aread firstArray, 4, 8
+// aread firstArray, apple, banana
+// aread notYetExistantArray, 5, 20			// unable to use undeclared arrays
+// aread firstArray							// missing indexes
+// aread firstArray,						// has comma but missing indexes
+// aread firstArray, 5						// missing end index
+// aread firstArray, 5,						// has comma but missing end index
+// aread firstArray, 2, 15,					// extra comma
+// aread
+
+c* ======= AWRITE COMMAND =======
+// awrite firstArray, 0, 10
+// awrite firstArray, apple, banana
+// awrite notYetExistantArray, 5, 20		// unable to use undeclared arrays
+// awrite firstArray						// missing indexes
+// awrite firstArray,						// has comma but missing indexes
+// awrite firstArray, 5						// missing end index
+// awrite firstArray, 5,					// has comma but missing end index
+// awrite firstArray, 2, 15,				// extra comma
+// awrite
+
+
+c* ============================
+c* ======= Compiler V4 ========
+c* ============================
+
+c* ======= GOTO COMMAND =======
+// goto lineLabel1
+// goto _lineLabel2
+// goto 3rdLineLabel
+// goto _line-Label#4
+// goto undeclaredLineLabel			// undeclared Line Label
+// goto 								// Missing Line Label
+// goto lineLabel1,					// Line Label doesn't end Line
+// goto lineLabel1, _lineLabel2		// Line Label doesn't end Line
+
+c* ======= LOOP COMMAND =======
+// loop x = a, b, c
+// loop y = 0, 10, 2
+// loop   						// No Iterator, Indexes, or Increment Amount
+// loop z						// No Indexes, or Increment Amount
+// loop z = 					// No Indexes, or Increment Amount
+// loop z = 4					// No EndIndex, or Increment Amount
+// loop z = 4,					// No EndIndex, or Increment Amount
+// loop z = 4, 9				// No Increment Amount
+// loop z = 4, 9,				// No Increment Amount
+// loop z = 4, 9, 1,			// Extra Comma
+// loop z, 4, 9, 1				// Comma Instead of =
+
+c* ======= LOOPEND COMMAND =======
+// loop-end
+// loop-end
+// loop-end,				// characters after LOOPEND command
+// loop-end apple			// characters after LOOPEND command
+
+c* ======= IFA COMMAND =======
+// ifa(x) lineLabel1, _lineLabel2, 3rdLineLabel
+// ifa(y) lineLabel1, undeclaredLineLabel, 3rdLineLabel
+// ifa 												// No Condition or Line Labels
+// ifa(												// No Condition or Line Labels
+// ifa(z)											// No Line Labels
+// ifa(z) 											// No Line Labels
+// ifa(z) lineLabel1								// Missing Line Labels
+// ifa(z) lineLabel1,								// Missing Line Labels
+// ifa(z) lineLabel1, _lineLabel2					// Missing Line Labels
+// ifa(z) lineLabel1, _lineLabel2,					// Missing Line Labels
+// ifa(z) lineLabel1, _lineLabel2, 3rdLineLabel,	// Comma Instead of =
+
+c* ======= NOP COMMAND =======
+// nop
+// nop,					// characters after NOP command
+// nop apple			// characters after NOP command
+
+c* ======= LISTO COMMAND =======
+// listo
+// listo,				// characters after LISTO command
+// listo apple			// characters after LISTO command
+
+c* ======= LINE LABELS =======
+// lineLabel1:
+// lineLabel2: read peaches, cream
+// lineLabel3: stop
+// lineLabel1:								// Redeclared Line Label
+// _lineLabel2:
+// 3rdLineLabel:
+// _line-Label#4:						// bad?
+// stop:								// Line label with command name
+// commentedOutLineLabel1:				// testing labels with comments
+c* commentedOutLineLabel2:				// testing labels with comments
+C* commentedOutLineLabel3:				// testing labels with comments
+
+c* ============================
+c* ======= Compiler V5 ========
+c* ============================
+
+c* ======= lREAD COMMAND =======
+lread $variableName
+// lread $variableName							// Duplicate variable
+// lread 									// missing variable name
+// lread $apple,							// Extra Characters after first Var
+// lread missingDollarSign					// Missing $
+// lread $apple, banana						// Extra Characters after first Var
+// lread $_failure  						// variable names can't start with _
+// lread $illegal#Char*  					// variable names can't have other random chars
+// lread $2bad							  	// 2bad invalid variable name
+
+c* ======= lWRITE COMMAND =======
+// lwrite "Hello World"
+// lwrite "Hello World"						// Duplicate Literal
+// lwrite $variableName
+// lwrite 									// Missing literal
+// lwrite missingDollarSign						// Missing $
+// lwrite missingLeftQuote"					// Missing first quote
+// lwrite "missingRightQuote					// Missing end quote
+// lwrite "firstLit", "secondLit"			// Extra Characters after first Var
+
+c* ======= IF COMMAND =======
+// if (1 < 2) then lineLabel1
+// if (1 <= 2) then lineLabel1
+// if (1 = 2) then lineLabel1
+// if (1 > 2) then lineLabel1
+// if (1 >= 2) then lineLabel1
+// if (1 != 2) then lineLabel1
+// if (apple = banana) then lineLabel1
+// if (3 = 4) then undeclaredLineLabel			// Undeclared Line Label
+// if 3 = 4 then lineLabel1				// Missing Parenthesis
+// if 3 = 4) then lineLabel1			// Missing Left Parenthesis
+// if (3 = 4 then lineLabel1			// Missing Right Parenthesis
+// if (3 = 4) 							// Missing then & lineLabel
+// if (3 = 4) then						// Missing lineLabel
+// if (3 = 4) lineLabel1				// Missing then
+
+c* ======= CLS COMMAND =======
+// cls
+// cls,				// characters after cls command
+// cls apple			// characters after cls command
+
+c* ======= CDUMP COMMAND =======
+// cdump 12, 25
+// cdump var1, var2
+// cdump 						// Missing both indexes
+// cdump 2						// missing comma and endIndex
+// cdump 3,					// missing endIndex
+// cdump 4, 5,					// extra comma
+
+c* ======= SUBP COMMAND =======
+// subp sin (varName, 0)
+// subp sin (varName, otherVar)
+// subp cos (var1Name, 1)
+// subp exp (var2Name, 2)
+// subp abs (var3Name, 3)
+// subp alg (var4Name, 4)
+// subp aln (var5Name, 5)
+// subp log (var6Name, 6)
+// subp sqr (var7Name, 7)
+// subp sqt (var7Name, 7)		// Invalid Operator
+// subp sqr (varName, 0),		// Extra Character
+// subp 						// Missing Parameters
+// subp cos 					// Missing VarName & ID
+// subp cos (					// Missing VarName & ID
+// subp cos (varName			// Missing Comma & ID
+// subp cos (varName,			// Missing ID
+// subp cos (varName, id 		// Missing )
+// subp cos (varName id) 		// Missing ,
+
+c* ============================
+c* ======= Compiler V6 ========
+c* ============================
+
+c* ======= ASSIGNMENT COMMAND =======
+// red0 = blue0 + orange0
+// red1 = blue1 - orange1
+// red2 = blue2 * orange2
+// red3 = blue3 / orange3
+// red4 = blue4 ^ orange4
+// red5 = blue5[3]
+// red6 = 1 + 2
+// red7 = (blue7 + orange7)
+// red8 = 12 ^ 5 / (blue8 + orange8) * 4
+// red9[0] = blue9
+C* Assignment Errors:
+// brown = tan[red * green
+// black = (cyan + 4 * 5
+// magenta = teal[]
+// yellow / indigo = rainbow
+// green1 = pink = purple
+// gold =

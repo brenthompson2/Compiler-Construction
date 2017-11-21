@@ -2,7 +2,7 @@
 
 	File: SymbolTable.cpp
 	Author: Brendan Thompson
-	Updated: 11/16/17
+	Updated: 11/20/17
 
 	Description: Interface for SymbolTable for Compiler object made for Transylvania University University Fall Term 2017 Compiler Construction class
 		- manages IDs (variables or Constants) and their associated values and virtual memory locations
@@ -17,6 +17,8 @@
 /* ==============================================================================
 	File Includes
 ============================================================================== */
+
+#include "FileManager.h"
 
 #include <iostream>	// Console IO
 #include <sstream> // used in convertToFloat()
@@ -70,10 +72,10 @@ public:
 	/* ==============================================================================
 		Public Manipulator Methods
 	============================================================================== */
-	// adds a new line of core to the SymbolTable
+	// loads the new line of core into the SymbolTable - For Executor
 	void loadLine(string newLine);
 
-	// Sets the RValue at memoryLocation to newValue
+	// Sets the RValue at memoryLocation to newValue - For Executor
 	void setValue(int memoryLocation, string newValue);
 
 	// if the variable doesn't already exist, calls insertInto(), and regardless sets the memoryLocation for the currentMemoryObject
@@ -81,6 +83,9 @@ public:
 
 	// sets coreMemory boolean regarding the result of compilation
 	void setCompilationResult(bool completedSuccessfully);
+
+	// sets the global currentFileManager to point to the Compiler's parentFileManager
+	void linkWithParentFileManager(FileManager *parentFileManager);
 
 	/* ==============================================================================
 		Public Accessor Methods
@@ -92,35 +97,40 @@ public:
 	// returns the memoryLocation for the variable
 	int lookup(string variableName);
 
-	// returns the value at the specified memoryLocation
+	// returns the value at the specified memoryLocation - For Executor
 	string getValue(int memoryLocation);
 
 	// returns the lookup table index for the variable
 	int getSymbolTableIndex(string variableNameToGet);
 
-	// prints out the value for every value in CoreMemory
+	// prints out the value for every value in CoreMemory - For Executor
 	void printCoreMemory();
 
-	// prints out the Rvalue for every memoryLocation in CoreMemory from startIndex to endIndex
+	// prints out the Rvalue for every memoryLocation in CoreMemory from startIndex to endIndex - For Executor
 	void printCoreMemory(int startIndex, int endIndex);
 
 	// iterates through the SymbolTable and prints the variableName & memoryLocation
 	void printSymbolTable();
 
+	// iterates through the SymbolTable and outputs the variableName & memoryLocation to .core file
+	void outputCoreFile();
+
 	// takes in currentString, sets the numberAsFloat, and returns if successful
 	bool convertToFloat(string currentString, float &numberAsFloat);
 
-private:
+protected:
 
 	/* ==============================================================================
 		Private Members
 	============================================================================== */
 
-	string globalCoreMemoryArray[MAX_NUM_VARIABLES];
-	int globalSizeCoreMemory;
+	string globalCoreMemoryArray[MAX_NUM_VARIABLES]; // - For Executor
+	int globalSizeCoreMemory; // - For Executor
 
 	memoryTableObject symbolTableArray[MAX_NUM_VARIABLES]; // SymbolTable implemented as array of memoryTableObjects
 	unsigned int numObjectsInArray;
+
+	FileManager *currentFileManager;
 
 	/* ==============================================================================
 		Private Methods

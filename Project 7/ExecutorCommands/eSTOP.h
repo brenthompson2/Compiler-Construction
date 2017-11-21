@@ -1,10 +1,10 @@
 /* ==============================================================================
 
-	File: eREAD.h
+	File: eSTOP.h
 	Author: Brendan Thompson
-	Updated: 11/20/17
+	Updated: 10/01/17
 
-	Description: Interface  READ handler for Executor object made for Transylvania University University Fall Term 2017 Compiler Construction class
+	Description: Interface for Functions for processing STOP command for Compiler object made for Transylvania University University Fall Term 2017 Compiler Construction class
 
 ============================================================================== */
 
@@ -15,50 +15,66 @@
 ============================================================================== */
 
 #include <iostream>	// Console IO
-
-#include "SymbolTable.h"
-#include "ProgramLineTable.h"
+#include <stdlib.h>	// Exit()
+#include <string.h> // strcpy & strcat
 
 using std::cin;
 using std::cout;
+using std::cerr;
 using std::endl;
 using std::string;
 
 /* ==============================================================================
-	eREAD Class Interface
+	Symbolic Constants
 ============================================================================== */
 
-class eREAD {
+#define INDEX_FIRST_CHAR_AFTER_STOP_COMMAND 4
+const string STOP_OP_CODE = "3";
+
+/* ==============================================================================
+	Type Definitions
+============================================================================== */
+
+/* ==============================================================================
+	eSTOP Class Interface
+============================================================================== */
+
+class eSTOP {
 public:
 	/* ==============================================================================
 	Constructor & Destructor
 	============================================================================== */
-	eREAD();
-	~eREAD();
-
-	// Connects local pointer to ParentMemoryManager
-	void prepareREAD(SymbolTable *currentMemoryManager);
+	eSTOP();
+	~eSTOP();
 
 	/* ==============================================================================
 		Public Manipulator Methods
 	============================================================================== */
 
-	// calls the functions necessary to execute the read command
-	void handleREAD(ProgramLineObject *currentLine, int correspondingLineNumber);
+	// calls the functions necessary to parse the line and print the object code to the file while counting errors
+	// returns num errors
+	int handleSTOP(string currentLine, int correspondingLineNumber);
 
 private:
 
 	/* ==============================================================================
 		Private Members
 	============================================================================== */
-	ProgramLineObject *globalCurrentLine;
+	string globalCurrentLine;
+	unsigned int globalNumErrors;
 
-	SymbolTable *ParentMemoryManager; // pointer to the Executor's (parent's) SymbolTable
 
 	/* ==============================================================================
 		Private Manipulator Methods
 	============================================================================== */
 
-	// Executes the Command
-	void executeREADCommand();
+	// checks to see if stop command is immediately followed by end of string character
+	void checkSyntax();
+
+
+
+
+	/* ==============================================================================
+		Private Accessor Methods
+	============================================================================== */
 };
