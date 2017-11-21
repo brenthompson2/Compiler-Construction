@@ -5,6 +5,7 @@
 	Updated: 10/12/17
 
 	Description: Interface for Functions for processing NOP command for Compiler object made for Transylvania University University Fall Term 2017 Compiler Construction class
+		- NOT BEING USED: EXECUTOR IS HANDLING THIS COMMAND
 
 ============================================================================== */
 

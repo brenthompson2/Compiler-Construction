@@ -516,7 +516,7 @@ bool FileManager::checkCurrentLine(string *currentLine) {
 
 		oldLineCursor++;
 		currentCharacter = (*currentLine)[oldLineCursor];
-		// cout << "\t\t\t[FILE MANAGER]: Checking Character: " << currentCharacter << endl;
+		// cout << "\t\t\t[FILE MANAGER]: Checking Character: \"" << currentCharacter << "\"\n";
 
 		// "//" comment starting
 		if (currentCharacter == '/'){
@@ -534,9 +534,11 @@ bool FileManager::checkCurrentLine(string *currentLine) {
 		// found "literal in quotes"
 		if (currentCharacter == '\"'){
 			if (!parsingLiteral) {
+				// cout << "\t\t\t[FILE MANAGER]: Started Parsing literal\n";
 				parsingLiteral = true;
 			}
 			else {
+				// cout << "\t\t\t[FILE MANAGER]: Finished Parsing literal\n";
 				parsingLiteral = false;
 			}
 		}

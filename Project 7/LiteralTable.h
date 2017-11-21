@@ -1,16 +1,13 @@
-/*
-  ==============================================================================
+/* ==============================================================================
 
 	File: LiteralTable.cpp
 	Author: Brendan Thompson
-	Updated: 11/05/17
+	Updated: 11/20/17
 
 	Description: Interface for LiteralTable for Compiler object made for Transylvania University University Fall Term 2017 Compiler Construction class
 		- manages literal phrases and their associated virtual memory locations
-		- calls on the FileManager to output .literal file
 
-  ==============================================================================
-*/
+============================================================================== */
 
 #pragma once
 
@@ -18,9 +15,10 @@
 	File Includes
 ============================================================================== */
 
+#include <iostream>	// Console IO
+
 #include "FileManager.h"
 
-#include <iostream>	// Console IO
 // using std::cin;
 using std::cout;
 using std::cerr;
@@ -61,15 +59,21 @@ public:
 	LiteralTable();
 	~LiteralTable();
 
+	// sets the global currentFileManager to point to the Compiler's parentFileManager
+	void linkWithParentFileManager(FileManager *parentFileManager);
+
 	/* ==============================================================================
 		Public Manipulator Methods
 	============================================================================== */
 
+	// adds a new line of core to the LiteralTable - For Executor
+	void loadLine(string newLine);
+
+	// Sets the RValue at memoryLocation to newValue - For Executor
+	void setValue(int memoryLocation, string newValue);
+
 	// if the Literal doesn't already exist, calls insertInto(), and regardless sets the memoryLocation for the currentLiteralObject
 	void manageLiteralObject(literalTableObject *currentLiteralObject);
-
-	// sets the global currentFileManager to point to the Compiler's parentFileManager
-	void linkWithParentFileManager(FileManager *parentFileManager);
 
 	/* ==============================================================================
 		Public Accessor Methods
@@ -81,6 +85,9 @@ public:
 	// returns true if the literal already exists in the LiteralTable
 	bool currentlyExists_Literal(string currentLiteralString);
 
+	// returns the rvalue pointed to by the memoryLocation - For Executor
+	string getValue(int memoryLocation);
+
 	// returns the memoryLocation for the variable
 	int lookup(string literalToFind);
 
@@ -88,7 +95,10 @@ public:
 	int lookup_Literal(string literalToFind);
 
 	// returns the lookup table index for the variable
-	int getLiteralTableIndex(string literalToFind);
+	int getLiteralTableIndex(string literalVariableToFind);
+
+	// iterates through the LiteralTable and prints the literalString & memoryLocation
+	void ePrintLiteralTable();
 
 	// iterates through the LiteralTable and prints the literalString & memoryLocation
 	void printLiteralTable();
@@ -101,6 +111,9 @@ protected:
 	/* ==============================================================================
 		Private Members
 	============================================================================== */
+	string globalLiteralArray[MAX_NUM_LITERALS]; // - For Executor
+	int globalSizeLiteralArray; // - For Executor
+
 	literalTableObject LiteralTableArray[MAX_NUM_LITERALS]; // LiteralTable implemented as array of memoryTableObjects
 	unsigned int numObjectsInArray;
 

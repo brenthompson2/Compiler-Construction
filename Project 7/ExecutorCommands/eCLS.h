@@ -6,6 +6,7 @@
 	Updated: 10/23/17
 
 	Description: Interface for Functions for processing eCLS command for Compiler object made for Transylvania University University Fall Term 2017 Compiler Construction class
+		- NOT BEING USED: EXECUTOR IS HANDLING THIS COMMAND
 
   ==============================================================================
 */

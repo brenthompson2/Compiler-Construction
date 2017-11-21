@@ -176,7 +176,7 @@ void EFileManager::loadLiterals(){
 
 	while (!(literalInputFile.eof())){
 		getline(literalInputFile, currentLine);
-		// (*ParentLiteralManager).loadLine(currentLine);
+		(*ParentLiteralManager).loadLine(currentLine);
 	}
 
 	return;

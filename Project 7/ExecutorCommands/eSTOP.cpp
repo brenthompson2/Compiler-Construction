@@ -5,6 +5,7 @@
 	Updated: 11/13/17
 
 	Description: Implementation of Functions for processing STOP command for Compiler object made for Transylvania University University Fall Term 2017 Compiler Construction class
+		- NOT BEING USED: EXECUTOR IS HANDLING THIS COMMAND
 
 ============================================================================== */
 

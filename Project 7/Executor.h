@@ -32,22 +32,22 @@ using std::string;
 
 #include "./ExecutorCommands/eREAD.h"
 #include "./ExecutorCommands/eWRITE.h"
-// #include "./ExecutorCommands/eSTOP.h"
-#include "./ExecutorCommands/eDIM.h"
-#include "./ExecutorCommands/eaREAD.h"
-#include "./ExecutorCommands/eaWRITE.h"
+// #include "./ExecutorCommands/eSTOP.h" // NOT USING COMMAND HANDLER
+#include "./ExecutorCommands/eDIM.h" // NOT YET IMPLEMENTED
+#include "./ExecutorCommands/eaREAD.h" // NOT YET IMPLEMENTED
+#include "./ExecutorCommands/eaWRITE.h" // NOT YET IMPLEMENTED
 // #include "./ExecutorCommands/eGOTO.h"
 // #include "./ExecutorCommands/eLOOP.h"
 // #include "./ExecutorCommands/eLOOPEND.h"
 // #include "./ExecutorCommands/eIFA.h"
-#include "./ExecutorCommands/eNOP.h"
-#include "./ExecutorCommands/eLISTO.h"
+// #include "./ExecutorCommands/eNOP.h" // NOT USING COMMAND HANDLER
+// #include "./ExecutorCommands/eLISTO.h" // NOT USING COMMAND HANDLER
 #include "./ExecutorCommands/elREAD.h"
 #include "./ExecutorCommands/elWRITE.h"
 // #include "./ExecutorCommands/eIF.h"
-#include "./ExecutorCommands/eCLS.h"
+// #include "./ExecutorCommands/eCLS.h" // NOT USING COMMAND HANDLER
 #include "./ExecutorCommands/eCDUMP.h"
-#include "./ExecutorCommands/eSUBP.h"
+#include "./ExecutorCommands/eSUBP.h" // NOT YET IMPLEMENTED
 // #include "./ExecutorCommands/eASSIGNMENT.h"
 
 /* ==============================================================================
@@ -99,7 +99,7 @@ private:
 	// objects for handling (executing) commands
 	eREAD mainREADHandler;
 	eWRITE mainWRITEHandler;
-	// eSTOP mainSTOPHandler;
+	// eSTOP mainSTOPHandler; // NOT USING COMMAND HANDLER
 	eDIM mainDIMHandler;
 	eaREAD mainAREADHandler;
 	eaWRITE mainAWRITEHandler;
@@ -107,12 +107,12 @@ private:
 	// eLOOP mainLOOPHandler;
 	// eLOOPEND mainLOOPENDHandler;
 	// eIFA mainIFAHandler;
-	eNOP mainNOPHandler;
-	eLISTO mainLISTOHandler;
+	// eNOP mainNOPHandler; // NOT USING COMMAND HANDLER
+	// eLISTO mainLISTOHandler; // NOT USING COMMAND HANDLER
 	elREAD mainLREADHandler;
 	elWRITE mainLWRITEHandler;
 	// eIF mainIFHandler;
-	eCLS mainCLSHandler;
+	// eCLS mainCLSHandler; // NOT USING COMMAND HANDLER
 	eCDUMP mainCDUMPHandler;
 	eSUBP mainSUBPHandler;
 	// eASSIGNMENT mainASSIGNMENTHandler;

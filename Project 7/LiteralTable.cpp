@@ -3,7 +3,7 @@
 
 	File: LiteralTable.cpp
 	Author: Brendan Thompson
-	Updated: 11/05/17
+	Updated: 11/20/17
 
 	Description: Implementation for LiteralTable for Compiler object made for Transylvania University University Fall Term 2017 Compiler Construction class
 		- manages literal phrases and their associated virtual memory locations
@@ -30,16 +30,42 @@ LiteralTable::~LiteralTable(){
 	return;
 }
 
+// sets the global currentFileManager to point to the Compiler's parentFileManager
+void LiteralTable::linkWithParentFileManager(FileManager *parentFileManager){
+	currentFileManager = parentFileManager;
+}
+
 /* ==============================================================================
 	Public Manipulator Methods
 ============================================================================== */
 
+// adds a new line of core to the LiteralTable
+void LiteralTable::loadLine(string newLine){
+	// cout << "\t\t\t[LiteralTable]: Adding " << newLine << " to Core Memory Manager\n";
+
+	if (newLine[0] != '\0'){
+		globalLiteralArray[globalSizeLiteralArray] = newLine;
+		globalSizeLiteralArray++;
+	}
+
+	return;
+}
+
+// Sets the RValue at memoryLocation to newValue - For Executor
+void LiteralTable::setValue(int memoryLocation, string newValue){
+	if ((memoryLocation >= 0) && (memoryLocation < MAX_NUM_LITERALS)){
+		globalLiteralArray[memoryLocation] = newValue;
+		// cout << "\t\t[LiteralTable]: Set RValue of location " << memoryLocation << " to \""  << globalLiteralArray[memoryLocation] << "\"\n";
+	}
+	return;
+}
+
 // if the Literal doesn't already exist, calls insertInto(), and regardless sets the memoryLocation for the currentLiteralObject
 void LiteralTable::manageLiteralObject(literalTableObject *currentLiteralObject){
-	// cout << "\t\t\t[LiteralTable]: Managing Memory for " << (*currentLiteralObject).literalString << endl;
 
 	// Managing a Literal String without a Variable Name
 	if ((*currentLiteralObject).variableName == UNNAMED_LITERAL){
+		cout << "\t\t\t[LiteralTable]: Managing Memory for " << (*currentLiteralObject).literalString << endl;
 		if (currentlyExists_Literal((*currentLiteralObject).literalString)){
 			(*currentLiteralObject).memoryLocation = lookup_Literal((*currentLiteralObject).literalString);
 		}
@@ -49,8 +75,10 @@ void LiteralTable::manageLiteralObject(literalTableObject *currentLiteralObject)
 	}
 	// Managing a Variable Name without a Literal String
 	else {
+		cout << "\t\t\t[LiteralTable]: Managing Memory for " << (*currentLiteralObject).variableName << endl;
 		if (currentlyExists_Variable((*currentLiteralObject).variableName)){
 			(*currentLiteralObject).memoryLocation = lookup((*currentLiteralObject).variableName);
+			cout << "yo\n";
 		}
 		else {
 			(*currentLiteralObject).memoryLocation = insertInto(currentLiteralObject);
@@ -58,11 +86,6 @@ void LiteralTable::manageLiteralObject(literalTableObject *currentLiteralObject)
 	}
 
 	return;
-}
-
-// sets the global currentFileManager to point to the Compiler's parentFileManager
-void LiteralTable::linkWithParentFileManager(FileManager *parentFileManager){
-	currentFileManager = parentFileManager;
 }
 
 /* ==============================================================================
@@ -100,6 +123,18 @@ bool LiteralTable::currentlyExists_Literal(string literalToFind){
 	return existsInTable;
 }
 
+// returns the rvalue pointed to by the memoryLocation
+string LiteralTable::getValue(int memoryLocation){
+	string currentValue;
+	if ((memoryLocation >= 0) && (memoryLocation < MAX_NUM_LITERALS)){
+		currentValue = globalLiteralArray[memoryLocation];
+	}
+	else {
+		currentValue = "failed to get literal: invalid memory location";
+	}
+	return currentValue;
+}
+
 // returns the memoryLocation for the currentVariableName
 int LiteralTable::lookup(string currentVariableName){
 	int index = getLiteralTableIndex(currentVariableName);
@@ -124,21 +159,32 @@ int LiteralTable::lookup_Literal(string literalToFind){
 }
 
 // returns the index for the literal
-int LiteralTable::getLiteralTableIndex(string literalToFind){
+int LiteralTable::getLiteralTableIndex(string literalVariableToFind){
 	int index = NOT_FOUND_IN_ARRAY;
  	string currentLiteral;
 
  	for (int i = 0; i < numObjectsInArray; i++){
  		currentLiteral = LiteralTableArray[i].variableName;
 
- 		// cout << "\t\t\t[LiteralTable]: Comparing table item " << i <<": " << currentLiteral << " to literalToFind " << literalToFind << endl;
-		if (literalToFind == literalToFind){
+ 		// cout << "\t\t\t[LiteralTable]: Comparing table item " << i <<": " << currentLiteral << " to " << literalVariableToFind << endl;
+		if (currentLiteral == literalVariableToFind){
 			index = i;
 		}
 	}
 
 	return index;
  }
+
+// iterates through the LiteralTable and prints the variableName & memoryLocation
+void LiteralTable::ePrintLiteralTable(){
+	cout << "\t\t\t[LiteralTable]: Literal Table currently has " << globalSizeLiteralArray << " literals\n";
+
+	for (int i = 0; i < globalSizeLiteralArray; i++){
+		cout << "\t\t\t\t" << i << ": " << globalLiteralArray[i] << endl;
+	}
+
+	return;
+}
 
 // iterates through the LiteralTable and prints the variableName & memoryLocation
 void LiteralTable::printLiteralTable(){

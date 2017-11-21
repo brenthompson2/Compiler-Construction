@@ -43,6 +43,7 @@ void ProgramLineTable::addLine(string newLine){
 		tokenizeLine(newLine, &programLineArray[globalNumLinesOfCode]);
 		// cout << "\t\t[ProgramLineTable]: Total Num Elements In Line \"" << (programLineArray[globalNumLinesOfCode]).numElementsInLine << "\"\n";
 		globalNumLinesOfCode++;
+		// printProgramLineTable();
 	}
 	return;
 }
@@ -130,7 +131,7 @@ ProgramLineObject* ProgramLineTable::getCopyOfProgramObject(ProgramLineObject pr
 }
 
 // returns the op code for the line at objLineNumber
-int ProgramLineTable::getOpCode(int objLineNumber){
+// int ProgramLineTable::getOpCode(int objLineNumber){
 	// string currentLine = programLineArray[objLineNumber];
 	// string currentOpCode = "";
 	// int opCodeAsInt;
@@ -144,7 +145,7 @@ int ProgramLineTable::getOpCode(int objLineNumber){
 	// str >> (opCodeAsInt);
 	// // cout << "\t\t[ProgramLineTable]: Found Op Code \"" << opCodeAsInt << "\"\n";
 	// return opCodeAsInt;
-}
+// }
 
 // iterates through the ProgramLineTable and prints the labelName & transyLineNumber
 void ProgramLineTable::printProgramLineTable(){

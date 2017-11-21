@@ -199,9 +199,11 @@ bool tCDUMP::parseVariable(int *currentCharIterator, int parameterNumber){
 		switch (parameterNumber){
 			case START_ID_CODE:
 				globalStartIndex.variableName = currentVariableName;
+				globalStartIndex.isConstant = false;
 				break;
 			case END_ID_CODE:
 				globalEndIndex.variableName = currentVariableName;
+				globalEndIndex.isConstant = false;
 				break;
 		}
 	}
@@ -310,9 +312,11 @@ bool tCDUMP::parseConstant(int *currentCharIterator, int parameterNumber){
 		switch (parameterNumber){
 			case START_ID_CODE:
 				globalStartIndex.variableName = currentVariableName;
+				globalStartIndex.isConstant = true;
 				break;
 			case END_ID_CODE:
 				globalEndIndex.variableName = currentVariableName;
+				globalEndIndex.isConstant = true;
 				break;
 		}
 	}

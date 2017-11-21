@@ -32,12 +32,9 @@ void eREAD::prepareREAD(SymbolTable *currentMemoryManager){
 ============================================================================== */
 
 // calls the functions necessary to execute the read command
-void eREAD::handleREAD(ProgramLineObject *currentLine, int correspondingLineNumber){
+void eREAD::handleREAD(ProgramLineObject *currentLine){
 	globalCurrentLine = currentLine;
-	cout << "\t\t[READ]: Executing Line " << correspondingLineNumber << "...\n";
-
 	executeREADCommand();
-
 	return;
 }
 

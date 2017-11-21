@@ -44,7 +44,7 @@ public:
 	============================================================================== */
 
 	// calls the functions necessary to execute the command
-	void handleWRITE(ProgramLineObject *currentLine, int correspondingLineNumber);
+	void handleWRITE(ProgramLineObject *currentLine);
 
 private:
 

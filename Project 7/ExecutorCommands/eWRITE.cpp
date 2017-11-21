@@ -32,12 +32,9 @@ void eWRITE::prepareWRITE(SymbolTable *currentMemoryManager){
 ============================================================================== */
 
 // calls the functions necessary to execute the command
-void eWRITE::handleWRITE(ProgramLineObject *currentLine, int correspondingLineNumber){
+void eWRITE::handleWRITE(ProgramLineObject *currentLine){
 	globalCurrentLine = currentLine;
-	cout << "\t\t[eWRITE]: Executing Line " << correspondingLineNumber << "...\n";
-
 	executeWRITECommand();
-
 	return;
 }
 
@@ -49,7 +46,7 @@ void eWRITE::handleWRITE(ProgramLineObject *currentLine, int correspondingLineNu
 void eWRITE::executeWRITECommand(){
 	int currentMemoryLocation;
 	string tempValue;
-	cout << "\t\t[eWRITE]: Attempting to Execute Object Code...\n";
+	// cout << "\t\t[eWRITE]: Attempting to Execute Object Code...\n";
 
 	for (int i = 1; i < (*globalCurrentLine).numElementsInLine; i++){
 		currentMemoryLocation = (*globalCurrentLine).lineOfCodeArray[i];

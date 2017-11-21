@@ -50,6 +50,9 @@ Executor.o: Executor.cpp Executor.h EFileManager.o FileManager.o SymbolTable.o L
 EFileManager.o: EFileManager.cpp EFileManager.h LiteralTable.h
 	g++ -c EFileManager.cpp
 
+ProgramLineTable.o: ProgramLineTable.cpp ProgramLineTable.h
+	g++ -c ProgramLineTable.cpp
+
 ###########################
 ### Shared Components ###
 ###########################
@@ -67,13 +70,13 @@ LiteralTable.o: LiteralTable.cpp LiteralTable.h FileManager.h
 tREAD.o: ./CompilerCommands/tREAD.cpp ./CompilerCommands/tREAD.h
 	g++ -c ./CompilerCommands/tREAD.cpp
 
-eREAD.o: ./ExecutorCommands/eREAD.cpp ./ExecutorCommands/eREAD.h
+eREAD.o: ./ExecutorCommands/eREAD.cpp ./ExecutorCommands/eREAD.h ProgramLineTable.h
 	g++ -c ./ExecutorCommands/eREAD.cpp
 
 tWRITE.o: ./CompilerCommands/tWRITE.cpp ./CompilerCommands/tWRITE.h
 	g++ -c ./CompilerCommands/tWRITE.cpp
 
-eWRITE.o: ./ExecutorCommands/eWRITE.cpp ./ExecutorCommands/eWRITE.h
+eWRITE.o: ./ExecutorCommands/eWRITE.cpp ./ExecutorCommands/eWRITE.h ProgramLineTable.h
 	g++ -c ./ExecutorCommands/eWRITE.cpp
 
 tSTOP.o: ./CompilerCommands/tSTOP.cpp ./CompilerCommands/tSTOP.h
@@ -163,7 +166,7 @@ eCLS.o: ./ExecutorCommands/eCLS.cpp ./ExecutorCommands/eCLS.h
 tCDUMP.o: ./CompilerCommands/tCDUMP.cpp ./CompilerCommands/tCDUMP.h
 	g++ -c ./CompilerCommands/tCDUMP.cpp
 
-eCDUMP.o: ./ExecutorCommands/eCDUMP.cpp ./ExecutorCommands/eCDUMP.h
+eCDUMP.o: ./ExecutorCommands/eCDUMP.cpp ./ExecutorCommands/eCDUMP.h ProgramLineTable.h
 	g++ -c ./ExecutorCommands/eCDUMP.cpp
 
 tSUBP.o: ./CompilerCommands/tSUBP.cpp ./CompilerCommands/tSUBP.h

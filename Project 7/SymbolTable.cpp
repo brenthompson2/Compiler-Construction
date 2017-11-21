@@ -2,7 +2,7 @@
 
 	File: SymbolTable.cpp
 	Author: Brendan Thompson
-	Updated: 11/16/17
+	Updated: 11/20/17
 
 	Description: 	Implementation for SymbolTable for Compiler object made for Transylvania University University Fall Term 2017 Compiler Construction class
 		- manages IDs (variables or Constants) and their associated values and virtual memory locations
@@ -32,6 +32,11 @@ SymbolTable::SymbolTable(){
 SymbolTable::~SymbolTable(){
 	// cout << "\t\t[SymbolTable]: Shutdown SymbolTable\n";
 	return;
+}
+
+// sets the global currentFileManager to point to the Compiler's parentFileManager
+void SymbolTable::linkWithParentFileManager(FileManager *parentFileManager){
+	currentFileManager = parentFileManager;
 }
 
 /* ==============================================================================
@@ -64,7 +69,6 @@ string SymbolTable::getValue(int memoryLocation){
 	string currentValue;
 	if ((memoryLocation >= 0) && (memoryLocation < MAX_NUM_VARIABLES)){
 		currentValue = globalCoreMemoryArray[memoryLocation];
-		// cout << "\t\t[Core Memory]: Set RValue of location " << memoryLocation << " to \""  << globalCoreMemoryArray[memoryLocation] << "\"\n";
 	}
 	else {
 		currentValue = "failed to get value: invalid memory location";
@@ -95,11 +99,6 @@ void SymbolTable::setCompilationResult(bool completedSuccessfully){
 	symbolTableArray[INDEX_COMPILATION_RESULT].memoryLocation = 1000;
 	symbolTableArray[INDEX_COMPILATION_RESULT].isArray = false;
 	symbolTableArray[INDEX_COMPILATION_RESULT].size = 1;
-}
-
-// sets the global currentFileManager to point to the Compiler's parentFileManager
-void SymbolTable::linkWithParentFileManager(FileManager *parentFileManager){
-	currentFileManager = parentFileManager;
 }
 
 /* ==============================================================================

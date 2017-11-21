@@ -44,7 +44,7 @@ public:
 	============================================================================== */
 
 	// calls the functions necessary to execute the read command
-	void handleREAD(ProgramLineObject *currentLine, int correspondingLineNumber);
+	void handleREAD(ProgramLineObject *currentLine);
 
 private:
 

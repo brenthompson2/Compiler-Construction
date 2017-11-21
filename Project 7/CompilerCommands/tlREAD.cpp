@@ -190,7 +190,7 @@ void tlREAD::syncLiteralToLiteralTable(){
 	globalLiteralObject.literalString = UNDEFINED_LITERAL;
 	(*currentliteralManager).manageLiteralObject(&globalLiteralObject);
 
-	// (*currentliteralManager).printLiteralTable();
+	(*currentliteralManager).printLiteralTable();
 	return;
 }
 

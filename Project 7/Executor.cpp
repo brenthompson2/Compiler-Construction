@@ -48,7 +48,7 @@ bool BREN_Executor::prepareForExecution(string fileToExecute, char *arrayOfFlags
 	// Print Program, Core, & Literal Tables
 	// globalProgramManager.printProgramLineTable();
 	// globalMemoryManager.printCoreMemory();
-	// globalLiteralManager.printLiteralTable();
+	// globalLiteralManager.ePrintLiteralTable();
 
 	return successfullyPrepared;
 }
@@ -104,88 +104,98 @@ void BREN_Executor::handleCommand(ProgramLineObject currentLineObject, int *curr
 	// 		mainDIMHandler.handleDIM(currentLine, *currentProgramCounter);
 	// 		break;
 		case READ_OP_CODE: // 1
-			cout << "\t[Executor]: Found READ Command\n";
-			mainREADHandler.handleREAD(&currentLineObject, (*currentProgramCounter));
+			// cout << "\t[Executor]: Found READ Command\n";
+			mainREADHandler.handleREAD(&currentLineObject);
 			(*currentProgramCounter)++;
 			break;
 		case WRITE_OP_CODE: // 2
 			// cout << "\t[Executor]: Found WRITE Command\n";
-			mainWRITEHandler.handleWRITE(&currentLineObject, *currentProgramCounter);
+			mainWRITEHandler.handleWRITE(&currentLineObject);
 			(*currentProgramCounter)++;
 			break;
 		case STOP_OP_CODE: // 3
 			// cout << "\t[Executor]: Found STOP command\n";
+			// mainSTOPHandler.handleSTOP(&currentLineObject); // NOT USING COMMAND HANDLER
 			(*currentProgramCounter) = END_OF_PROGRAM;
 			globalFoundStopCommand = true;
 			break;
 		case 4: // 4
-	// 		cout << "\t[Executor]: Error: Found Invalid Op Code 4\n";
-	// 		globalglobalNumErrors++;
-	// 		break;
-	// 	case CDUMP_OP_CODE: // 5
-	// 		// cout << "\t[Executor]: Found CDUMP Command\n";
-	// 		mainCDUMPHandler.handleCDUMP(currentLine, *currentProgramCounter);
-	// 		break;
-	// 	case LISTO_OP_CODE: // 6
-	// 		// cout << "\t[Executor]: Found LISTO Command\n";
-	// 		mainLISTOHandler.handleLISTO(currentLine, *currentProgramCounter);
-	// 		break;
-	// 	case NOP_OP_CODE: // 7
-	// 		// cout << "\t[Executor]: Found NOP Command\n";
-	// 		mainNOPHandler.handleNOP(currentLine, *currentProgramCounter);
-	// 		break;
+			cout << "\t[Executor]: Error: Found Invalid Op Code 4\n";
+			globalNumErrors++;
+			(*currentProgramCounter)++;
+			break;
+		case CDUMP_OP_CODE: // 5
+			// cout << "\t[Executor]: Found CDUMP Command\n";
+			mainCDUMPHandler.handleCDUMP(&currentLineObject);
+			(*currentProgramCounter)++;
+			break;
+		case LISTO_OP_CODE: // 6
+			// cout << "\t[Executor]: Found LISTO Command\n";
+			// mainLISTOHandler.handleLISTO(&currentLineObject, *currentProgramCounter); // NOT USING COMMAND HANDLER
+			globalProgramManager.printProgramLineTable();
+			(*currentProgramCounter)++;
+			break;
+		case NOP_OP_CODE: // 7
+			// cout << "\t[Executor]: Found NOP Command\n";
+			// mainNOPHandler.handleNOP(&currentLineObject, *currentProgramCounter); // NOT USING COMMAND HANDLER
+			(*currentProgramCounter)++;
+			break;
 	// 	case GOTO_OP_CODE: // 8
 	// 		// cout << "\t[Executor]: Found GOTO Command\n";
-	// 		mainAREADHandler.handleAREAD(currentLine, *currentProgramCounter);
+	// 		mainAREADHandler.handleAREAD(&currentLineObject, *currentProgramCounter);
 	// 		break;
-	// 	case 9: // 9
-	// 		cout << "\t[Executor]: Error: Found Invalid Op Code 9\n";
-	// 		globalglobalNumErrors++;
-	// 		break;
+		case 9: // 9
+			cout << "\t[Executor]: Error: Found Invalid Op Code 9\n";
+			globalNumErrors++;
+			(*currentProgramCounter)++;
+			break;
 	// 	case IFA_OP_CODE: // 10
 	// 		// cout << "\t[Executor]: Found IFA Command\n";
-	// 		mainIFAHandler.handleIFA(currentLine, *currentProgramCounter);
+	// 		mainIFAHandler.handleIFA(&currentLineObject, *currentProgramCounter);
 	// 		break;
 	// 	case AREAD_OP_CODE: // 11
 	// 		// cout << "\t[Executor]: Found aREAD Command\n";
-	// 		mainAREADHandler.handleAREAD(currentLine, *currentProgramCounter);
+	// 		mainAREADHandler.handleAREAD(&currentLineObject, *currentProgramCounter);
 	// 		break;
 	// 	case AWRITE_OP_CODE: // 12
 	// 		// cout << "\t[Executor]: Found aWRITE Command\n";
-	// 		mainAWRITEHandler.handleAWRITE(currentLine, *currentProgramCounter);
+	// 		mainAWRITEHandler.handleAWRITE(&currentLineObject, *currentProgramCounter);
 	// 		break;
 	// 	case SUBP_OP_CODE: // 13
 	// 		// cout << "\t[Executor]: Found SUBP Command\n";
-	// 		mainSUBPHandler.handleSUBP(currentLine, *currentProgramCounter);
+	// 		mainSUBPHandler.handleSUBP(&currentLineObject, *currentProgramCounter);
 	// 		break;
 	// 	case LOOP_OP_CODE: // 14
 	// 		// cout << "\t[Executor]: Found LOOP Command\n";
-	// 		mainLOOPHandler.handleLOOP(currentLine, *currentProgramCounter);
+	// 		mainLOOPHandler.handleLOOP(&currentLineObject, *currentProgramCounter);
 	// 		break;
 	// 	case LOOPEND_OP_CODE: // 15
 	// 		// cout << "\t[Executor]: Found LOOP-END Command\n";
-	// 		mainLOOPENDHandler.handleLOOPEND(currentLine, *currentProgramCounter);
+	// 		mainLOOPENDHandler.handleLOOPEND(&currentLineObject, *currentProgramCounter);
 	// 		break;
 		case LREAD_OP_CODE: // 16
-			cout << "\t[Executor]: Found LREAD Command\n";
-			// mainLREADHandler.handleLREAD(currentLineObject, *currentProgramCounter);
+			// cout << "\t[Executor]: Found LREAD Command\n";
+			mainLREADHandler.handleLREAD(&currentLineObject);
 			(*currentProgramCounter)++;
 			break;
-	// 	case LWRITE_OP_CODE: // 17
-	// 		// cout << "\t[Executor]: Found LWRITE Command\n";
-	// 		mainLWRITEHandler.handleLWRITE(currentLine, *currentProgramCounter);
-	// 		break;
+		case LWRITE_OP_CODE: // 17
+			// cout << "\t[Executor]: Found LWRITE Command\n";
+			mainLWRITEHandler.handleLWRITE(&currentLineObject);
+			(*currentProgramCounter)++;
+			break;
 	// 	case IF_OP_CODE: // 18
 	// 		// cout << "\t[Executor]: Found IF Command\n";
-	// 		mainIFHandler.handleIF(currentLine, *currentProgramCounter);
+	// 		mainIFHandler.handleIF(&currentLineObject, *currentProgramCounter);
 	// 		break;
-	// 	case CLS_OP_CODE: // 19
-	// 		// cout << "\t[Executor]: Found CLS Command\n";
-	// 		mainCLSHandler.handleCLS(currentLine, *currentProgramCounter);
-	// 		break;
+		case CLS_OP_CODE: // 19
+			// cout << "\t[Executor]: Found CLS Command\n";
+			// mainCLSHandler.handleCLS(&currentLineObject, *currentProgramCounter);
+			cout << string(100, '\n');
+			(*currentProgramCounter)++;
+			break;
 	// 	case ASSIGNMENT_OP_CODE: // 20
 	// 		// cout << "\t[Executor]: Found ASSIGNMENT Command\n";
-	// 		mainASSIGNMENTHandler.handleASSIGNMENT(currentLine, *currentProgramCounter);
+	// 		mainASSIGNMENTHandler.handleASSIGNMENT(&currentLineObject, *currentProgramCounter);
 	// 		break;
 		default:
 			cout << "\t[Executor]: Error: Invalid Op Code \"" << currentOpCode << "\"\n";
@@ -199,7 +209,7 @@ void BREN_Executor::handleCommand(ProgramLineObject currentLineObject, int *curr
 void BREN_Executor::instantiateCommandObjects(){
 	mainREADHandler.prepareREAD(&globalMemoryManager);
 	mainWRITEHandler.prepareWRITE(&globalMemoryManager);
-	// mainSTOPHandler.prepareSTOP();
+	// mainSTOPHandler.prepareSTOP(); // NOT USING COMMAND HANDLER
 
 	// mainDIMHandler.prepareDIM(&globalFileManager, &globalMemoryManager);
 	// mainAREADHandler.prepareAREAD(&globalFileManager, &globalMemoryManager);
@@ -209,14 +219,14 @@ void BREN_Executor::instantiateCommandObjects(){
 	// mainLOOPHandler.prepareLOOP(&globalFileManager, &globalMemoryManager);
 	// mainLOOPENDHandler.prepareLOOPEND(&globalFileManager);
 	// mainIFAHandler.prepareIFA(&globalFileManager, &globalMemoryManager, &globalLineManager);
-	// mainNOPHandler.prepareNOP(&globalFileManager);
-	// mainLISTOHandler.prepareLISTO(&globalFileManager);
+	// mainNOPHandler.prepareNOP(); // NOT USING COMMAND HANDLER
+	// mainLISTOHandler.prepareLISTO(&globalFileManager); // NOT USING COMMAND HANDLER
 
-	// mainLREADHandler.prepareLREAD(&globalFileManager, &globalLiteralManager);
-	// mainLWRITEHandler.prepareLWRITE(&globalFileManager, &globalLiteralManager);
+	mainLREADHandler.prepareLREAD(&globalLiteralManager);
+	mainLWRITEHandler.prepareLWRITE(&globalLiteralManager);
 	// mainIFHandler.prepareIF(&globalFileManager, &globalMemoryManager, &globalLineManager);
-	// mainCLSHandler.prepareCLS(&globalFileManager);
-	// mainCDUMPHandler.prepareCDUMP(&globalFileManager, &globalMemoryManager);
+	// mainCLSHandler.prepareCLS(); // NOT USING COMMAND HANDLER
+	mainCDUMPHandler.prepareCDUMP(&globalMemoryManager);
 	// mainSUBPHandler.prepareSUBP(&globalFileManager, &globalMemoryManager);
 
 	// mainASSIGNMENTHandler.prepareASSIGNMENT(&globalFileManager, &globalMemoryManager);

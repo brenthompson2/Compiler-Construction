@@ -69,6 +69,9 @@ public:
 	SymbolTable();
 	~SymbolTable();
 
+	// sets the global currentFileManager to point to the Compiler's parentFileManager
+	void linkWithParentFileManager(FileManager *parentFileManager);
+
 	/* ==============================================================================
 		Public Manipulator Methods
 	============================================================================== */
@@ -83,9 +86,6 @@ public:
 
 	// sets coreMemory boolean regarding the result of compilation
 	void setCompilationResult(bool completedSuccessfully);
-
-	// sets the global currentFileManager to point to the Compiler's parentFileManager
-	void linkWithParentFileManager(FileManager *parentFileManager);
 
 	/* ==============================================================================
 		Public Accessor Methods

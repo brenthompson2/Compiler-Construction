@@ -2,7 +2,7 @@
 =========================================================
 
 Devlog
-Emulator V1 - Project 7
+Project 7 - Emulator V1 & Compiler V7
 Brendan Thompson
 
 - A detailed documentation of daily work, current status, what needs to be implemented, and other thoughts
@@ -15,7 +15,7 @@ Brendan Thompson
 
 I) Summary of Work:
 	- Organized Project 7 into One Folder
-	- Implemented WRITE & STOP
+	- Implemented WRITE, STOP, NOP, CDUMP, CLS
 
 II) Still Need to Implement:
 	- Handle Every eCommand Except
@@ -24,6 +24,7 @@ II) Still Need to Implement:
 		- Executor V3 = Assignment
 
 III) Thoughts:
+	- Can't use ":" in an LWRITE because my Compiler's FileManager turns all : into LineLabels
 	- Each command has a parser function and they are all super similar
 		- Could possibly abstract them away into less function
 		- aread & awrite = identical
@@ -78,6 +79,14 @@ IV) Status:
 		3) STOP:
 			- NOT USED = Executor sees command and stops executing
 
+		11) NOP:
+			- handles NOP command, tells parent FileManager to write op code to .obj
+
+		16) CLS
+			- handles CLS command, tells parent FileManager to write op code to .obj
+		17) CDUMP:
+			- handles CDUMP command, tells parent FileManager to write op code to .obj and tells MemoryManager to manage variables
+
 	- eCommands Not Yet Implemented:
 		4) DIM:
 			- handles write command, tells parent FileManager to write op code to .obj, and tells MemoryManager to manage variables
@@ -97,8 +106,6 @@ IV) Status:
 			- handles LOOPEND command, tells parent FileManager to write op code to .obj
 		10) IFA:
 			- handles IFA command, tells parent FileManager to write op code to .obj, tells MemoryManager to manage variables, and gets Line Label Location from LineLabelTable
-		11) NOP:
-			- handles NOP command, tells parent FileManager to write op code to .obj
 		12) LISTO:
 			- handles LISTO command, tells parent FileManager to write op code to .obj
 		13) lREAD:
@@ -108,10 +115,6 @@ IV) Status:
 		15) IF:
 			- (<  : -1)	 (<= : -2)  (=  : -3)  (>  : -4)  (>= : -5)  (!  : -6)
 			- handles IF command, tells parent FileManager to write op code to .obj, tells MemoryManager to manage variables, and gets Line Label Location from LineLabelTable
-		16) CLS
-			- handles CLS command, tells parent FileManager to write op code to .obj
-		17) CDUMP:
-			- handles CDUMP command, tells parent FileManager to write op code to .obj and tells MemoryManager to manage variables
 		18) SUBP:
 			- (sin : -10)  (cos : -11)  (exp : -12)  (abs : -13)  (alg : -14)  (aln : -15)  (log : -16)  (sqr : -17)
 			- handles SUBP command, tells parent FileManager to write op code to .obj and tells MemoryManager to manage variables
@@ -130,10 +133,42 @@ V) Log Of Activity:
 - Implemented WRITE
 	- Copied Read
 	- Created getValue fn in SymbolTable (core memory)
+	- Executor increments PC
 
 - Implemented STOP
 	- not using an object to handle it
 	- Executor sees the command, changes globalFoundStopCommand boolean, and stops executing
+	- Sets PC to END_OF_PROGRAM -2
+
+- Implemented NOP
+	- not using an object to handle it
+	- just increments PC
+
+- Implemented CDUMP
+	- string to int from tDIM
+	- prints out SymbolTable.getValue()
+	- Executor increments PC
+	- tCDUMP wasn't letting the SymbolTable know if the values were constants
+
+- Implemented CLS
+	- not using an object to handle it
+	- Executor does: cout << string(100, '\n');
+		- www.cplusplus.com/forum/beginner/3304/
+		- NOT system()
+			- "system() is evil. Use it at your own peril (aka job security). Most simply it is resource heavy and a security hole"
+			- "Makes your program Less Portable"
+	- Executor increments PC
+
+- Implemented LWRITE
+	- Copied WRITE
+	- Changed from MemoryManager to LiteralManager
+	- Doesn't automatically put NewLine
+	- Executor increments PC
+
+- Implemented LREAD
+	- Copied READ
+	- Changed from MemoryManager to LiteralManager
+	- Executor increments PC
 
 =========================================================
 =========================================================
@@ -2432,6 +2467,9 @@ Still Need to Implement:
 		- if analyzeChar sees [, parses size one character at a time, send it to analyzeSize
 			- if analyzeSize sees ], adds to variableArray and returns to parsing variables
 	- converted string to int
+		- #include <sstream>
+		- std::stringstream str(currentSizeString);
+		- str >> (*arraySize);
 		- https://stackoverflow.com/questions/6093414/convert-char-array-to-single-int
 
 - Implemented aREAD

@@ -3,7 +3,7 @@
 
 	File: eDIM.h
 	Author: Brendan Thompson
-	Updated: 11/13/17
+	Updated: 11/20/17
 
 	Description: Interface for Functions for processing DIM command for Compiler object made for Transylvania University University Fall Term 2017 Compiler Construction class
 
@@ -37,8 +37,6 @@ using std::string;
 #define MAX_VARIABLE_NAME_LENGTH 128	// currently using strings which may or may not allow for 128 characters
 #define MAX_ARGUMENTS 7
 #define INDEX_FIRST_CHAR_AFTER_DIM_COMMAND 3
-
-const string DIM_OP_CODE = "0";
 
 /* ==============================================================================
 	Type Definitions

@@ -36,14 +36,14 @@ using std::string;
 #define END_OF_PROGRAM -2
 
 // Command Op Codes
-// #define DIM_OP_CODE 0
+#define DIM_OP_CODE 0
 #define READ_OP_CODE 1
 #define WRITE_OP_CODE 2
 #define STOP_OP_CODE 3
 // // 4
-// #define CDUMP_OP_CODE 5
-// #define LISTO_OP_CODE 6
-// #define NOP_OP_CODE 7
+#define CDUMP_OP_CODE 5
+#define LISTO_OP_CODE 6
+#define NOP_OP_CODE 7
 // #define GOTO_OP_CODE 8
 // // 9
 // #define IFA_OP_CODE 10
@@ -53,9 +53,9 @@ using std::string;
 // #define LOOP_OP_CODE 14
 // #define LOOPEND_OP_CODE 15
 #define LREAD_OP_CODE 16
-// #define LWRITE_OP_CODE 17
+#define LWRITE_OP_CODE 17
 // #define IF_OP_CODE 18
-// #define CLS_OP_CODE 19
+#define CLS_OP_CODE 19
 // #define ASSIGNMENT_OP_CODE 20
 
 /* ==============================================================================
@@ -101,7 +101,7 @@ public:
 	ProgramLineObject* getCopyOfProgramObject(ProgramLineObject programObjectToCopy);
 
 	// returns the op code for the line at objLineNumber
-	int getOpCode(int objLineNumber);
+	// int getOpCode(int objLineNumber);
 
 	// iterates through the ProgramLineTable and prints the lineOfObj
 	void printProgramLineTable();

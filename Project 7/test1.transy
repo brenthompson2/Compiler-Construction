@@ -8,6 +8,16 @@ c* ===============================
 c* ======= Read / Write ==========
 c* ===============================
 
+listo
+
+lwrite "Hello, What is your name? \n"
+lread $userName
+lwrite "\n Welcome "
+lwrite $userName
+
+lwrite "\n Please Supply Three Variables "
+
 read apple, banana, carrot
+lwrite "\n You Supplied "
 write apple, banana, carrot
 stop

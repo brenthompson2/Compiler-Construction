@@ -266,7 +266,7 @@ void tlWRITE::syncLiteralToLiteralTable(){
 
 	(*currentliteralManager).manageLiteralObject(&globalLiteralObject);
 
-	// (*currentliteralManager).printLiteralTable();
+	(*currentliteralManager).printLiteralTable();
 	return;
 }
 

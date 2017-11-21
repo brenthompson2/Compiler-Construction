@@ -6,6 +6,7 @@
 	Updated: 11/13/17
 
 	Description: Interface for Functions for processing CDUMP command for Compiler object made for Transylvania University University Fall Term 2017 Compiler Construction class
+		- NOT BEING USED: EXECUTOR IS HANDLING THIS COMMAND
 
   ==============================================================================
 */
@@ -17,31 +18,22 @@
 ============================================================================== */
 
 #include <iostream>	// Console IO
-#include <stdlib.h>	// Exit()
-#include <string.h> // strcpy & strcat
+// #include <stdlib.h>	// Exit()
+// #include <string.h> // strcpy & strcat
 #include <sstream> //std::stringstream str(" ")
 
 #include "../SymbolTable.h"
+#include "../ProgramLineTable.h"
 
-using std::cin;
+// using std::cin;
 using std::cout;
-using std::cerr;
+// using std::cerr;
 using std::endl;
 using std::string;
 
 /* ==============================================================================
 	Symbolic Constants
 ============================================================================== */
-
-#define MAX_STRING_LENGTH 50
-#define MAX_VARIABLE_NAME_LENGTH 128	// currently using strings which may or may not allow for 128 characters
-#define MAX_ARGUMENTS 7
-#define INDEX_FIRST_CHAR_AFTER_CDUMP_COMMAND 5
-
-const int START_ID_CODE = 1;
-const int END_ID_CODE = 2;
-
-const string CDUMP_OP_CODE = "5";
 
 /* ==============================================================================
 	Type Definitions
@@ -67,20 +59,14 @@ public:
 	void prepareCDUMP(SymbolTable *parentMemoryManager);
 
 	// calls the functions necessary to parse the line, sync the variables with the SymbolTable, and print the object code to the file while counting errors
-	// returns num errors
-	int handleCDUMP(string currentLine, int correspondingLineNumber);
+	void handleCDUMP(ProgramLineObject *currentLine);
 
 private:
 
 	/* ==============================================================================
 		Private Members
 	============================================================================== */
-	string globalCurrentLine;
-	int globalNumErrors;
-
-	// Arguments
-	memoryTableObject globalStartIndex;
-	memoryTableObject globalEndIndex;
+	ProgramLineObject *globalCurrentLine;
 
 	// Parent's Objects
 	SymbolTable *currentMemoryManager; // pointer to the Compiler's (parent's) SymbolTable
@@ -90,24 +76,11 @@ private:
 		Private Manipulator Methods
 	============================================================================== */
 
-	// iteratively calls parseVariable() to get arrayName, and then parseSize() to get the LOOPensions
-	void parseParameters();
-
-	// parses through a line one character at a time, manages the global member variable associated with the parameterNumber, and returns whether or not there are any more parameters to parse
-	bool parseVariable(int *currentCharIterator, int parameterNumber);
-
-	// parses through a line one character at a time, manages the global member variable associated with the parameterNumber, and returns whether or not there are any more parameters to parse
-	bool parseConstant(int *currentCharIterator, int parameterNumber);
-
-	// tells the memoryManager to conditionally add the global memoryTableObject arguments to the symbol table
-	void syncVariablesToSymbolTable();
-
-	// tells the FileManager to print the object code for the command, which includes the command op code and the variable memoryLocations
-	void outputCDUMPCommand();
-
-
-
 	/* ==============================================================================
 		Private Accessor Methods
 	============================================================================== */
+
+	// Outputs All Core Memory Values Between the start and the end indexes
+	 void coreDump(int startIndex, int endIndex);
+
 };
