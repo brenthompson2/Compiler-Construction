@@ -1,0 +1,47 @@
+c* Brendan Thompson
+c* test1.transy
+c* Updated 11/20/17
+C* Test File for Project 7 - Compiler & Executor
+C* Compiles Commands for the Executor
+
+c* ===============================
+c* ======= Read / Write ==========
+c* ===============================
+
+// listo
+
+// lwrite "Hello, What is your name? \n"
+// lread $userName
+// lwrite "\n Welcome "
+// lwrite $userName
+
+// lwrite "\n Please Supply Three Variables "
+
+// read apple, banana, carrot
+// lwrite "\n You Supplied "
+// write apple, banana, carrot
+
+// cdump 0, 5
+// stop
+
+c* =======================
+c* ======= Arrays ========
+c* =======================
+
+// dim firstArray[10]
+// aread firstArray, 0, 9
+// awrite firstArray, 0, 9
+// stop
+
+c* =======================
+c* ======== Math =========
+c* =======================
+
+subp sin (a, 15)
+subp cos (a, 15)
+subp exp (a, 15)
+subp abs (a, 15)
+subp alg (a, 15)
+subp aln (a, 15)
+subp log (a, 15)
+subp sqr (a, 15)
