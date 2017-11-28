@@ -18,10 +18,14 @@ I) Summary of Work:
 	- Implemented WRITE, STOP, NOP, CDUMP, CLS, LWRITE, LREAD
 
 II) Still Need to Implement:
-	- Handle Every eCommand Except
-		- Implemented: READ, WRITE, STOP
+	- eCOMMANDS:
+		- DIM, AREAD, AWRITE, SUBP
 		- Executor V2 = Loop, Loopend, Goto, ifa, if
 		- Executor V3 = Assignment
+	- Flags:
+		-x = compiler flag to execute after compilation
+		-r = executor flag to check range violations on arrays
+		-z = executor flag to use 0 for undefined values (0.123456789)
 
 III) Thoughts:
 	- Can't use ":" in an LWRITE because my Compiler's FileManager turns all : into LineLabels
@@ -78,20 +82,23 @@ IV) Status:
 			- Outputs the RValues at the specified memory locations
 		3) STOP:
 			- NOT USED = Executor sees command and stops executing
-
+		4) DIM:
+			- Adds arrays to SymbolTable::globalArrayOfArrayDimensions
 		11) NOP:
-			- handles NOP command, tells parent FileManager to write op code to .obj
+			- NOT USED = Executor sees command and increments PC
+		12) LISTO:
+			- NOT USED = Executor sees command and tells ProgramLineManger to print
+		13) lREAD:
+			- reads in the literal to the specified memory location
+		14) lWRITE:
+			- writes the literal for the specified memory location
 
 		16) CLS
-			- handles CLS command, tells parent FileManager to write op code to .obj
+			- NOT USED = Executor sees command and prints 100 blank lines
 		17) CDUMP:
-			- handles CDUMP command, tells parent FileManager to write op code to .obj and tells MemoryManager to manage variables
+			- outputs each CoreMemory value between startIndex & endIndex, from SymbolTable
 
 	- eCommands Not Yet Implemented:
-		4) DIM:
-			- handles write command, tells parent FileManager to write op code to .obj, and tells MemoryManager to manage variables
-			- Can't DIM an array with the same name
-			- All DIM statements must be at the top of the file
 		5) aREAD:
 			- handles aREAD command, tells parent FileManager to write op code to .obj, and tells MemoryManager to manage variables
 			- arrays must have already been declared by a dim command
@@ -106,12 +113,6 @@ IV) Status:
 			- handles LOOPEND command, tells parent FileManager to write op code to .obj
 		10) IFA:
 			- handles IFA command, tells parent FileManager to write op code to .obj, tells MemoryManager to manage variables, and gets Line Label Location from LineLabelTable
-		12) LISTO:
-			- handles LISTO command, tells parent FileManager to write op code to .obj
-		13) lREAD:
-			- handles lREAD command, tells parent FileManager to write op code to .obj, tells MemoryManager to manage variables, and tells LiteralTable to manage literals
-		14) lWRITE:
-			- handles lWRITE command, tells parent FileManager to write op code to .obj and tells LiteralTable to manage literals
 		15) IF:
 			- (<  : -1)	 (<= : -2)  (=  : -3)  (>  : -4)  (>= : -5)  (!  : -6)
 			- handles IF command, tells parent FileManager to write op code to .obj, tells MemoryManager to manage variables, and gets Line Label Location from LineLabelTable
@@ -168,6 +169,11 @@ V) Log Of Activity:
 - Implemented LREAD
 	- Copied READ
 	- Changed from MemoryManager to LiteralManager
+	- Executor increments PC
+
+- Implemented DIM
+	- Copied READ
+	- Created globalArrayOfArrayDimensions in SymbolTable
 	- Executor increments PC
 
 =========================================================

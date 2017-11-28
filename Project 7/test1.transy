@@ -8,16 +8,26 @@ c* ===============================
 c* ======= Read / Write ==========
 c* ===============================
 
-listo
+// listo
 
-lwrite "Hello, What is your name? \n"
-lread $userName
-lwrite "\n Welcome "
-lwrite $userName
+// lwrite "Hello, What is your name? \n"
+// lread $userName
+// lwrite "\n Welcome "
+// lwrite $userName
 
-lwrite "\n Please Supply Three Variables "
+// lwrite "\n Please Supply Three Variables "
 
-read apple, banana, carrot
-lwrite "\n You Supplied "
-write apple, banana, carrot
+// read apple, banana, carrot
+// lwrite "\n You Supplied "
+// write apple, banana, carrot
+
+// cdump 0, 5
+// stop
+
+c* =======================
+c* ======= Arrays ========
+c* =======================
+
+dim firstArray[10]
 stop
+

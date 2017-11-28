@@ -4,7 +4,7 @@ Brendan Thompson
 
 Transylvania University	Compiler Construction Fall 2017 with Dr. Moorman
 
-The BRENxCompiler is written in C++ and turns programs written in the Transy Language (.transy) to Transy Object Code (.obj). An Emulator capable of running the Transy Object Code is currently under construction
+The BRENxCompiler is written in C++ and turns programs written in the Transy Language (.transy) to Transy Object Code (.obj). An Emulator capable of running the Transy Object Code is still under construction
 
 This GitHub Repository was created for downloading, compiling, and running the code on a lab computer remotely via SSH
 
@@ -12,7 +12,7 @@ This GitHub Repository was created for downloading, compiling, and running the c
 
 #### Compiling the Transy Compiler
 
-In order to use this Transy Language (.transy) to Transy Object Code (.obj) compiler, the C++ code that it is written in must first be compiled into an executable
+In order to use this Transy Language (.transy) to Transy Object Code (.obj) compiler, the C++ code that it is written in must first be compiled into an executable. The Executor needs to be compiled as well, and is compiled using the same command below.
 
 On Ubuntu: navigate the terminal to the directory of the preferred Compiler Version and run `make`
 
@@ -20,7 +20,7 @@ To remove all of the files run `make clean`
 
 #### Using the Transy Compiler
 
-On Ubuntu: The Transy Compiler but first be Compiled. Then, navigate the terminal to the directory with the `Compiler` executable and type `./Compiler <fileName>`
+On Ubuntu: The Transy Compiler must first be Compiled. Then, navigate the terminal to the directory with the `Compiler` executable and type `./Compiler <fileName>`
 
 Flags:
 
@@ -34,7 +34,7 @@ Other Info:
 
 #### Running Transy Object Code
 
-An emulator capable of running Transy Object Code on a computer is currently under construction
+On Ubuntu: The Transy Executor must first be Compiled. Then, navigate the terminal to the directory with the `BRENxExecutor` executable and type `./BRENxExecutor <fileName>`
 
 ## Development
 

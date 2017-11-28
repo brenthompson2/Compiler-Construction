@@ -81,6 +81,9 @@ public:
 	// Sets the RValue at memoryLocation to newValue - For Executor
 	void setValue(int memoryLocation, string newValue);
 
+	// Adds a new array to the globalArrayofArrayDimensions
+	void addNewArray(int memoryLocationOfNewArray, int sizeOfNewArray);
+
 	// if the variable doesn't already exist, calls insertInto(), and regardless sets the memoryLocation for the currentMemoryObject
 	void manageMemoryTableObject(memoryTableObject *currentMemoryObject);
 
@@ -109,6 +112,9 @@ public:
 	// prints out the Rvalue for every memoryLocation in CoreMemory from startIndex to endIndex - For Executor
 	void printCoreMemory(int startIndex, int endIndex);
 
+	// prints out the globalArrayofArrayDimensions
+	void printArrayDimension();
+
 	// iterates through the SymbolTable and prints the variableName & memoryLocation
 	void printSymbolTable();
 
@@ -126,6 +132,9 @@ protected:
 
 	string globalCoreMemoryArray[MAX_NUM_VARIABLES]; // - For Executor
 	int globalSizeCoreMemory; // - For Executor
+
+	memoryTableObject globalArrayofArrayDimensions[MAX_NUM_VARIABLES]; // -For Executor
+	int globalNumArrayDimension;
 
 	memoryTableObject symbolTableArray[MAX_NUM_VARIABLES]; // SymbolTable implemented as array of memoryTableObjects
 	unsigned int numObjectsInArray;

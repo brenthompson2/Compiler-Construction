@@ -99,10 +99,11 @@ void BREN_Executor::handleCommand(ProgramLineObject currentLineObject, int *curr
 	int currentOpCode = currentLineObject.opCode;
 
 	switch (currentOpCode){
-	// 	case DIM_OP_CODE: // 0
-	// 		// cout << "\t[Executor]: Found DIM Command\n";
-	// 		mainDIMHandler.handleDIM(currentLine, *currentProgramCounter);
-	// 		break;
+		case DIM_OP_CODE: // 0
+			// cout << "\t[Executor]: Found DIM Command\n";
+			mainDIMHandler.handleDIM(&currentLineObject);
+			(*currentProgramCounter)++;
+			break;
 		case READ_OP_CODE: // 1
 			// cout << "\t[Executor]: Found READ Command\n";
 			mainREADHandler.handleREAD(&currentLineObject);
@@ -211,7 +212,7 @@ void BREN_Executor::instantiateCommandObjects(){
 	mainWRITEHandler.prepareWRITE(&globalMemoryManager);
 	// mainSTOPHandler.prepareSTOP(); // NOT USING COMMAND HANDLER
 
-	// mainDIMHandler.prepareDIM(&globalFileManager, &globalMemoryManager);
+	mainDIMHandler.prepareDIM(&globalMemoryManager);
 	// mainAREADHandler.prepareAREAD(&globalFileManager, &globalMemoryManager);
 	// mainAWRITEHandler.prepareAWRITE(&globalFileManager, &globalMemoryManager);
 

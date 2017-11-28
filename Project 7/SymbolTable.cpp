@@ -20,6 +20,7 @@ Constructor & Destructor
 
 SymbolTable::SymbolTable(){
 	globalSizeCoreMemory = 0;
+	globalNumArrayDimension = 0;
 	numObjectsInArray = 0;
 	for (int i = 0; i < MAX_NUM_VARIABLES; i++){
 		symbolTableArray[i].variableName = UNDECLARED_VALUE;
@@ -74,6 +75,16 @@ string SymbolTable::getValue(int memoryLocation){
 		currentValue = "failed to get value: invalid memory location";
 	}
 	return currentValue;
+}
+
+// Adds a new array to the globalArrayofArrayDimensions
+void SymbolTable::addNewArray(int memoryLocationOfNewArray, int sizeOfNewArray){
+	if (globalNumArrayDimension < MAX_NUM_VARIABLES){
+		globalArrayofArrayDimensions[globalNumArrayDimension].memoryLocation = memoryLocationOfNewArray;
+		globalArrayofArrayDimensions[globalNumArrayDimension].isArray = true;
+		globalArrayofArrayDimensions[globalNumArrayDimension].size = sizeOfNewArray;
+		globalNumArrayDimension++;
+	}
 }
 
 // if the variable doesn't already exist, calls insertInto(), and regardless returns the index for the currentMemoryObject
@@ -155,6 +166,11 @@ void SymbolTable::printCoreMemory(int startIndex, int endIndex){
 			cout << "\t\t\t\t" << i << ": " << globalCoreMemoryArray[i] << endl;
 		}
 	}
+}
+
+// prints out the globalArrayofArrayDimensions
+void SymbolTable::printArrayDimension(){
+
 }
 
 // iterates through the SymbolTable and prints the variableName & memoryLocation
