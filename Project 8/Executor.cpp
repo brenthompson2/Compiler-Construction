@@ -2,7 +2,7 @@
 
 	File: Executor.cpp
 	Author: Brendan Thompson
-	Updated: 11/20/17
+	Updated: 11/30/17
 
 	Description: Interface for Main Executor Object made for Transylvania University University Fall Term 2017 Executor Construction class
 		- creates an instance of FileManager, SymbolTable, LiteralTable, and LineLabelTable
@@ -46,7 +46,7 @@ bool BREN_Executor::prepareForExecution(string fileToExecute, char *arrayOfFlags
 	successfullyPrepared = globalFileManager.prepareForExecution(fileToExecute, &globalProgramManager, &globalMemoryManager, &globalLiteralManager);
 
 	// Print Program, Core, & Literal Tables
-	// globalProgramManager.printProgramLineTable();
+	globalProgramManager.printProgramLineTable();
 	// globalMemoryManager.printCoreMemory();
 	// globalLiteralManager.ePrintLiteralTable();
 
@@ -62,7 +62,7 @@ void BREN_Executor::execute(){
 
 	while (continueCompiling){
 		currentProgramLine = globalProgramManager.getCopyOfNextProgramObject(programCounter);
-		if ((*currentProgramLine).numElementsInLine != NOT_VALID_PROGRAM){
+		if ((*currentProgramLine).numElementsInLine != END_OF_PROGRAM){
 			handleCommand((*currentProgramLine), &programCounter);
 			linesRunCount++;
 		}
@@ -79,7 +79,7 @@ void BREN_Executor::execute(){
 
 	}
 
-	globalMemoryManager.printCoreMemory();
+	// globalMemoryManager.printCoreMemory();
 
 	// Manage Execution Result
 	if (globalNumErrors == 0){
@@ -171,14 +171,14 @@ void BREN_Executor::handleCommand(ProgramLineObject currentLineObject, int *curr
 			mainSUBPHandler.handleSUBP(&currentLineObject);
 			(*currentProgramCounter)++;
 			break;
-	// 	case LOOP_OP_CODE: // 14
-	// 		// cout << "\t[Executor]: Found LOOP Command\n";
-	// 		mainLOOPHandler.handleLOOP(&currentLineObject, *currentProgramCounter);
-	// 		break;
-	// 	case LOOPEND_OP_CODE: // 15
-	// 		// cout << "\t[Executor]: Found LOOP-END Command\n";
-	// 		mainLOOPENDHandler.handleLOOPEND(&currentLineObject, *currentProgramCounter);
-	// 		break;
+		case LOOP_OP_CODE: // 14
+			// cout << "\t[Executor]: Found LOOP Command\n";
+			globalLoopManager.handleLOOP(&currentLineObject, currentProgramCounter);
+			break;
+		case LOOPEND_OP_CODE: // 15
+			// cout << "\t[Executor]: Found LOOP-END Command\n";
+			globalLoopManager.handleLOOPEND(currentProgramCounter);
+			break;
 		case LREAD_OP_CODE: // 16
 			// cout << "\t[Executor]: Found LREAD Command\n";
 			mainLREADHandler.handleLREAD(&currentLineObject);
@@ -215,25 +215,19 @@ void BREN_Executor::handleCommand(ProgramLineObject currentLineObject, int *curr
 void BREN_Executor::instantiateCommandObjects(){
 	mainREADHandler.prepareREAD(&globalMemoryManager);
 	mainWRITEHandler.prepareWRITE(&globalMemoryManager);
-	// mainSTOPHandler.prepareSTOP(); // NOT USING COMMAND HANDLER
 
 	mainDIMHandler.prepareDIM(&globalMemoryManager);
 	mainAREADHandler.prepareAREAD(&globalMemoryManager);
 	mainAWRITEHandler.prepareAWRITE(&globalMemoryManager);
-
-	// mainGOTOHandler.prepareGOTO(&globalFileManager, &globalLineManager);
-	// mainLOOPHandler.prepareLOOP(&globalFileManager, &globalMemoryManager);
-	// mainLOOPENDHandler.prepareLOOPEND(&globalFileManager);
-	// mainIFAHandler.prepareIFA(&globalFileManager, &globalMemoryManager, &globalLineManager);
-	// mainNOPHandler.prepareNOP(); // NOT USING COMMAND HANDLER
-	// mainLISTOHandler.prepareLISTO(&globalFileManager); // NOT USING COMMAND HANDLER
-
 	mainLREADHandler.prepareLREAD(&globalLiteralManager);
 	mainLWRITEHandler.prepareLWRITE(&globalLiteralManager);
-	// mainIFHandler.prepareIF(&globalFileManager, &globalMemoryManager, &globalLineManager);
-	// mainCLSHandler.prepareCLS(); // NOT USING COMMAND HANDLER
 	mainCDUMPHandler.prepareCDUMP(&globalMemoryManager);
 	mainSUBPHandler.prepareSUBP(&globalMemoryManager);
+
+	globalLoopManager.prepareLoopManager(&globalMemoryManager, &globalProgramManager);
+	// mainGOTOHandler.prepareGOTO(&globalFileManager, &globalLineManager);
+	// mainIFAHandler.prepareIFA(&globalFileManager, &globalMemoryManager, &globalLineManager);
+	// mainIFHandler.prepareIF(&globalFileManager, &globalMemoryManager, &globalLineManager);
 
 	// mainASSIGNMENTHandler.prepareASSIGNMENT(&globalFileManager, &globalMemoryManager);
 }

@@ -30,10 +30,8 @@ using std::string;
 ============================================================================== */
 
 #define MAX_NUM_LINES 1000
-#define INDEX_NOT_VALID_PROGRAM (MAX_NUM_LINES + 1)
 #define MAX_NUM_PARAMETERS 40
-#define NOT_VALID_PROGRAM -1
-#define END_OF_PROGRAM -2
+#define END_OF_PROGRAM -1
 
 // Command Op Codes
 #define DIM_OP_CODE 0
@@ -50,8 +48,8 @@ using std::string;
 #define AREAD_OP_CODE 11
 #define AWRITE_OP_CODE 12
 #define SUBP_OP_CODE 13
-// #define LOOP_OP_CODE 14
-// #define LOOPEND_OP_CODE 15
+#define LOOP_OP_CODE 14
+#define LOOPEND_OP_CODE 15
 #define LREAD_OP_CODE 16
 #define LWRITE_OP_CODE 17
 // #define IF_OP_CODE 18
@@ -94,14 +92,14 @@ public:
 	// Turns the currentLine into a ProgramLineObject
 	void tokenizeLine(string currentLine, ProgramLineObject *currentProgramLine);
 
-	// Returns a pointer to a copy of the ProgramLineObject for the next line indexed at nextProgramCounter
+	// Returns a pointer to a copy of the ProgramLineObject for the line indexed at nextProgramCounter
 	ProgramLineObject* getCopyOfNextProgramObject(int nextProgramCounter);
+
+	// Returns the index of the line after the next loopend given the currentProgramLine,
+	int getIndexNextLoopend(int currentProgramLine);
 
 	// Returns a pointer to a copy of the programObjectToCopy
 	ProgramLineObject* getCopyOfProgramObject(ProgramLineObject programObjectToCopy);
-
-	// returns the op code for the line at objLineNumber
-	// int getOpCode(int objLineNumber);
 
 	// iterates through the ProgramLineTable and prints the lineOfObj
 	void printProgramLineTable();
@@ -111,7 +109,7 @@ private:
 	/* ==============================================================================
 		Private Members
 	============================================================================== */
-	ProgramLineObject programLineArray[MAX_NUM_LINES + 1]; // array of code indexed in order of objLineNumber
+	ProgramLineObject programLineArray[MAX_NUM_LINES]; // array of code indexed in order of objLineNumber
 	int globalNumLinesOfCode;
 
 	/* ==============================================================================

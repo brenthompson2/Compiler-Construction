@@ -81,6 +81,9 @@ public:
 	// Sets the RValue at memoryLocation to newValue - For Executor
 	void setValue(int memoryLocation, string newValue);
 
+	// Sets the RValue of the destinationAddress to the RValue of the sourceAddress
+	void deepCopy(int destinationAddress, int sourceAddress);
+
 	// Adds a new array to the globalArrayofArrayDimensions
 	void addNewArray(int memoryLocationOfNewArray, int sizeOfNewArray);
 

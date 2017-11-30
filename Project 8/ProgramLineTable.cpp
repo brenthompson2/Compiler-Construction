@@ -18,11 +18,6 @@ Constructor & Destructor
 
 ProgramLineTable::ProgramLineTable(){
 	globalNumLinesOfCode = 0;
-
-	// Prepare NOT_VALID_PROGRAM ProgramLineObject
-	programLineArray[INDEX_NOT_VALID_PROGRAM].numElementsInLine = NOT_VALID_PROGRAM;
-	programLineArray[INDEX_NOT_VALID_PROGRAM].opCode = NOT_VALID_PROGRAM;
-
 	// cout << "\t\t[ProgramLineTable]: Initialized ProgramLineTable\n";
 	return;
 }
@@ -75,6 +70,7 @@ void ProgramLineTable::tokenizeLine(string currentLine, ProgramLineObject *curre
 			}
 			else{
 				if (currentChar == '\0'){
+					continueParsingCurrentObjectCode = false;
 					continueParsingLine = false;
 				}
 				else {
@@ -101,17 +97,48 @@ void ProgramLineTable::tokenizeLine(string currentLine, ProgramLineObject *curre
 	return;
 }
 
+// Returns the index of the line after the next loopend given the currentProgramLine,
+int ProgramLineTable::getIndexNextLoopend(int currentProgramLine){
+	bool continueSearching = true;
+	bool foundLoopEnd = false;
+	int currentOpCode;
+
+	while (continueSearching){
+		currentProgramLine++;
+		if (currentProgramLine <= globalNumLinesOfCode){
+			currentOpCode = programLineArray[currentProgramLine].opCode;
+			if (currentOpCode == LOOPEND_OP_CODE){
+				continueSearching = false;
+				foundLoopEnd = true;
+			}
+			else {
+				continueSearching = true;
+			}
+		}
+		else {
+			continueSearching = false;
+		}
+
+	}
+
+	return currentProgramLine;
+
+}
+
 // Returns a pointer to a copy of the ProgramLineObject for the next line indexed at nextProgramCounter
 ProgramLineObject* ProgramLineTable::getCopyOfNextProgramObject(int nextProgramCounter){
 	ProgramLineObject *nextProgramLine;
 
+	// cout << "\n\n\t\t[ProgramLineTable]: Next program: " << nextProgramCounter << "\tLines: " << globalNumLinesOfCode << endl;
+
 	if (nextProgramCounter < globalNumLinesOfCode){
 		nextProgramLine = getCopyOfProgramObject(programLineArray[nextProgramCounter]);
-		// cout << "\t\t[ProgramLineTable]: Got Line #" << nextProgramCounter << ": \"" << nextProgramLine << "\"\n";
 	}
 	else {
-		nextProgramLine = getCopyOfProgramObject(programLineArray[INDEX_NOT_VALID_PROGRAM]);
-		// cout << "\t\t[ProgramLineTable]: Reached End Of Program\n";
+		nextProgramLine = new ProgramLineObject();
+		(*nextProgramLine).numElementsInLine = END_OF_PROGRAM;
+		(*nextProgramLine).opCode = END_OF_PROGRAM;
+		// cout << "\t\t[ProgramLineTable]: Reached End Of Program " << (*nextProgramLine).numElementsInLine << "\n";
 	}
 
 	return nextProgramLine;

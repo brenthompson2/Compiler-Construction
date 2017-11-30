@@ -249,6 +249,7 @@ void BREN_Compiler::handleCommand(string currentLine, int correspondingLineNumbe
 
 	if (!caseFound){
 		cerr << "\t[Compiler]: ERROR: Failed to interpret command in line " << correspondingLineNumber << ": " <<  currentLine << endl << endl << endl;
+		numErrors++;
 	}
 }
 

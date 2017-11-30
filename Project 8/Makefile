@@ -1,5 +1,5 @@
 # Brendan Thompson
-# 11/20/17
+# 11/27/17
 # Makefile for Compiler V6
 
 # "make main" = Compile and Link Both BREN_Compiler & BREN_Executor
@@ -38,13 +38,13 @@ ExpressionFixConverter.o: ExpressionFixConverter.cpp ExpressionFixConverter.h Ex
 ### Executor Components ###
 ###########################
 
-BREN_Executor: ExecutorDriver.o Executor.o EFileManager.o FileManager.o SymbolTable.o LiteralTable.o LineLabelTable.o ProgramLineTable.o ExpressionConvertingMatrix.o ExpressionFixConverter.o eREAD.o eWRITE.o eSTOP.o eDIM.o eaREAD.o eaWRITE.o eNOP.o eLISTO.o elREAD.o elWRITE.o eCLS.o eCDUMP.o eSUBP.o
-	g++ -o BREN_Executor ExecutorDriver.o Executor.o EFileManager.o FileManager.o SymbolTable.o LiteralTable.o LineLabelTable.o ProgramLineTable.o ExpressionConvertingMatrix.o ExpressionFixConverter.o eREAD.o eWRITE.o eSTOP.o eDIM.o eaREAD.o eaWRITE.o eNOP.o eLISTO.o elREAD.o elWRITE.o eCLS.o eCDUMP.o eSUBP.o
+BREN_Executor: ExecutorDriver.o Executor.o EFileManager.o FileManager.o SymbolTable.o LiteralTable.o LineLabelTable.o ProgramLineTable.o LoopManager.o eREAD.o eWRITE.o eDIM.o eaREAD.o eaWRITE.o elREAD.o elWRITE.o eCDUMP.o eSUBP.o
+	g++ -o BREN_Executor ExecutorDriver.o Executor.o EFileManager.o FileManager.o SymbolTable.o LiteralTable.o LineLabelTable.o ProgramLineTable.o LoopManager.o eREAD.o eWRITE.o eDIM.o eaREAD.o eaWRITE.o elREAD.o elWRITE.o eCDUMP.o eSUBP.o
 
 ExecutorDriver.o: ExecutorDriver.cpp Executor.o
 	g++ -c ExecutorDriver.cpp
 
-Executor.o: Executor.cpp Executor.h EFileManager.o FileManager.o SymbolTable.o LiteralTable.o LineLabelTable.o ProgramLineTable.o ExpressionConvertingMatrix.o ExpressionFixConverter.o eREAD.o eWRITE.o eSTOP.o eDIM.o eaREAD.o eaWRITE.o eNOP.o eLISTO.o elREAD.o elWRITE.o eCLS.o eCDUMP.o eSUBP.o
+Executor.o: Executor.cpp Executor.h EFileManager.o FileManager.o SymbolTable.o LiteralTable.o LineLabelTable.o ProgramLineTable.o LoopManager.o eREAD.o eWRITE.o eDIM.o eaREAD.o eaWRITE.o elREAD.o elWRITE.o eCDUMP.o eSUBP.o
 	g++ -c Executor.cpp
 
 EFileManager.o: EFileManager.cpp EFileManager.h LiteralTable.h
@@ -52,6 +52,9 @@ EFileManager.o: EFileManager.cpp EFileManager.h LiteralTable.h
 
 ProgramLineTable.o: ProgramLineTable.cpp ProgramLineTable.h
 	g++ -c ProgramLineTable.cpp
+
+LoopManager.o: LoopManager.cpp LoopManager.h
+	g++ -c LoopManager.cpp
 
 ###########################
 ### Shared Components ###
@@ -82,9 +85,6 @@ eWRITE.o: ./ExecutorCommands/eWRITE.cpp ./ExecutorCommands/eWRITE.h ProgramLineT
 tSTOP.o: ./CompilerCommands/tSTOP.cpp ./CompilerCommands/tSTOP.h
 	g++ -c ./CompilerCommands/tSTOP.cpp
 
-eSTOP.o: ./ExecutorCommands/eSTOP.cpp ./ExecutorCommands/eSTOP.h
-	g++ -c ./ExecutorCommands/eSTOP.cpp
-
 tDIM.o: ./CompilerCommands/tDIM.cpp ./CompilerCommands/tDIM.h
 	g++ -c ./CompilerCommands/tDIM.cpp
 
@@ -112,14 +112,8 @@ tGOTO.o: ./CompilerCommands/tGOTO.cpp ./CompilerCommands/tGOTO.h
 tLOOP.o: ./CompilerCommands/tLOOP.cpp ./CompilerCommands/tLOOP.h
 	g++ -c ./CompilerCommands/tLOOP.cpp
 
-# eLOOP.o: ./ExecutorCommands/eLOOP.cpp ./ExecutorCommands/eLOOP.h
-# 	g++ -c ./ExecutorCommands/eLOOP.cpp
-
 tLOOPEND.o: ./CompilerCommands/tLOOPEND.cpp ./CompilerCommands/tLOOPEND.h
 	g++ -c ./CompilerCommands/tLOOPEND.cpp
-
-# eLOOPEND.o: ./ExecutorCommands/eLOOPEND.cpp ./ExecutorCommands/eLOOPEND.h
-# 	g++ -c ./ExecutorCommands/eLOOPEND.cpp
 
 tIFA.o: ./CompilerCommands/tIFA.cpp ./CompilerCommands/tIFA.h
 	g++ -c ./CompilerCommands/tIFA.cpp
@@ -130,14 +124,8 @@ tIFA.o: ./CompilerCommands/tIFA.cpp ./CompilerCommands/tIFA.h
 tNOP.o: ./CompilerCommands/tNOP.cpp ./CompilerCommands/tNOP.h
 	g++ -c ./CompilerCommands/tNOP.cpp
 
-eNOP.o: ./ExecutorCommands/eNOP.cpp ./ExecutorCommands/eNOP.h
-	g++ -c ./ExecutorCommands/eNOP.cpp
-
 tLISTO.o: ./CompilerCommands/tLISTO.cpp ./CompilerCommands/tLISTO.h
 	g++ -c ./CompilerCommands/tLISTO.cpp
-
-eLISTO.o: ./ExecutorCommands/eLISTO.cpp ./ExecutorCommands/eLISTO.h
-	g++ -c ./ExecutorCommands/eLISTO.cpp
 
 tlREAD.o: ./CompilerCommands/tlREAD.cpp ./CompilerCommands/tlREAD.h
 	g++ -c ./CompilerCommands/tlREAD.cpp
@@ -159,9 +147,6 @@ tIF.o: ./CompilerCommands/tIF.cpp ./CompilerCommands/tIF.h
 
 tCLS.o: ./CompilerCommands/tCLS.cpp ./CompilerCommands/tCLS.h
 	g++ -c ./CompilerCommands/tCLS.cpp
-
-eCLS.o: ./ExecutorCommands/eCLS.cpp ./ExecutorCommands/eCLS.h
-	g++ -c ./ExecutorCommands/eCLS.cpp
 
 tCDUMP.o: ./CompilerCommands/tCDUMP.cpp ./CompilerCommands/tCDUMP.h
 	g++ -c ./CompilerCommands/tCDUMP.cpp

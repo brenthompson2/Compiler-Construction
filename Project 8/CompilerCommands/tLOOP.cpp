@@ -3,7 +3,7 @@
 
 	File: tLOOP.cpp
 	Author: Brendan Thompson
-	Updated: 10/12/17
+	Updated: 11/30/17
 
 	Description: Implementation of Functions for processing LOOP command for Compiler object made for Transylvania University University Fall Term 2017 Compiler Construction class
 
@@ -212,15 +212,19 @@ bool tLOOP::parseVariable(int *currentCharIterator, int parameterNumber){
 		switch (parameterNumber){
 			case 0:
 				indexVariable.variableName = currentVariableName;
+				indexVariable.isConstant = false;
 				break;
 			case 1:
 				startIndex.variableName = currentVariableName;
+				startIndex.isConstant = false;
 				break;
 			case 2:
 				endIndex.variableName = currentVariableName;
+				endIndex.isConstant = false;
 				break;
 			case 3:
 				incrementAmount.variableName = currentVariableName;
+				incrementAmount.isConstant = false;
 				break;
 		}
 	}
@@ -351,15 +355,19 @@ bool tLOOP::parseConstant(int *currentCharIterator, int parameterNumber){
 		switch (parameterNumber){
 			case 0:
 				indexVariable.variableName = currentVariableName;
+				indexVariable.isConstant = true;
 				break;
 			case 1:
 				startIndex.variableName = currentVariableName;
+				startIndex.isConstant = true;
 				break;
 			case 2:
 				endIndex.variableName = currentVariableName;
+				endIndex.isConstant = true;
 				break;
 			case 3:
 				incrementAmount.variableName = currentVariableName;
+				incrementAmount.isConstant = true;
 				break;
 		}
 	}
@@ -369,7 +377,7 @@ bool tLOOP::parseConstant(int *currentCharIterator, int parameterNumber){
 
 // tells the memoryManager to conditionally add the global memoryTableObject arguments to the symbol table
 void tLOOP::syncVariablesToSymbolTable(){
-	// cout << "\t\t[LOOP]: Attempting to Add Arguments to Lookup Table...\n";
+	cout << "\t\t[LOOP]: Attempting to Add Arguments to Lookup Table...\n";
 	indexVariable.isArray = false;
 	indexVariable.size = 1;
 	startIndex.isArray = false;
@@ -384,7 +392,7 @@ void tLOOP::syncVariablesToSymbolTable(){
 	(*currentMemoryManager).manageMemoryTableObject(&endIndex);
 	(*currentMemoryManager).manageMemoryTableObject(&incrementAmount);
 
-	// (*currentMemoryManager).printSymbolTable();
+	(*currentMemoryManager).printSymbolTable();
 	return;
 }
 

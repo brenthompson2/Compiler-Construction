@@ -2,7 +2,7 @@
 
 	File: Executor.h
 	Author: Brendan Thompson
-	Updated: 11/20/17
+	Updated: 11/30/17
 
 	Description: Interface for Main Executor Object made for Transylvania University University Fall Term 2017 Executor Construction class
 		- creates an instance of FileManager, SymbolTable, LiteralTable, LineLabelTable, and ProgramLineTable
@@ -29,23 +29,18 @@ using std::string;
 #include "SymbolTable.h"
 #include "LiteralTable.h"
 #include "ProgramLineTable.h"
+#include "LoopManager.h"
 
 #include "./ExecutorCommands/eREAD.h"
 #include "./ExecutorCommands/eWRITE.h"
-// #include "./ExecutorCommands/eSTOP.h" // NOT USING COMMAND HANDLER
 #include "./ExecutorCommands/eDIM.h"
 #include "./ExecutorCommands/eaREAD.h"
 #include "./ExecutorCommands/eaWRITE.h"
 // #include "./ExecutorCommands/eGOTO.h"
-// #include "./ExecutorCommands/eLOOP.h"
-// #include "./ExecutorCommands/eLOOPEND.h"
 // #include "./ExecutorCommands/eIFA.h"
-// #include "./ExecutorCommands/eNOP.h" // NOT USING COMMAND HANDLER
-// #include "./ExecutorCommands/eLISTO.h" // NOT USING COMMAND HANDLER
 #include "./ExecutorCommands/elREAD.h"
 #include "./ExecutorCommands/elWRITE.h"
 // #include "./ExecutorCommands/eIF.h"
-// #include "./ExecutorCommands/eCLS.h" // NOT USING COMMAND HANDLER
 #include "./ExecutorCommands/eCDUMP.h"
 #include "./ExecutorCommands/eSUBP.h"
 // #include "./ExecutorCommands/eASSIGNMENT.h"
@@ -95,26 +90,21 @@ private:
 	SymbolTable globalMemoryManager;
 	LiteralTable globalLiteralManager;
 	ProgramLineTable globalProgramManager;
+	LoopManager globalLoopManager;
 
 	// objects for handling (executing) commands
 	eREAD mainREADHandler;
 	eWRITE mainWRITEHandler;
-	// eSTOP mainSTOPHandler; // NOT USING COMMAND HANDLER
 	eDIM mainDIMHandler;
 	eaREAD mainAREADHandler;
 	eaWRITE mainAWRITEHandler;
-	// eGOTO mainGOTOHandler;
-	// eLOOP mainLOOPHandler;
-	// eLOOPEND mainLOOPENDHandler;
-	// eIFA mainIFAHandler;
-	// eNOP mainNOPHandler; // NOT USING COMMAND HANDLER
-	// eLISTO mainLISTOHandler; // NOT USING COMMAND HANDLER
 	elREAD mainLREADHandler;
 	elWRITE mainLWRITEHandler;
-	// eIF mainIFHandler;
-	// eCLS mainCLSHandler; // NOT USING COMMAND HANDLER
 	eCDUMP mainCDUMPHandler;
 	eSUBP mainSUBPHandler;
+	// eGOTO mainGOTOHandler;
+	// eIFA mainIFAHandler;
+	// eIF mainIFHandler;
 	// eASSIGNMENT mainASSIGNMENTHandler;
 
 	/* ==============================================================================

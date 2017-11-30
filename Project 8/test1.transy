@@ -37,11 +37,20 @@ c* =======================
 c* ======== Math =========
 c* =======================
 
-subp sin (a, 15)
-subp cos (a, 15)
-subp exp (a, 15)
-subp abs (a, 15)
-subp alg (a, 15)
-subp aln (a, 15)
-subp log (a, 15)
-subp sqr (a, 15)
+// subp sin (a, 15)
+// subp cos (a, 15)
+// subp exp (a, 15)
+// subp abs (a, 15)
+// subp alg (a, 15)
+// subp aln (a, 15)
+// subp log (a, 15)
+// subp sqr (a, 15)
+
+c* =======================
+c* ======== LOOPS ========
+c* =======================
+
+loop x=0, 5, 1
+lwrite "\n Please Supply a Variable "
+read apple
+loop-end

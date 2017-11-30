@@ -2,7 +2,7 @@
 
 	File: SymbolTable.cpp
 	Author: Brendan Thompson
-	Updated: 11/26/17
+	Updated: 11/29/17
 
 	Description: 	Implementation for SymbolTable for Compiler object made for Transylvania University University Fall Term 2017 Compiler Construction class
 		- manages IDs (variables or Constants) and their associated values and virtual memory locations
@@ -62,6 +62,12 @@ void SymbolTable::setValue(int memoryLocation, string newValue){
 		globalCoreMemoryArray[memoryLocation] = newValue;
 		// cout << "\t\t[Core Memory]: Set RValue of location " << memoryLocation << " to \""  << globalCoreMemoryArray[memoryLocation] << "\"\n";
 	}
+	return;
+}
+
+// Sets the RValue of the destinationAddress to the RValue of the sourceAddress
+void SymbolTable::deepCopy(int destinationAddress, int sourceAddress){
+	globalCoreMemoryArray[destinationAddress] = globalCoreMemoryArray[sourceAddress];
 	return;
 }
 
@@ -206,7 +212,7 @@ void SymbolTable::printSymbolTable(){
 	cout << "\t\t\t[SymbolTable]: Symbol Table currently has " << numObjectsInArray << " declared locations\n";
 
 	for (int i = 0; i < numObjectsInArray; i++){
-		cout << "\t\t\t\t" << i << ":\t" << symbolTableArray[i].variableName;
+		cout << "\t\t\t\t" << i << ":\t" << symbolTableArray[i].value;
 		if (symbolTableArray[i].isArray){
 			cout << "\tSize: " << symbolTableArray[i].size;
 		}
@@ -220,9 +226,11 @@ void SymbolTable::printSymbolTable(){
 
 // iterates through the SymbolTable and outputs the variableName & memoryLocation to .core file
 void SymbolTable::outputCoreFile(){
+	printSymbolTable();
+
 	cout << "\t\t\t[SymbolTable]: Writing .core file...\n";
 	for (int i = 0; i < MAX_NUM_VARIABLES; i++){
-		// cout << "\t\t\t[SymbolTable]: Outputting data for " << symbolTableArray[i].variableName << endl;;
+		cout << "\t\t\t" << i << ": " << symbolTableArray[i].value << endl;;
 		// (*currentFileManager).writeStringToCore(symbolTableArray[i].variableName);
 		// (*currentFileManager).writeStringToCore("\t");
 		(*currentFileManager).writeNumToCore(symbolTableArray[i].value);
