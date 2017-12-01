@@ -395,6 +395,11 @@ int FileManager::checkForLineLabel(string currentLine){
 			continueSearching = false;
 		}
 
+		// Got Open Quote, stop searching
+		if (currentCharacter == '"'){
+			continueSearching = false;
+		}
+
 		// Got End Of Line, stop searching
 		if (currentCharacter == '\0'){
 			continueSearching = false;
