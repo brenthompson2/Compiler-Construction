@@ -38,13 +38,13 @@ ExpressionFixConverter.o: ExpressionFixConverter.cpp ExpressionFixConverter.h Ex
 ### Executor Components ###
 ###########################
 
-BREN_Executor: ExecutorDriver.o Executor.o EFileManager.o FileManager.o SymbolTable.o LiteralTable.o LineLabelTable.o ProgramLineTable.o LoopManager.o eREAD.o eWRITE.o eDIM.o eaREAD.o eaWRITE.o elREAD.o elWRITE.o eCDUMP.o eSUBP.o
-	g++ -o BREN_Executor ExecutorDriver.o Executor.o EFileManager.o FileManager.o SymbolTable.o LiteralTable.o LineLabelTable.o ProgramLineTable.o LoopManager.o eREAD.o eWRITE.o eDIM.o eaREAD.o eaWRITE.o elREAD.o elWRITE.o eCDUMP.o eSUBP.o
+BREN_Executor: ExecutorDriver.o Executor.o EFileManager.o FileManager.o SymbolTable.o LiteralTable.o LineLabelTable.o ProgramLineTable.o LoopManager.o eREAD.o eWRITE.o eDIM.o eaREAD.o eaWRITE.o elREAD.o elWRITE.o eIF.o eCDUMP.o eSUBP.o
+	g++ -o BREN_Executor ExecutorDriver.o Executor.o EFileManager.o FileManager.o SymbolTable.o LiteralTable.o LineLabelTable.o ProgramLineTable.o LoopManager.o eREAD.o eWRITE.o eDIM.o eaREAD.o eaWRITE.o elREAD.o elWRITE.o eIF.o eCDUMP.o eSUBP.o
 
 ExecutorDriver.o: ExecutorDriver.cpp Executor.o
 	g++ -c ExecutorDriver.cpp
 
-Executor.o: Executor.cpp Executor.h EFileManager.o FileManager.o SymbolTable.o LiteralTable.o LineLabelTable.o ProgramLineTable.o LoopManager.o eREAD.o eWRITE.o eDIM.o eaREAD.o eaWRITE.o elREAD.o elWRITE.o eCDUMP.o eSUBP.o
+Executor.o: Executor.cpp Executor.h EFileManager.o FileManager.o SymbolTable.o LiteralTable.o LineLabelTable.o ProgramLineTable.o LoopManager.o eREAD.o eWRITE.o eDIM.o eaREAD.o eaWRITE.o elREAD.o elWRITE.o eIF.o eCDUMP.o eSUBP.o
 	g++ -c Executor.cpp
 
 EFileManager.o: EFileManager.cpp EFileManager.h LiteralTable.h
@@ -106,9 +106,6 @@ eaWRITE.o: ./ExecutorCommands/eaWRITE.cpp ./ExecutorCommands/eaWRITE.h
 tGOTO.o: ./CompilerCommands/tGOTO.cpp ./CompilerCommands/tGOTO.h
 	g++ -c ./CompilerCommands/tGOTO.cpp
 
-# eGOTO.o: ./ExecutorCommands/eGOTO.cpp ./ExecutorCommands/eGOTO.h
-# 	g++ -c ./ExecutorCommands/eGOTO.cpp
-
 tLOOP.o: ./CompilerCommands/tLOOP.cpp ./CompilerCommands/tLOOP.h
 	g++ -c ./CompilerCommands/tLOOP.cpp
 
@@ -142,8 +139,8 @@ elWRITE.o: ./ExecutorCommands/elWRITE.cpp ./ExecutorCommands/elWRITE.h
 tIF.o: ./CompilerCommands/tIF.cpp ./CompilerCommands/tIF.h
 	g++ -c ./CompilerCommands/tIF.cpp
 
-# eIF.o: ./ExecutorCommands/eIF.cpp ./ExecutorCommands/eIF.h
-# 	g++ -c ./ExecutorCommands/eIF.cpp
+eIF.o: ./ExecutorCommands/eIF.cpp ./ExecutorCommands/eIF.h
+	g++ -c ./ExecutorCommands/eIF.cpp
 
 tCLS.o: ./CompilerCommands/tCLS.cpp ./CompilerCommands/tCLS.h
 	g++ -c ./CompilerCommands/tCLS.cpp
