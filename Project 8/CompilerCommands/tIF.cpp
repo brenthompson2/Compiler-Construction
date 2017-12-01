@@ -302,9 +302,11 @@ bool tIF::parseVariable(int *currentCharIterator, int parameterNumber){
 		switch (parameterNumber){
 			case FIRST_ID_CODE:
 				firstID.variableName = currentVariableName;
+				firstID.isConstant = false;
 				break;
 			case SECOND_ID_CODE:
 				secondID.variableName = currentVariableName;
+				secondID.isConstant = false;
 				break;
 		}
 	}
@@ -425,9 +427,11 @@ bool tIF::parseConstant(int *currentCharIterator, int parameterNumber){
 		switch (parameterNumber){
 			case FIRST_ID_CODE:
 				firstID.variableName = currentVariableName;
+				firstID.isConstant = true;
 				break;
 			case SECOND_ID_CODE:
 				secondID.variableName = currentVariableName;
+				secondID.isConstant = true;
 				break;
 		}
 	}
