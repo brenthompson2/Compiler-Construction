@@ -149,7 +149,7 @@ void tlWRITE::parseLiteral(int *currentCharIterator){
 	if (isValidLiteral){
 		globalLiteralObject.variableName = UNNAMED_LITERAL;
 		globalLiteralObject.literalString = currentLiteral;
-		cout << "\t\t[tlWRITE]: Found Literal: \""<< globalLiteralObject.literalString << "\"\n";
+		// cout << "\t\t[tlWRITE]: Found Literal: \""<< globalLiteralObject.literalString << "\"\n";
 	}
 
 	return;
@@ -254,7 +254,7 @@ bool tlWRITE::parseVariable(int *currentCharIterator){
 	if (isValidVariableName){
 		globalLiteralObject.variableName = currentVariableName;
 		globalLiteralObject.literalString = UNDEFINED_LITERAL;
-		cout << "\t\t[tlWRITE]: Found Literal Variable Name: \""<< globalLiteralObject.variableName << "\"\n";
+		// cout << "\t\t[tlWRITE]: Found Literal Variable Name: \""<< globalLiteralObject.variableName << "\"\n";
 	}
 
 	return isNotLastVariable;
@@ -266,7 +266,7 @@ void tlWRITE::syncLiteralToLiteralTable(){
 
 	(*currentliteralManager).manageLiteralObject(&globalLiteralObject);
 
-	(*currentliteralManager).printLiteralTable();
+	// (*currentliteralManager).printLiteralTable();
 	return;
 }
 

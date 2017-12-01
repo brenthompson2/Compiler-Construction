@@ -65,7 +65,7 @@ void LiteralTable::manageLiteralObject(literalTableObject *currentLiteralObject)
 
 	// Managing a Literal String without a Variable Name
 	if ((*currentLiteralObject).variableName == UNNAMED_LITERAL){
-		cout << "\t\t\t[LiteralTable]: Managing Memory for " << (*currentLiteralObject).literalString << endl;
+		// cout << "\t\t\t[LiteralTable]: Managing Memory for " << (*currentLiteralObject).literalString << endl;
 		if (currentlyExists_Literal((*currentLiteralObject).literalString)){
 			(*currentLiteralObject).memoryLocation = lookup_Literal((*currentLiteralObject).literalString);
 		}
@@ -75,10 +75,9 @@ void LiteralTable::manageLiteralObject(literalTableObject *currentLiteralObject)
 	}
 	// Managing a Variable Name without a Literal String
 	else {
-		cout << "\t\t\t[LiteralTable]: Managing Memory for " << (*currentLiteralObject).variableName << endl;
+		// cout << "\t\t\t[LiteralTable]: Managing Memory for " << (*currentLiteralObject).variableName << endl;
 		if (currentlyExists_Variable((*currentLiteralObject).variableName)){
 			(*currentLiteralObject).memoryLocation = lookup((*currentLiteralObject).variableName);
-			cout << "yo\n";
 		}
 		else {
 			(*currentLiteralObject).memoryLocation = insertInto(currentLiteralObject);
@@ -217,8 +216,8 @@ void LiteralTable::outputLiteralFile(){
 
 // adds the literal object to the table
 int LiteralTable::insertInto(literalTableObject *currentMemoryObject){
-	cout << "\t\t\t[LiteralTable]: Adding Literal Object to LiteralTable\n";
-	cout << "\t\t\t\tName: " << (*currentMemoryObject).variableName << "\tLiteral: \"" << (*currentMemoryObject).literalString << "\"\n";
+	// cout << "\t\t\t[LiteralTable]: Adding Literal Object to LiteralTable\n";
+	// cout << "\t\t\t\tName: " << (*currentMemoryObject).variableName << "\tLiteral: \"" << (*currentMemoryObject).literalString << "\"\n";
 	int newMemoryLocation = numObjectsInArray;
 
 	LiteralTableArray[numObjectsInArray].variableName = (*currentMemoryObject).variableName;
