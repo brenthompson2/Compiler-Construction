@@ -258,6 +258,7 @@ bool BREN_Compiler::checkForAssignment(string currentLine, int correspondingLine
 	char currentCharacter;
 	bool foundEquals = false;
 	bool foundComma = false;
+	bool foundQuote = false;
 	bool isAssignment = false;
 
 	for (int characterIterator = 0; characterIterator < currentLine.size(); characterIterator++){
@@ -270,9 +271,13 @@ bool BREN_Compiler::checkForAssignment(string currentLine, int correspondingLine
 		if (currentCharacter == ','){
 			foundComma = true;
 		}
+
+		if (currentCharacter == '"'){
+			foundQuote = true;
+		}
 	}
 
-	if (foundEquals && (!foundComma)){
+	if (foundEquals && (!foundComma) && (!foundQuote)){
 		isAssignment = true;
 
 	}
