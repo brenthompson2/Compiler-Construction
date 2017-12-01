@@ -18,21 +18,20 @@ I) Summary of Work:
 	- Fixed Literals
 	- Fixed If
 	- Implemented Jump Commands
+	- Handled Flags (-x not working)
 
 II) Still Need to Implement:
 	- eCOMMANDS:
-		- SUBP difference between alg, aln, and log
+		- SUBP difference between alg, aln, and log?
 		- Executor V3 = Assignment
-	- Flags:
-		-x = compiler flag to execute after compilation
-		-r = executor flag to check range violations on arrays
-		-z = executor flag to use 0 for undefined values (0.123456789)
 	- \n prints new line for lwrite
 	- Compiler:
-		- handle floats
+		- handle floats everywhere
 		- handle no id after operator in assignment (x = y + 4 * _)
 
 III) Thoughts:
+	- Should separate CoreMemory out of SymbolTable
+		- They're different & both have a bunch of functions
 	- Can't use ":" in an LWRITE because my Compiler's FileManager turns all : into LineLabels
 	- Each command has a parser function and they are all super similar
 		- Could possibly abstract them away into less function
@@ -139,6 +138,18 @@ V) Log Of Activity:
 		- tIF wasn't flagging constants and therefore wasn't defining them within the symbol table
 	- IFA
 		- Copied IF
+
+- Handled Flags
+	-r = range checking
+		- Executor tells SymbolTable to set bool
+		- Used in function rangeChecksOut
+	-z = use zero if undefined
+		- Executor tells SymbolTable to set bool
+		- Used in function getValue
+		- had to hack the getValue function when testing to see if it is undefined
+	-x = automatically execute after compilation
+		- not working properly
+		- Compiler Driver attempts to call system("./BRENxExecutor <filename>");
 
 =========================================================
 =========================================================

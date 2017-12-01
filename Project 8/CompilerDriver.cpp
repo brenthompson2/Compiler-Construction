@@ -32,8 +32,11 @@
 // takes in the command line arguments passed to the compiler and parses them into flags and the fileName
 bool parseArguments(int numArguments, char* *arrayOfArgs, char *arrayOfFlags, string *fileName, int *numFlags);
 
+// returns whether or not the execution flag has been set (-x)
+bool checkForExecutionFlag(string fileName, char *arrayOfFlags, int numFlags);
+
 /* ==============================================================================
-	Main Driver
+	Main Compiler Driver
 ============================================================================== */
 
 int main (int argc, char**argv){
@@ -44,24 +47,32 @@ int main (int argc, char**argv){
 	bool gotFilename = false;
 	bool continueWithCompilation = true;
 
-	cout << "\n[Driver]: Preparing for Compilation...\n";
+	cout << "\n[Compiler Driver]: Preparing for Compilation...\n";
 	continueWithCompilation = parseArguments(argc, argv, arrayOfFlags, &fileName, &numFlags);
 	if (!continueWithCompilation){
-		cout << "[Driver]: Error Parsing Command Line Arguments, aborting...\n";
+		cout << "[Compiler Driver]: Error Parsing Command Line Arguments, aborting...\n";
 		exit(1);
 	}
 
 	BREN_Compiler mainCompiler;
 	continueWithCompilation = mainCompiler.prepareForCompilation(fileName, arrayOfFlags, numFlags);
 	if (!continueWithCompilation){
-		cout << "[Driver]: Error Preparing for Compilation, aborting...\n";
+		cout << "[Compiler Driver]: Error Preparing for Compilation, aborting...\n";
 		exit(1);
 	}
 
-	cout << "\n\n[Driver]: Compiling...\n";
+	cout << "\n\n[Compiler Driver]: Compiling...\n";
 	mainCompiler.compile();
 
-	cout << "\n\n[Driver]: Finished Compilation\n";
+	cout << "\n\n[Compiler Driver]: Finished Compilation\n";
+
+	if (checkForExecutionFlag(fileName, arrayOfFlags, numFlags)){
+		cout << "[Compiler Driver]: Calling Executor...\n";
+		string executorFunctionCall = "./BRENxExecutor";
+		// executorFunctionCall += " ";
+		// executorFunctionCall += fileName;
+		system(executorFunctionCall.c_str());
+	}
 
 	return 0;
 }
@@ -117,8 +128,17 @@ bool parseArguments(int numArguments, char* *arrayOfArgs, char *arrayOfFlags, st
 		(*fileName) = "test1.transy";
 	}
 
-	cout << "[Driver]: Got Filename: " << (*fileName) << endl;
-
+	// cout << "[Driver]: Got Filename: " << (*fileName) << endl;
 	return true;
+}
 
+// returns whether or not the execution flag has been set (-x)
+bool checkForExecutionFlag(string fileName, char *arrayOfFlags, int numFlags){
+	bool callExecutorFlag = false;
+	for (int i = 0; i < numFlags; i++){
+		if ((arrayOfFlags[i] == 'x') || (arrayOfFlags[i] == 'X')){
+			callExecutorFlag = true;
+		}
+	}
+	return callExecutorFlag;
 }

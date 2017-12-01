@@ -40,6 +40,18 @@ bool BREN_Executor::prepareForExecution(string fileToExecute, char *arrayOfFlags
 	bool successfullyPrepared = false;
 
 	// Handle Flags
+	char currentFlag;
+	for (int i = 0; i < numberOfFlags; i++){
+		currentFlag = arrayOfFlags[i];
+		if ((currentFlag == 'r') || (currentFlag == 'R')){
+			cout << "\n\t[Warning]: Found -r flag\n";
+			globalMemoryManager.turnOnRangeCheckingFlag();
+		}
+		if ((currentFlag == 'z') || (currentFlag == 'Z')){
+			cout << "\n\t[Warning]: Found -z flag\n";
+			globalMemoryManager.turnOnZeroForUndefinedFlag();
+		}
+	}
 
 	// Load Program
 	// cout << "\t[Executor]: Attempting to load " << fileToExecute << "...\n";

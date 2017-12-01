@@ -2,7 +2,7 @@
 
 	File: SymbolTable.cpp
 	Author: Brendan Thompson
-	Updated: 11/26/17
+	Updated: 11/30/17
 
 	Description: Interface for SymbolTable for Compiler object made for Transylvania University University Fall Term 2017 Compiler Construction class
 		- manages IDs (variables or Constants) and their associated values and virtual memory locations
@@ -93,18 +93,24 @@ public:
 	// sets coreMemory boolean regarding the result of compilation
 	void setCompilationResult(bool completedSuccessfully);
 
+	// sets the flag to true
+	void turnOnRangeCheckingFlag();
+
+	// sets the flag to true
+	void turnOnZeroForUndefinedFlag();
+
 	/* ==============================================================================
 		Public Accessor Methods
 	============================================================================== */
+
+	// returns the value at the specified memoryLocation - For Executor
+	string getValue(int memoryLocation);
 
 	// returns true if the variable already exists in the SymbolTable
 	bool currentlyExists(string variableName);
 
 	// returns the memoryLocation for the variable
 	int lookup(string variableName);
-
-	// returns the value at the specified memoryLocation - For Executor
-	string getValue(int memoryLocation);
 
 	// returns the lookup table index for the variable
 	int getSymbolTableIndex(string variableNameToGet);
@@ -135,6 +141,10 @@ protected:
 	/* ==============================================================================
 		Private Members
 	============================================================================== */
+
+	// Execution Flags
+	bool checkRangesFlag;
+	bool useZeroFlag;
 
 	// Core memory Array of Variables for Execution
 	string globalCoreMemoryArray[MAX_NUM_VARIABLES];

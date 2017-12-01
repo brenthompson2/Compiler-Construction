@@ -22,6 +22,8 @@ SymbolTable::SymbolTable(){
 	globalSizeCoreMemory = 0;
 	globalNumArrayDimension = 0;
 	numObjectsInArray = 0;
+	checkRangesFlag = false;
+	useZeroFlag = false;
 	for (int i = 0; i < MAX_NUM_VARIABLES; i++){
 		symbolTableArray[i].variableName = UNDECLARED_VALUE;
 		symbolTableArray[i].value = UNDEFINED_VALUE;
@@ -71,18 +73,6 @@ void SymbolTable::deepCopy(int destinationAddress, int sourceAddress){
 	return;
 }
 
-// returns the value at the specified memoryLocation
-string SymbolTable::getValue(int memoryLocation){
-	string currentValue;
-	if ((memoryLocation >= 0) && (memoryLocation < MAX_NUM_VARIABLES)){
-		currentValue = globalCoreMemoryArray[memoryLocation];
-	}
-	else {
-		currentValue = "failed to get value: invalid memory location";
-	}
-	return currentValue;
-}
-
 // Adds a new array to the globalArrayofArrayDimensions
 void SymbolTable::addNewArray(int memoryLocationOfNewArray, int sizeOfNewArray){
 	if (globalNumArrayDimension < MAX_NUM_VARIABLES){
@@ -118,9 +108,39 @@ void SymbolTable::setCompilationResult(bool completedSuccessfully){
 	symbolTableArray[INDEX_COMPILATION_RESULT].size = 1;
 }
 
+// sets the flag to true
+void SymbolTable::turnOnRangeCheckingFlag(){
+	checkRangesFlag = true;
+}
+
+// sets the flag to true
+void SymbolTable::turnOnZeroForUndefinedFlag(){
+	useZeroFlag = true;
+}
+
 /* ==============================================================================
 	Public Accessor Methods
 ============================================================================== */
+
+// returns the value at the specified memoryLocation
+string SymbolTable::getValue(int memoryLocation){
+	string currentValue;
+	if ((memoryLocation >= 0) && (memoryLocation < MAX_NUM_VARIABLES)){
+		currentValue = globalCoreMemoryArray[memoryLocation];
+	}
+	else {
+		currentValue = "failed to get value: invalid memory location";
+	}
+
+	if (useZeroFlag){
+		cout << "\t\t\t[Core Memory]: Current value is " << currentValue << endl;
+		if (currentValue == "0.12345679"){
+			currentValue = "0";
+		}
+	}
+
+	return currentValue;
+}
 
 // returns true if the variable already exists in the SymbolTable
 bool SymbolTable::currentlyExists(string variableName){
@@ -175,8 +195,13 @@ bool SymbolTable::rangeChecksOut(int arrayMemoryLocation, int startIndex, int en
 		}
 	}
 
-	if ((startIndex >= sizeOfArray) || (endIndex >= sizeOfArray)){
-		withinRange = false;
+	if (checkRangesFlag){
+		if ((startIndex < 0) || (endIndex >= sizeOfArray)){
+			withinRange = false;
+		}
+		else {
+			withinRange = true;
+		}
 	}
 	else {
 		withinRange = true;

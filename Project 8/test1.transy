@@ -59,28 +59,53 @@ c* =======================
 c* ======== JUMPS ========
 c* =======================
 
-// goto apple
+// Test GOTO
+// goto skipTheLine
 // lwrite "You shouldn't see this"
+// skipTheLine:
+// lwrite "Hopefully you didn't see it"
+// stop
 
+// Test IFA
+// lwrite "Please Supply a Value: "
+// read banana
+// ifa (banana) Negative, Zero, Positive
+// Negative:
+// lwrite "Its Negative!"
+// goto done
+// Zero:
+// lwrite "Its Zero!"
+// goto done
+// Positive:
+// lwrite "Its Positive!"
+// done:
+// stop
 
-lwrite "Please Supply a Value: "
-read banana
-ifa (banana) Negative, Zero, Positive
-Negative:
-lwrite "Its Negative!"
-goto done
-Zero:
-lwrite "Its Zero!"
-goto done
-Positive:
-lwrite "Its Positive!"
-done:
-stop
-
-// if (0 < 15) then apple
+// Test IF
+// if (0 < 15) then true
 // goto after
-// apple:
+// true:
 // lwrite "Its True!"
 // after:
 // lwrite "Blah"
+// stop
 
+c* ======================
+c* ======= FLAGS ========
+c* ======================
+
+// Testing Range Checking
+// dim theArray[10]
+// lwrite "Preparing to read... please supply a start index: "
+// read startIndex
+// lwrite "Preparing to read... please supply an end index: "
+// read endIndex
+// lwrite "Read in the values: "
+// aread theArray, startIndex, endIndex
+// awrite theArray, startIndex, endIndex
+// stop
+
+// Testing Undefined Values
+lwrite "Undefined value: "
+write undefinedVariable
+stop

@@ -33,7 +33,7 @@
 bool parseArguments(int numArguments, char* *arrayOfArgs, char *arrayOfFlags, string *fileName, int *numFlags);
 
 /* ==============================================================================
-	Main Driver
+	Main Executor Driver
 ============================================================================== */
 
 int main (int argc, char**argv){
@@ -44,24 +44,24 @@ int main (int argc, char**argv){
 	bool gotFilename = false;
 	bool continueWithExecution = true;
 
-	cout << "\n[Driver]: Preparing for Execution...\n";
+	cout << "\n[Executor Driver]: Preparing for Execution...\n";
 	continueWithExecution = parseArguments(argc, argv, arrayOfFlags, &fileName, &numFlags);
 	if (!continueWithExecution){
-		cout << "[Driver]: Error Parsing Command Line Arguments, aborting...\n";
+		cout << "[Executor Driver]: Error Parsing Command Line Arguments, aborting...\n";
 		exit(1);
 	}
 
 	BREN_Executor mainExecutor;
 	continueWithExecution = mainExecutor.prepareForExecution(fileName, arrayOfFlags, numFlags);
 	if (!continueWithExecution){
-		cout << "[Driver]: Error Preparing for Execution, aborting...\n";
+		cout << "[Executor Driver]: Error Preparing for Execution, aborting...\n";
 		exit(1);
 	}
 
-	cout << "\n\n[Driver]: Executing...\n";
+	cout << "\n\n[Executor Driver]: Executing...\n";
 	mainExecutor.execute();
 
-	cout << "\n\n[Driver]: Finished Execution\n";
+	cout << "\n\n[Executor Driver]: Finished Execution\n";
 	return 0;
 }
 
@@ -82,10 +82,10 @@ bool parseArguments(int numArguments, char* *arrayOfArgs, char *arrayOfFlags, st
 	}
 
 	// Get Flags
-	// cout << "\n[Driver]: Getting Flags...\n";
+	// cout << "\n[Executor Driver]: Getting Flags...\n";
 	for (int i = 1; i < numArguments; i++){
 		currentArg = (arrayOfArgs[i]);
-		// cout << "[Driver]: Parsing Arg " << i << ": " << currentArg << endl;
+		// cout << "[Executor Driver]: Parsing Arg " << i << ": " << currentArg << endl;
 
 		// Got Flag
 		if (currentArg[0] == '-'){
@@ -94,14 +94,14 @@ bool parseArguments(int numArguments, char* *arrayOfArgs, char *arrayOfFlags, st
 			// Parse Nested Flags
 			while (currentArg[flagIterator] != '\0'){
 				arrayOfFlags[(*numFlags)] = currentArg[flagIterator];
-				// cout << "[Driver]: Got Flag: " << i << ": " << arrayOfFlags[(*numFlags)] << endl;
+				// cout << "[Executor Driver]: Got Flag: " << i << ": " << arrayOfFlags[(*numFlags)] << endl;
 				(*numFlags)++;
 				flagIterator++;
 			}
 		}
 		else {
 			if (i != numArguments -1){
-				cout << "[Driver]: Error: Expected Flag\n";
+				cout << "[Executor Driver]: Error: Expected Flag\n";
 				return false;
 			}
 			else {
@@ -116,7 +116,7 @@ bool parseArguments(int numArguments, char* *arrayOfArgs, char *arrayOfFlags, st
 		(*fileName) = "test1.obj";
 	}
 
-	cout << "[Driver]: Got Filename: " << (*fileName) << endl;
+	// cout << "[Executor Driver]: Got Filename: " << (*fileName) << endl;
 
 	return true;
 
