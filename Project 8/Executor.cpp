@@ -118,7 +118,6 @@ void BREN_Executor::handleCommand(ProgramLineObject currentLineObject, int *curr
 			break;
 		case STOP_OP_CODE: // 3
 			// cout << "\t[Executor]: Found STOP command\n";
-			// mainSTOPHandler.handleSTOP(&currentLineObject); // NOT USING COMMAND HANDLER
 			(*currentProgramCounter) = END_OF_PROGRAM;
 			globalFoundStopCommand = true;
 			break;
@@ -134,13 +133,11 @@ void BREN_Executor::handleCommand(ProgramLineObject currentLineObject, int *curr
 			break;
 		case LISTO_OP_CODE: // 6
 			// cout << "\t[Executor]: Found LISTO Command\n";
-			// mainLISTOHandler.handleLISTO(&currentLineObject, *currentProgramCounter); // NOT USING COMMAND HANDLER
 			globalProgramManager.printProgramLineTable();
 			(*currentProgramCounter)++;
 			break;
 		case NOP_OP_CODE: // 7
 			// cout << "\t[Executor]: Found NOP Command\n";
-			// mainNOPHandler.handleNOP(&currentLineObject, *currentProgramCounter); // NOT USING COMMAND HANDLER
 			(*currentProgramCounter)++;
 			break;
 		case GOTO_OP_CODE: // 8
@@ -152,10 +149,10 @@ void BREN_Executor::handleCommand(ProgramLineObject currentLineObject, int *curr
 			globalNumErrors++;
 			(*currentProgramCounter)++;
 			break;
-	// 	case IFA_OP_CODE: // 10
-	// 		// cout << "\t[Executor]: Found IFA Command\n";
-	// 		mainIFAHandler.handleIFA(&currentLineObject, *currentProgramCounter);
-	// 		break;
+		case IFA_OP_CODE: // 10
+			// cout << "\t[Executor]: Found IFA Command\n";
+			mainIFAHandler.handleIFA(&currentLineObject, currentProgramCounter);
+			break;
 		case AREAD_OP_CODE: // 11
 			// cout << "\t[Executor]: Found aREAD Command\n";
 			mainAREADHandler.handleAREAD(&currentLineObject);
@@ -189,13 +186,12 @@ void BREN_Executor::handleCommand(ProgramLineObject currentLineObject, int *curr
 			mainLWRITEHandler.handleLWRITE(&currentLineObject);
 			(*currentProgramCounter)++;
 			break;
-	// 	case IF_OP_CODE: // 18
-	// 		// cout << "\t[Executor]: Found IF Command\n";
-	// 		mainIFHandler.handleIF(&currentLineObject, *currentProgramCounter);
-	// 		break;
+		case IF_OP_CODE: // 18
+			// cout << "\t[Executor]: Found IF Command\n";
+			mainIFHandler.handleIF(&currentLineObject, currentProgramCounter);
+			break;
 		case CLS_OP_CODE: // 19
 			// cout << "\t[Executor]: Found CLS Command\n";
-			// mainCLSHandler.handleCLS(&currentLineObject, *currentProgramCounter);
 			cout << string(100, '\n');
 			(*currentProgramCounter)++;
 			break;
@@ -226,8 +222,8 @@ void BREN_Executor::instantiateCommandObjects(){
 
 	globalLoopManager.prepareLoopManager(&globalMemoryManager, &globalProgramManager);
 	// mainGOTOHandler.prepareGOTO(&globalFileManager, &globalLineManager);
-	// mainIFAHandler.prepareIFA(&globalFileManager, &globalMemoryManager, &globalLineManager);
-	// mainIFHandler.prepareIF(&globalFileManager, &globalMemoryManager, &globalLineManager);
+	mainIFAHandler.prepareIFA(&globalMemoryManager);
+	mainIFHandler.prepareIF(&globalMemoryManager);
 
 	// mainASSIGNMENTHandler.prepareASSIGNMENT(&globalFileManager, &globalMemoryManager);
 }

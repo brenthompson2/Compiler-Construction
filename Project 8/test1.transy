@@ -59,8 +59,28 @@ c* =======================
 c* ======== JUMPS ========
 c* =======================
 
+// goto apple
+// lwrite "You shouldn't see this"
 
-goto apple
-lwrite "You shouldn't see this"
-apple:
-lwrite "Hi there!"
+
+lwrite "Please Supply a Value: "
+read banana
+ifa (banana) Negative, Zero, Positive
+Negative:
+lwrite "Its Negative!"
+goto done
+Zero:
+lwrite "Its Zero!"
+goto done
+Positive:
+lwrite "Its Positive!"
+done:
+stop
+
+// if (0 < 15) then apple
+// goto after
+// apple:
+// lwrite "Its True!"
+// after:
+// lwrite "Blah"
+

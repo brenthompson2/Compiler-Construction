@@ -11,15 +11,17 @@ Brendan Thompson
 =========================================================
 =========================================================
 
-11/29/17
+11/30/17
 
 I) Summary of Work:
 	- Removed Unused eCOMMANDS
+	- Fixed Literals
+	- Fixed If
+	- Implemented Jump Commands
 
 II) Still Need to Implement:
 	- eCOMMANDS:
 		- SUBP difference between alg, aln, and log
-		- Executor V2 = Loop, Loopend, Goto, ifa, if
 		- Executor V3 = Assignment
 	- Flags:
 		-x = compiler flag to execute after compilation
@@ -128,8 +130,15 @@ V) Log Of Activity:
 	- Not flagging = as an assignment statement
 	- Not flagging : as a line label
 
+- Fixed If:
+	- Not flagging = as an assignment statement if find ( first
+
 - Implemented Jump Commands
 	- GOTO didn't need handler
+	- IF
+		- tIF wasn't flagging constants and therefore wasn't defining them within the symbol table
+	- IFA
+		- Copied IF
 
 =========================================================
 =========================================================

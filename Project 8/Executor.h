@@ -36,13 +36,12 @@ using std::string;
 #include "./ExecutorCommands/eDIM.h"
 #include "./ExecutorCommands/eaREAD.h"
 #include "./ExecutorCommands/eaWRITE.h"
-// #include "./ExecutorCommands/eGOTO.h"
-// #include "./ExecutorCommands/eIFA.h"
 #include "./ExecutorCommands/elREAD.h"
 #include "./ExecutorCommands/elWRITE.h"
-// #include "./ExecutorCommands/eIF.h"
 #include "./ExecutorCommands/eCDUMP.h"
 #include "./ExecutorCommands/eSUBP.h"
+#include "./ExecutorCommands/eIFA.h"
+#include "./ExecutorCommands/eIF.h"
 // #include "./ExecutorCommands/eASSIGNMENT.h"
 
 /* ==============================================================================
@@ -102,9 +101,8 @@ private:
 	elWRITE mainLWRITEHandler;
 	eCDUMP mainCDUMPHandler;
 	eSUBP mainSUBPHandler;
-	// eGOTO mainGOTOHandler;
-	// eIFA mainIFAHandler;
-	// eIF mainIFHandler;
+	eIFA mainIFAHandler;
+	eIF mainIFHandler;
 	// eASSIGNMENT mainASSIGNMENTHandler;
 
 	/* ==============================================================================

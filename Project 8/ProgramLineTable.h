@@ -44,7 +44,7 @@ using std::string;
 #define NOP_OP_CODE 7
 #define GOTO_OP_CODE 8
 // // 9
-// #define IFA_OP_CODE 10
+#define IFA_OP_CODE 10
 #define AREAD_OP_CODE 11
 #define AWRITE_OP_CODE 12
 #define SUBP_OP_CODE 13
@@ -52,7 +52,7 @@ using std::string;
 #define LOOPEND_OP_CODE 15
 #define LREAD_OP_CODE 16
 #define LWRITE_OP_CODE 17
-// #define IF_OP_CODE 18
+#define IF_OP_CODE 18
 #define CLS_OP_CODE 19
 // #define ASSIGNMENT_OP_CODE 20
 

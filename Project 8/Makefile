@@ -1,5 +1,5 @@
 # Brendan Thompson
-# 11/27/17
+# 11/30/17
 # Makefile for Compiler V6
 
 # "make main" = Compile and Link Both BREN_Compiler & BREN_Executor
@@ -38,13 +38,13 @@ ExpressionFixConverter.o: ExpressionFixConverter.cpp ExpressionFixConverter.h Ex
 ### Executor Components ###
 ###########################
 
-BREN_Executor: ExecutorDriver.o Executor.o EFileManager.o FileManager.o SymbolTable.o LiteralTable.o LineLabelTable.o ProgramLineTable.o LoopManager.o eREAD.o eWRITE.o eDIM.o eaREAD.o eaWRITE.o elREAD.o elWRITE.o eIF.o eCDUMP.o eSUBP.o
-	g++ -o BREN_Executor ExecutorDriver.o Executor.o EFileManager.o FileManager.o SymbolTable.o LiteralTable.o LineLabelTable.o ProgramLineTable.o LoopManager.o eREAD.o eWRITE.o eDIM.o eaREAD.o eaWRITE.o elREAD.o elWRITE.o eIF.o eCDUMP.o eSUBP.o
+BREN_Executor: ExecutorDriver.o Executor.o EFileManager.o FileManager.o SymbolTable.o LiteralTable.o LineLabelTable.o ProgramLineTable.o LoopManager.o eREAD.o eWRITE.o eDIM.o eaREAD.o eaWRITE.o eIFA.o elREAD.o elWRITE.o eIF.o eCDUMP.o eSUBP.o
+	g++ -o BREN_Executor ExecutorDriver.o Executor.o EFileManager.o FileManager.o SymbolTable.o LiteralTable.o LineLabelTable.o ProgramLineTable.o LoopManager.o eREAD.o eWRITE.o eDIM.o eaREAD.o eaWRITE.o eIFA.o elREAD.o elWRITE.o eIF.o eCDUMP.o eSUBP.o
 
 ExecutorDriver.o: ExecutorDriver.cpp Executor.o
 	g++ -c ExecutorDriver.cpp
 
-Executor.o: Executor.cpp Executor.h EFileManager.o FileManager.o SymbolTable.o LiteralTable.o LineLabelTable.o ProgramLineTable.o LoopManager.o eREAD.o eWRITE.o eDIM.o eaREAD.o eaWRITE.o elREAD.o elWRITE.o eIF.o eCDUMP.o eSUBP.o
+Executor.o: Executor.cpp Executor.h EFileManager.o FileManager.o SymbolTable.o LiteralTable.o LineLabelTable.o ProgramLineTable.o LoopManager.o eREAD.o eWRITE.o eDIM.o eaREAD.o eaWRITE.o eIFA.o elREAD.o elWRITE.o eIF.o eCDUMP.o eSUBP.o
 	g++ -c Executor.cpp
 
 EFileManager.o: EFileManager.cpp EFileManager.h LiteralTable.h
@@ -115,8 +115,8 @@ tLOOPEND.o: ./CompilerCommands/tLOOPEND.cpp ./CompilerCommands/tLOOPEND.h
 tIFA.o: ./CompilerCommands/tIFA.cpp ./CompilerCommands/tIFA.h
 	g++ -c ./CompilerCommands/tIFA.cpp
 
-# eIFA.o: ./ExecutorCommands/eIFA.cpp ./ExecutorCommands/eIFA.h
-# 	g++ -c ./ExecutorCommands/eIFA.cpp
+eIFA.o: ./ExecutorCommands/eIFA.cpp ./ExecutorCommands/eIFA.h
+	g++ -c ./ExecutorCommands/eIFA.cpp
 
 tNOP.o: ./CompilerCommands/tNOP.cpp ./CompilerCommands/tNOP.h
 	g++ -c ./CompilerCommands/tNOP.cpp

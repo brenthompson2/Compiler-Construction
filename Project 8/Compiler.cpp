@@ -257,29 +257,35 @@ void BREN_Compiler::handleCommand(string currentLine, int correspondingLineNumbe
 bool BREN_Compiler::checkForAssignment(string currentLine, int correspondingLineNumber){
 	char currentCharacter;
 	bool foundEquals = false;
-	bool foundComma = false;
-	bool foundQuote = false;
+	bool continueSearching = true;
 	bool isAssignment = false;
 
-	for (int characterIterator = 0; characterIterator < currentLine.size(); characterIterator++){
+	for (int characterIterator = 0; ((characterIterator < currentLine.size()) && (continueSearching)); characterIterator++){
 		currentCharacter = currentLine[characterIterator];
 
+		// First character matched is =
 		if (currentCharacter == '='){
 			foundEquals = true;
 		}
 
+		// Catch = in LOOP
 		if (currentCharacter == ','){
-			foundComma = true;
+			continueSearching = false;
 		}
 
+		// Catch = in Literal
 		if (currentCharacter == '"'){
-			foundQuote = true;
+			continueSearching = false;
+		}
+
+		// Catch = in IF
+		if (currentCharacter == '('){
+			continueSearching = false;
 		}
 	}
 
-	if (foundEquals && (!foundComma) && (!foundQuote)){
+	if (foundEquals){
 		isAssignment = true;
-
 	}
 
 	return isAssignment;
