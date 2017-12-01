@@ -42,7 +42,7 @@ using std::string;
 #define CDUMP_OP_CODE 5
 #define LISTO_OP_CODE 6
 #define NOP_OP_CODE 7
-// #define GOTO_OP_CODE 8
+#define GOTO_OP_CODE 8
 // // 9
 // #define IFA_OP_CODE 10
 #define AREAD_OP_CODE 11

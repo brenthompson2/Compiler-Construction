@@ -130,7 +130,7 @@ string LiteralTable::getValue(int memoryLocation){
 		currentValue = globalLiteralArray[memoryLocation];
 	}
 	else {
-		currentValue = "failed to get literal: invalid memory location";
+		currentValue = "Failed to get literal: invalid memory location";
 	}
 	return currentValue;
 }

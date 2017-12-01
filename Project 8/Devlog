@@ -81,7 +81,8 @@ IV) Status:
 			- reads in strings and sets RValues in core memory for the designated array indexes
 		6) aWRITE:
 			- outputs RValues from core memory for the designated array indexes
-
+		7) GOTO:
+			- NOT USED = Executor sees command and sets the programCounter to the specified lineLocation
 		8) LOOP:
 			- NOT USED = Executor sees command and loopManager handles it and sets the programCounter
 		9) LOOPEND:
@@ -106,8 +107,6 @@ IV) Status:
 
 
 	- eCommands Not Yet Implemented:
-		7) GOTO:
-			- handles GOTO command, tells parent FileManager to write op code to .obj, and gets Line Label Location from LineLabelTable
 		10) IFA:
 			- handles IFA command, tells parent FileManager to write op code to .obj, tells MemoryManager to manage variables, and gets Line Label Location from LineLabelTable
 		15) IF:
@@ -125,6 +124,13 @@ V) Log Of Activity:
 	- removed from files, makefile, and executor
 	- stop, listo, cls, nop, loop, loopend
 
+- Fixed Literals:
+	- Not flagging = as an assignment statement
+	- Not flagging : as a line label
+
+- Implemented Jump Commands
+	- GOTO didn't need handler
+
 =========================================================
 =========================================================
 
@@ -133,17 +139,18 @@ V) Log Of Activity:
 I) Summary of Work:
 	- Implemented LoopManager
 	- Implemented Deep Copy given lValues in Core Memory
+	- Implemented Jumpy Commands: GOTO, IF, IFA
 
 II) Still Need to Implement:
 	- eCOMMANDS:
 		- SUBP difference between alg, aln, and log
-		- Executor V2 = Loop, Loopend, Goto, ifa, if
+		- Executor V2 = Goto, ifa, if
 		- Executor V3 = Assignment
 	- Flags:
 		-x = compiler flag to execute after compilation
 		-r = executor flag to check range violations on arrays
 		-z = executor flag to use 0 for undefined values (0.123456789)
-	- \n prints new line for lwrite
+	- For lWRITE: \n prints new line
 	- Compiler:
 		- handle floats
 		- handle no id after operator in assignment (x = y + 4 * _)

@@ -143,10 +143,10 @@ void BREN_Executor::handleCommand(ProgramLineObject currentLineObject, int *curr
 			// mainNOPHandler.handleNOP(&currentLineObject, *currentProgramCounter); // NOT USING COMMAND HANDLER
 			(*currentProgramCounter)++;
 			break;
-	// 	case GOTO_OP_CODE: // 8
-	// 		// cout << "\t[Executor]: Found GOTO Command\n";
-	// 		mainAREADHandler.handleAREAD(&currentLineObject, *currentProgramCounter);
-	// 		break;
+		case GOTO_OP_CODE: // 8
+			// cout << "\t[Executor]: Found GOTO Command\n";
+			(*currentProgramCounter) = currentLineObject.lineOfCodeArray[1];
+			break;
 		case 9: // 9
 			cout << "\t[Executor]: Error: Found Invalid Op Code 9\n";
 			globalNumErrors++;

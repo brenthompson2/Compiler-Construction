@@ -50,7 +50,17 @@ c* =======================
 c* ======== LOOPS ========
 c* =======================
 
-loop x=0, 5, 1
-lwrite "\n Please Supply a Variable "
-read apple
-loop-end
+// loop x=0, 5, 1
+// 	lwrite "\n Please Supply a Variable "
+// 	read apple
+// loop-end
+
+c* =======================
+c* ======== JUMPS ========
+c* =======================
+
+
+goto apple
+lwrite "You shouldn't see this"
+apple:
+lwrite "Hi there!"
