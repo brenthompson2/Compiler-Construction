@@ -126,7 +126,7 @@ void LoopManager::popOffTopLoop(){
 void LoopManager::incrementTopRunner(){
 	int topRunnerAddress, topIncrementAmountAddress;
 	string topRunnerValue_string, topIncrementAmount_string, newRunnerValue;
-	float topRunnerValue_float, topIncrementAmount_float;
+	double topRunnerValue_double, topIncrementAmount_double;
 
 	// Get Address
 	topRunnerAddress = globalLoopArray[globalIndexTopLoopObject].runnerAddress;
@@ -136,23 +136,22 @@ void LoopManager::incrementTopRunner(){
 	topRunnerValue_string = (*parentMemoryManager).getValue(topRunnerAddress);
 	topIncrementAmount_string = (*parentMemoryManager).getValue(topIncrementAmountAddress);
 
-	// Convert Values to floats
+	// Convert Values to doubles
 	std::stringstream str0(topRunnerValue_string);
-	str0 >> topRunnerValue_float;
+	str0 >> topRunnerValue_double;
 	std::stringstream str1(topIncrementAmount_string);
-	str1 >> topIncrementAmount_float;
+	str1 >> topIncrementAmount_double;
 
 	// Increment Runner, Convert it to a String, & Save it
-	topRunnerValue_float += topIncrementAmount_float;
-	newRunnerValue = std::to_string(topRunnerValue_float);
-	(*parentMemoryManager).setValue(topRunnerAddress, newRunnerValue);
+	topRunnerValue_double += topIncrementAmount_double;
+	(*parentMemoryManager).setValue(topRunnerAddress, topRunnerValue_double);
 
 	return;
 }
 
 // Returns the result of the conditional of the top loop
 bool LoopManager::checkConditionTopLoop(){
-	float topRunnerValue, topStartValue, topEndValue, topIncrementAmount;
+	double topRunnerValue, topStartValue, topEndValue, topIncrementAmount;
 	int topRunnerAddress, topStartIndexAddress, topEndIndexAddress, topIncrementAmountAddress;
 	bool topResultOfCondition = false;
 
@@ -172,10 +171,10 @@ bool LoopManager::checkConditionTopLoop(){
 }
 
 // Sets the RValues given the LValues
-void LoopManager::setConditionValues(int runnerLValue, float *runnerRValue,
-										int startLValue, float *startRValue,
-										int endLValue, float *endRValue,
-										int incrementLValue, float *incrementRValue){
+void LoopManager::setConditionValues(int runnerLValue, double *runnerRValue,
+										int startLValue, double *startRValue,
+										int endLValue, double *endRValue,
+										int incrementLValue, double *incrementRValue){
 
 	// Get Values as Strings
 	string runnerRValue_string, startRValue_string, endRValue_string, incrementRValue_string;
@@ -184,7 +183,7 @@ void LoopManager::setConditionValues(int runnerLValue, float *runnerRValue,
 	endRValue_string = (*parentMemoryManager).getValue(endLValue);
 	incrementRValue_string = (*parentMemoryManager).getValue(incrementLValue);
 
-	// Convert from strings to floats
+	// Convert from strings to doubles
 	std::stringstream str0(runnerRValue_string);
 	str0 >> (*runnerRValue);
 	std::stringstream str1(startRValue_string);
@@ -197,7 +196,7 @@ void LoopManager::setConditionValues(int runnerLValue, float *runnerRValue,
 }
 
 // returns true if the condition succeeded given the direction represented by the increment amount
-bool LoopManager::getConditionResults(float topIncrementAmount, float topRunnerValue, float topEndValue){
+bool LoopManager::getConditionResults(double topIncrementAmount, double topRunnerValue, double topEndValue){
 	bool resultOfCondition = false;
 	// cout << "\t\t\t[LoopManager]: Increment: " << topIncrementAmount << "\tRunner: " << topRunnerValue << "\tEnd: " << topEndValue << endl;
 	if (topIncrementAmount == 0){

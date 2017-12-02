@@ -150,6 +150,15 @@ V) Log Of Activity:
 		- #include <cstdlib>
 	- Had to explicitly call ~FileManager at end of compilation
 
+- Compiled in the lab
+	- std::to_string not a member of std
+	- Added -std=c++11 flag to symbolTable and overloaded the setValue function to also take a double
+		- put burden of double to string conversion on the stupidly implemented Core Memory (Symbol Table)
+
+- Changed all floats to doubles
+	- LoopManager
+	- eSUBP
+
 =========================================================
 =========================================================
 

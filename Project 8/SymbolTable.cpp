@@ -67,6 +67,17 @@ void SymbolTable::setValue(int memoryLocation, string newValue){
 	return;
 }
 
+// Sets the RValue at memoryLocation to newValue
+void SymbolTable::setValue(int memoryLocation, double newValue){
+	string newValue_string;
+	if ((memoryLocation >= 0) && (memoryLocation < MAX_NUM_VARIABLES)){
+		newValue_string = std::to_string(newValue);
+		globalCoreMemoryArray[memoryLocation] = newValue_string;
+		// cout << "\t\t[Core Memory]: Set RValue of location " << memoryLocation << " to \""  << globalCoreMemoryArray[memoryLocation] << "\"\n";
+	}
+		return;
+}
+
 // Sets the RValue of the destinationAddress to the RValue of the sourceAddress
 void SymbolTable::deepCopy(int destinationAddress, int sourceAddress){
 	globalCoreMemoryArray[destinationAddress] = globalCoreMemoryArray[sourceAddress];

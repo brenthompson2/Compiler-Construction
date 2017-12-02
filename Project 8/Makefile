@@ -61,7 +61,7 @@ LoopManager.o: LoopManager.cpp LoopManager.h
 ###########################
 
 SymbolTable.o: SymbolTable.cpp SymbolTable.h FileManager.h
-	g++ -c SymbolTable.cpp
+	g++ -c -std=c++11 SymbolTable.cpp
 
 LiteralTable.o: LiteralTable.cpp LiteralTable.h FileManager.h
 	g++ -c LiteralTable.cpp

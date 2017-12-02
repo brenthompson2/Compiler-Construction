@@ -43,7 +43,7 @@ struct loopObject {
 	int runnerAddress;
 	int startIndexAddress;
 	int endIndexAddress;
-	float incrementAmountAddress;
+	double incrementAmountAddress;
 };
 
 /* ==============================================================================
@@ -107,13 +107,13 @@ private:
 	bool checkConditionTopLoop();
 
 	// Sets the RValues given the LValues
-	void setConditionValues(int runnerLValue, float *runnerRValue,
-							int startLValue, float *startRValue,
-							int endLValue, float *endRValue,
-							int incrementLValue, float *incrementRValue);
+	void setConditionValues(int runnerLValue, double *runnerRValue,
+							int startLValue, double *startRValue,
+							int endLValue, double *endRValue,
+							int incrementLValue, double *incrementRValue);
 
 	// returns true if the condition succeeded given the direction represented by the increment amount
-	bool getConditionResults(float topIncrementAmount, float topRunnerValue, float topEndValue);
+	bool getConditionResults(double topIncrementAmount, double topRunnerValue, double topEndValue);
 
 	// returns true if the variable already exists in the LoopManager
 	bool currentlyExists(int lineNumberOfLoop);

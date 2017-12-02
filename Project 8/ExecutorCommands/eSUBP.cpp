@@ -104,9 +104,6 @@ void eSUBP::executeSUBPCommand(int operationCode, int variableMemLocation, int v
 			break;
 	}
 
-	newValue_string = std::to_string(newValue);
-
-	(*ParentMemoryManager).setValue(variableMemLocation, newValue_string);
-
+	(*ParentMemoryManager).setValue(variableMemLocation, newValue);
 	return;
 }
