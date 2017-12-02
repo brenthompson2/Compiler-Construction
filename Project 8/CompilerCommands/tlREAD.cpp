@@ -177,7 +177,7 @@ bool tlREAD::parseVariable(int *currentCharIterator){
 
 	if (isValidVariableName){
 		globalLiteralObject.variableName = currentVariableName;
-		cout << "\t\t[tlREAD]: Found Literal Variable Name: \""<< globalLiteralObject.variableName << "\"\n";
+		// cout << "\t\t[tlREAD]: Found Literal Variable Name: \""<< globalLiteralObject.variableName << "\"\n";
 	}
 
 	return isNotLastVariable;
@@ -190,7 +190,7 @@ void tlREAD::syncLiteralToLiteralTable(){
 	globalLiteralObject.literalString = UNDEFINED_LITERAL;
 	(*currentliteralManager).manageLiteralObject(&globalLiteralObject);
 
-	(*currentliteralManager).printLiteralTable();
+	// (*currentliteralManager).printLiteralTable();
 	return;
 }
 
