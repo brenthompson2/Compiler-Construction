@@ -79,7 +79,7 @@ bool FileManager::preprocessFile(){
 		cout << "\t\t[FILE MANAGER]: Error! Unable to Preprocess File\n";
 	}
 	else {
-		cout << "\t\t[FILE MANAGER]: Preprocessed Successfully. Prepared to Compile...\n";
+		// cout << "\t\t[FILE MANAGER]: Preprocessed Successfully. Prepared to Compile...\n";
 	}
 	return successfullyPreprocessed;
 }
@@ -311,19 +311,19 @@ void FileManager::removeFiles(){
 	coreOutFile.close();
 
 	if (!keepNoBlanksFlag){
-		cout << "\t\t[FILE MANAGER]: Removing " << globalPreprocessedFileName << "...\n";
+		// cout << "\t\t[FILE MANAGER]: Removing " << globalPreprocessedFileName << "...\n";
 		remove(globalPreprocessedFileName);
 	}
 	if (!keepObjFlag){
-		cout << "\t\t[FILE MANAGER]: Removing " << globalObjFileName << "...\n";
+		// cout << "\t\t[FILE MANAGER]: Removing " << globalObjFileName << "...\n";
 		remove(globalObjFileName);
 	}
 	if (!keepLiteralFlag){
-		cout << "\t\t[FILE MANAGER]: Removing " << globalLiteralFileName << "...\n";
+		// cout << "\t\t[FILE MANAGER]: Removing " << globalLiteralFileName << "...\n";
 		remove(globalLiteralFileName);
 	}
 	if (!keepCoreFlag){
-		cout << "\t\t[FILE MANAGER]: Removing " << globalCoreFileName << "...\n";
+		// cout << "\t\t[FILE MANAGER]: Removing " << globalCoreFileName << "...\n";
 		remove(globalCoreFileName);
 	}
 }

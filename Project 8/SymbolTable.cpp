@@ -262,7 +262,7 @@ void SymbolTable::printSymbolTable(){
 
 // iterates through the SymbolTable and outputs the variableName & memoryLocation to .core file
 void SymbolTable::outputCoreFile(){
-	cout << "\t\t\t[SymbolTable]: Writing .core file...\n";
+	// cout << "\t\t\t[SymbolTable]: Writing .core file...\n";
 	for (int i = 0; i < MAX_NUM_VARIABLES; i++){
 		// cout << "\t\t\t" << i << ": " << symbolTableArray[i].value << endl;;
 		// (*currentFileManager).writeStringToCore(symbolTableArray[i].variableName);

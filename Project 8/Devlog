@@ -17,6 +17,10 @@ I) Summary of Work:
 	- Finished Implementing SUBP
 	- Handled \n printing newLine for lWRITE
 	- Handled -x Compiler Flag
+	- Compiled in the lab
+		- Added -std=c++11 to Core Memory for std::to_string()
+	- Changed some floats to doubles
+	- Silenced A Lot of Debugging Output
 
 II) Need to Implement:
 	- Compiler:
@@ -35,6 +39,7 @@ II.IV) Should Implement
 			- They both have a bunch of functions and share none of them
 			- Needs to bring the table of Array Dimensions with it
 	- Use try {} catch {} for exception handling
+	- Commands return numErrors, just like tCommands (at least when range checking)
 	- Compiler Specific:
 		- 128 Character Limit on Variable Names
 		- Abstract the parser out of the tCommands into its own object
@@ -155,9 +160,11 @@ V) Log Of Activity:
 	- Added -std=c++11 flag to symbolTable and overloaded the setValue function to also take a double
 		- put burden of double to string conversion on the stupidly implemented Core Memory (Symbol Table)
 
-- Changed all floats to doubles
+- Changed some floats to doubles
 	- LoopManager
 	- eSUBP
+
+- Silenced A Lot of Debugging Output
 
 =========================================================
 =========================================================

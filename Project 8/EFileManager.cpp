@@ -39,8 +39,8 @@ EFileManager::~EFileManager(){
 ============================================================================== */
 
 // Sets the EFileManagers's Global FileNames and links with the parentProgramManager, parentMemoryManager, parentLiteralManager
-bool EFileManager::prepareForExecution(string fileToCompile, ProgramLineTable *currentProgramManager, SymbolTable *currentMemoryManager, LiteralTable *currentLiteralManager){
-	cout << "\t\t[FILE MANAGER]: Preparing For Compilation..." << endl;
+bool EFileManager::prepareForExecution(string fileToExecute, ProgramLineTable *currentProgramManager, SymbolTable *currentMemoryManager, LiteralTable *currentLiteralManager){
+	// cout << "\t\t[FILE MANAGER]: Preparing For Execution..." << endl;
 	bool successfullyPrepared = false;
 
 	ParentProgramManager = currentProgramManager;
@@ -48,7 +48,7 @@ bool EFileManager::prepareForExecution(string fileToCompile, ProgramLineTable *c
 	ParentLiteralManager = currentLiteralManager;
 
 	// Create Global File Names & Open All Files
-	createFileNames(fileToCompile);
+	createFileNames(fileToExecute);
 	successfullyPrepared = openFiles();
 	if (successfullyPrepared){
 		loadProgram();

@@ -62,7 +62,7 @@ void LineLabelTable::addLineLabel(string newLineLabel, int newTransyLineNumber){
 
 // Iterates through line labels and sets the objLineNumber to the next appropriate line of obj code, decided by the transyLineNumber, and returns num labels after last line of actual code
 int LineLabelTable::syncLabelsWithLines(){
-	cout << "\t\t\t[LineLabelTable]: Syncing " << globalNumLabels << " Line Labels with Line Numbers\n";
+	// cout << "\t\t\t[LineLabelTable]: Syncing " << globalNumLabels << " Line Labels with Line Numbers\n";
 
 	string currentLineLabel;
 	int currentTransyLineNumber;

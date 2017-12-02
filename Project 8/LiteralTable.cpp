@@ -199,7 +199,7 @@ void LiteralTable::printLiteralTable(){
 // iterates through the LiteralTable and outputs the literalString & memoryLocation to .literal file
 void LiteralTable::outputLiteralFile(){
 	if (numObjectsInArray > 0) {
-		cout << "\t\t\t[LiteralTable]: Writing .literal file...\n";
+		// cout << "\t\t\t[LiteralTable]: Writing .literal file...\n";
 		for (int i = 0; i < numObjectsInArray; i++){
 			// (*currentFileManager).writeStringToLiteral(LiteralTableArray[i].variableName);
 			// (*currentFileManager).writeStringToLiteral("\t");

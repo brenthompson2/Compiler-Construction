@@ -117,6 +117,6 @@ bool parseArguments(int numArguments, char* *arrayOfArgs, char *arrayOfFlags, st
 		(*fileName) = "test1.obj";
 	}
 
-	cout << "[Executor Driver]: Got Filename: " << (*fileName) << endl;
+	// cout << "[Executor Driver]: Got Filename: " << (*fileName) << endl;
 	return true;
 }

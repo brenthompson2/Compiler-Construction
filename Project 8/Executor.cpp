@@ -19,13 +19,13 @@
 // Instantiates a BREN_Executor object, tell FileManager to preprocess .transy file, and instantiates objects for handling commands
 BREN_Executor::BREN_Executor (){
 	instantiateCommandObjects();
-	cout << "\t[Executor]: Initialized Executor\n";
+	// cout << "\t[Executor]: Initialized Executor\n";
 	return;
 }
 
 // Shuts Down the BREN_Executor object
 BREN_Executor::~BREN_Executor (){
-	cout << "\t[Executor]: Shutdown BREN_Executor\n";
+	// cout << "\t[Executor]: Shutdown BREN_Executor\n";
 	return;
 }
 
@@ -58,7 +58,7 @@ bool BREN_Executor::prepareForExecution(string fileToExecute, char *arrayOfFlags
 	successfullyPrepared = globalFileManager.prepareForExecution(fileToExecute, &globalProgramManager, &globalMemoryManager, &globalLiteralManager);
 
 	// Print Program, Core, & Literal Tables
-	globalProgramManager.printProgramLineTable();
+	// globalProgramManager.printProgramLineTable();
 	// globalMemoryManager.printCoreMemory();
 	// globalLiteralManager.ePrintLiteralTable();
 
@@ -97,7 +97,7 @@ bool BREN_Executor::execute(){
 	// Manage Execution Result
 	if (globalNumErrors == 0){
 		executionStatus = 0;
-		cout << "\n\n\n\t[Executor]: Successfully Executed the file\n";
+		// cout << "\n\n\n\t[Executor]: Successfully Executed the file\n";
 	}
 	else {
 		executionStatus = 1;

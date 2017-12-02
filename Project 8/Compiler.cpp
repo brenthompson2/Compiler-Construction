@@ -23,13 +23,13 @@ BREN_Compiler::BREN_Compiler (){
 	numErrors = 0;
 	foundFirstLineAfterDIM = false;
 	instantiateCommandObjects();
-	cout << "\t[Compiler]: Initialized Compiler\n";
+	// cout << "\t[Compiler]: Initialized Compiler\n";
 	return;
 }
 
 // Shuts Down the BREN_Compiler object
 BREN_Compiler::~BREN_Compiler (){
-	cout << "\t[Compiler]: Shutdown BREN_Compiler\n";
+	// cout << "\t[Compiler]: Shutdown BREN_Compiler\n";
 	return;
 }
 
@@ -71,7 +71,7 @@ bool BREN_Compiler::compile(){
 
 	currentLine = globalFileManager.getNextLine();
 	actualLineNumber = globalLineManager.getTransyLineNumber(lineCount);
-	cout << "\t[Compiler]: Attempting to Compile Input File Line number: " << actualLineNumber << endl;
+	// cout << "\t[Compiler]: Attempting to Compile Input File Line number: " << actualLineNumber << ": " << currentLine << endl;
 	if (actualLineNumber == NOT_FOUND_IN_ARRAY){
 		continueCompiling = false;
 		cout << "\t[Compiler]: ERROR: File appears to be empty\n";
@@ -88,7 +88,7 @@ bool BREN_Compiler::compile(){
 			continueCompiling = false;
 		}
 		else {
-			cout << "\n\t[Compiler]: Attempting to Compile Input File Line number: " << actualLineNumber << ": " << currentLine << endl;
+			// cout << "\n\t[Compiler]: Attempting to Compile Input File Line number: " << actualLineNumber << ": " << currentLine << endl;
 		}
 	}
 
