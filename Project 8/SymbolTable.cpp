@@ -144,7 +144,7 @@ string SymbolTable::getValue(int memoryLocation){
 	}
 
 	if (useZeroFlag){
-		cout << "\t\t\t[Core Memory]: Current value is " << currentValue << endl;
+		// cout << "\t\t\t[Core Memory]: Current value is " << currentValue << endl;
 		if (currentValue == "0.12345679"){
 			currentValue = "0";
 		}
