@@ -2,11 +2,13 @@
 
 Brendan Thompson
 
-Transylvania University	Compiler Construction Fall 2017 with Dr. Moorman
+Transylvania University	Compiler Construction Course Fall 2017 with Dr. Moorman
 
-The BRENxCompiler is written in C++ and turns programs written in the Transy Language (.transy) to Transy Object Code (.obj). An Emulator capable of running the Transy Object Code is still under construction
+The BRENxCompiler is written in C++ and turns programs written in the Transy Language (.transy) to Transy Object Code (.obj).
 
-This GitHub Repository was created for downloading, compiling, and running the code on a lab computer remotely via SSH
+The BRENxExecutor is written in C++ and interprets Transy Object Code (.obj)
+
+This GitHub Repository was created for testing the code on a lab computer remotely via SSH
 
 ## Use
 
@@ -20,21 +22,30 @@ To remove all of the files run `make clean`
 
 #### Using the Transy Compiler
 
-On Ubuntu: The Transy Compiler must first be Compiled. Then, navigate the terminal to the directory with the `Compiler` executable and type `./Compiler <fileName>`
+On Ubuntu: The Transy Compiler must first be Compiled. Then, navigate the terminal to the directory with the `Compiler` executable and type `./Compiler <fileName.transy>`
 
 Flags:
 
+	`-c` = keep core file even if it failed compilation
+	`-l` = keep literal file even if it failed compilation
 	`-n` = keep noblanks file even if it successfully compiles
 	`-o` = keep obj file even if it failed compilation
-	`-l` = keep literal file even if it failed compilation
-	`-c` = keep core file even if it failed compilation
+	`-x` = execute the code immediately after compilation
 
 Other Info:
 	If no file is specified it will attempt to compile `test1.transy`
 
 #### Running Transy Object Code
 
-On Ubuntu: The Transy Executor must first be Compiled. Then, navigate the terminal to the directory with the `BRENxExecutor` executable and type `./BRENxExecutor <fileName>`
+On Ubuntu: The Transy Executor must first be Compiled. Then, navigate the terminal to the directory with the `BRENxExecutor` executable and type `./BRENxExecutor <fileName.obj>`
+
+Flags:
+
+	`-r` = range check to ensure array indexes are within the dimensions
+	`-z` = use zero for undefined variables
+
+Other Info:
+	If no file is specified it will attempt to execute `test1.obj`
 
 ## Development
 
