@@ -2,7 +2,7 @@
 
 	File: eSUBP.cpp
 	Author: Brendan Thompson
-	Updated: 11/26/17
+	Updated: 12/01/17
 
 	Description: Implementation of Functions for processing SUBP command for Compiler object made for Transylvania University University Fall Term 2017 Compiler Construction class
 
@@ -87,7 +87,7 @@ void eSUBP::executeSUBPCommand(int operationCode, int variableMemLocation, int v
 			cout << "\t\t[SUBP]: " << newValue << " = abs(" << IdValue << ")\n";
 			break;
 		case ALG_CODE:
-			newValue = log(IdValue);
+			newValue = log2(IdValue);
 			cout << "\t\t[SUBP]: " << newValue << " = alg(" << IdValue << ")\n";
 			break;
 		case ALN_CODE:
