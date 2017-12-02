@@ -41,19 +41,19 @@ void eCDUMP::handleCDUMP(ProgramLineObject *currentLine){
 
 	startIndexMemLocation_int = ((*globalCurrentLine).lineOfCodeArray)[1];
 	endIndexMemLocation_int = ((*globalCurrentLine).lineOfCodeArray)[2];
-	cout << "\t\t[CDUMP]: Executing CDUMP command from values at mem locations " << startIndexMemLocation_int << " to " << endIndexMemLocation_int << endl;
+	// cout << "\t\t[CDUMP]: Executing CDUMP command from values at mem locations " << startIndexMemLocation_int << " to " << endIndexMemLocation_int << endl;
 
 	startIndexValue_string = (*currentMemoryManager).getValue(startIndexMemLocation_int);
 	endIndexValue_string = (*currentMemoryManager).getValue(endIndexMemLocation_int);
 
-	cout << "\t\t[CDUMP]: Executing CDUMP command from " << startIndexValue_string << " to " << endIndexValue_string << endl;
+	// cout << "\t\t[CDUMP]: Executing CDUMP command from " << startIndexValue_string << " to " << endIndexValue_string << endl;
 
 	std::stringstream str0(startIndexValue_string);
 	str0 >> startIndexValue_int;
 	std::stringstream str1(endIndexValue_string);
 	str1 >> endIndexValue_int;
 
-	cout << "\t\t[CDUMP]: Executing CDUMP command from " << startIndexValue_int << " to " << endIndexValue_int << endl;
+	// cout << "\t\t[CDUMP]: Executing CDUMP command from " << startIndexValue_int << " to " << endIndexValue_int << endl;
 	coreDump(startIndexValue_int, endIndexValue_int);
 	// cout << "\t\t[CDUMP]: Executed CDUMP command\n";
 	return;
@@ -78,10 +78,10 @@ void eCDUMP::handleCDUMP(ProgramLineObject *currentLine){
  	}
  	else {
  		if (startIndex >= 0){
-			cout << "\t\t\t[LiteralTable]: Start Index Must Exceed 0: \"" << startIndex << "\"\n";
+			cout << "\t\t\t[LiteralTable]: Warning: Start Index Must Exceed 0: \"" << startIndex << "\"\n";
  		}
 		if (endIndex <= MAX_NUM_VARIABLES){
-			cout << "\t\t\t[LiteralTable]: End Index Exceeds " << MAX_NUM_VARIABLES << ": \"" << endIndex << "\"\n";
+			cout << "\t\t\t[LiteralTable]: Warning: End Index Exceeds " << MAX_NUM_VARIABLES << ": \"" << endIndex << "\"\n";
 		}
  	}
  	return;
