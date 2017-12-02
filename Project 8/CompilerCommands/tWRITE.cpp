@@ -38,7 +38,7 @@ void tWRITE::prepareWRITE(FileManager *parentFileManager, SymbolTable *parentMem
 // returns number of errors
 int tWRITE::handleWRITE(string currentLine, int correspondingLineNumber){
 	globalCurrentLine = currentLine;
-	cout << "\t\t[tWRITE]: Compiling Line " << correspondingLineNumber << ": " << globalCurrentLine << endl;
+	// cout << "\t\t[tWRITE]: Compiling Line " << correspondingLineNumber << ": " << globalCurrentLine << endl;
 
 	numVariablesInArray = 0;
 	globalNumErrors = 0;
@@ -50,7 +50,7 @@ int tWRITE::handleWRITE(string currentLine, int correspondingLineNumber){
 
 	if (globalNumErrors == 0){
 		outputWRITECommand();
-		cout << "\t\t[tWRITE]: Successfully completed tWRITE command\n";
+		// cout << "\t\t[tWRITE]: Successfully completed tWRITE command\n";
 	}
 	else {
 		cout << "\t\t[tWRITE]: Failed to complete tWRITE command in line "<< correspondingLineNumber << " with " << globalNumErrors << " errors\n";
@@ -209,7 +209,7 @@ void tWRITE::outputWRITECommand(){
 	for (int i = 0; i < numVariablesInArray; i++){
 		(*currentFileManager).writeStringToObj(" ");
 		currentMemoryLocation = (variableArray[i]).memoryLocation;
-		(*currentFileManager).writeNumToObj((float) currentMemoryLocation);
+		(*currentFileManager).writeNumToObj((double) currentMemoryLocation);
 	}
 
 	(*currentFileManager).writeStringToObj("\n");

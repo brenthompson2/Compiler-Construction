@@ -110,7 +110,7 @@ string FileManager::getNextLine(){
 // }
 
 // Writes the int "value" to the .obj output file
-void FileManager::writeNumToObj (float value){
+void FileManager::writeNumToObj (double value){
 	objOutFile << std::setprecision(8) << value;
 	// cout << "\t\t[FILE MANAGER]: Wrote " << value << " to .obj\n";
 	return;
@@ -138,8 +138,8 @@ void FileManager::writeStringToLiteral (string currentString){
 	return;
 }
 
-// Writes the float "value" to the .literal output file
-void FileManager::writeNumToLiteral (float value){
+// Writes the double "value" to the .literal output file
+void FileManager::writeNumToLiteral (double value){
 	literalOutFile << std::setprecision(8) << value;
 	// cout << "\t\t[FILE MANAGER]: Wrote " << value << " to .obj\n";
 	return;
@@ -156,8 +156,8 @@ void FileManager::writeStringToCore (string currentString){
 	return;
 }
 
-// Writes the float "value" to the .core output file
-void FileManager::writeNumToCore (float value){
+// Writes the double "value" to the .core output file
+void FileManager::writeNumToCore (double value){
 	coreOutFile << std::setprecision(8) << value;
 	// cout << "\t\t[FILE MANAGER]: Wrote " << value << " to .obj\n";
 	return;

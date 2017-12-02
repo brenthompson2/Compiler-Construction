@@ -37,7 +37,7 @@ void tSTOP::prepareSTOP(FileManager *parentFileManager){
 // returns num errors
 int tSTOP::handleSTOP(string currentLine, int correspondingLineNumber){
 	globalCurrentLine = currentLine;
-	cout << "\t\t[STOP]: Compiling Line " << correspondingLineNumber << ": " << globalCurrentLine << endl;
+	// cout << "\t\t[STOP]: Compiling Line " << correspondingLineNumber << ": " << globalCurrentLine << endl;
 
 	globalNumErrors = 0;
 
@@ -45,7 +45,7 @@ int tSTOP::handleSTOP(string currentLine, int correspondingLineNumber){
 
 	if (globalNumErrors == 0){
 		outputSTOPCommand();
-		cout << "\t\t[STOP]: Successfully completed STOP command\n";
+		// cout << "\t\t[STOP]: Successfully completed STOP command\n";
 	}
 	else {
 		cout << "\t\t[STOP]: Failed to complete STOP command in line " << correspondingLineNumber << " with " << globalNumErrors << " errors\n";

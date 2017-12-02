@@ -36,7 +36,7 @@ void tASSIGNMENT::prepareASSIGNMENT(FileManager *parentFileManager, SymbolTable 
 // calls the functions necessary to parse the line, sync the variables with the SymbolTable, and print the object code to the file while counting errors
 // returns num errors
 int tASSIGNMENT::handleASSIGNMENT(string currentLine, int correspondingLineNumber){
-	cout << "\t\t[ASSIGNMENT]: Compiling Line: " << currentLine << endl;
+	// cout << "\t\t[ASSIGNMENT]: Compiling Line: " << currentLine << endl;
 
 	globalNumErrors = 0;
 	globalNumVariablesInArray = 0;
@@ -52,7 +52,7 @@ int tASSIGNMENT::handleASSIGNMENT(string currentLine, int correspondingLineNumbe
 	outputASSIGNMENTCommand(postfixExpression, numInputValues);
 
 	if (globalNumErrors == 0){
-		cout << "\t\t[ASSIGNMENT]: Successfully completed ASSIGNMENT command\n";
+		// cout << "\t\t[ASSIGNMENT]: Successfully completed ASSIGNMENT command\n";
 	}
 	else {
 		cout << "\t\t[ASSIGNMENT]: Failed to complete ASSIGNMENT command with " << globalNumErrors << " errors\n";
@@ -113,7 +113,7 @@ void tASSIGNMENT::outputASSIGNMENTCommand(string newExpression[], int numValsInN
 		else {
 			valueToOutput = getObjectCodeMapping(newExpression[i]);
 		}
-		(*currentFileManager).writeNumToObj((float) valueToOutput);
+		(*currentFileManager).writeNumToObj((double) valueToOutput);
 		(*currentFileManager).writeStringToObj(" ");
 	}
 	(*currentFileManager).writeStringToObj("\n");

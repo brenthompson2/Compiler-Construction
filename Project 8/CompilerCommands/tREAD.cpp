@@ -38,7 +38,7 @@ void tREAD::prepareREAD(FileManager *parentFileManager, SymbolTable *parentMemor
 // returns number of errors
 int tREAD::handleREAD(string currentLine, int correspondingLineNumber){
 	globalCurrentLine = currentLine;
-	cout << "\t\t[tREAD]: Compiling Line " << correspondingLineNumber << ": " << globalCurrentLine << endl;
+	// cout << "\t\t[tREAD]: Compiling Line " << correspondingLineNumber << ": " << globalCurrentLine << endl;
 
 	numVariablesInArray = 0;
 	globalNumErrors = 0;
@@ -50,7 +50,7 @@ int tREAD::handleREAD(string currentLine, int correspondingLineNumber){
 
 	if (globalNumErrors == 0){
 		outputREADCommand();
-		cout << "\t\t[tREAD]: Successfully completed tREAD command\n";
+		// cout << "\t\t[tREAD]: Successfully completed tREAD command\n";
 	}
 	else {
 		cout << "\t\t[tREAD]: Failed to complete tREAD command in line " << correspondingLineNumber << " with " << globalNumErrors << " errors\n";
@@ -210,7 +210,7 @@ void tREAD::outputREADCommand(){
 	for (int i = 0; i < numVariablesInArray; i++){
 		(*currentFileManager).writeStringToObj(" ");
 		currentMemoryLocation = (variableArray[i]).memoryLocation;
-		(*currentFileManager).writeNumToObj((float) currentMemoryLocation);
+		(*currentFileManager).writeNumToObj((double) currentMemoryLocation);
 	}
 
 	(*currentFileManager).writeStringToObj("\n");

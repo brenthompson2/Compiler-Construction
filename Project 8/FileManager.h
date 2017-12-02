@@ -91,7 +91,7 @@ public:
 	// void writeCharToObj (char value);
 
 	// Writes the int "value" to the .obj output file
-	void writeNumToObj (float value);
+	void writeNumToObj (double value);
 
 	// Writes the string "currentString" to the .obj output file
 	void writeStringToObj (string currentString);
@@ -99,14 +99,14 @@ public:
 	// Writes the string "currentString" to the .literal output file
 	void writeStringToLiteral (string currentString);
 
-	// Writes the float "value" to the .literal output file
-	void writeNumToLiteral (float value);
+	// Writes the double "value" to the .literal output file
+	void writeNumToLiteral (double value);
 
 	// Writes the string "currentString" to the .core output file
 	void writeStringToCore (string currentString);
 
-	// Writes the float "value" to the .core output file
-	void writeNumToCore (float value);
+	// Writes the double "value" to the .core output file
+	void writeNumToCore (double value);
 
 	/* ==============================================================================
 		Public Flag Methods

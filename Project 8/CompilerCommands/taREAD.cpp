@@ -39,7 +39,7 @@ void taREAD::prepareAREAD(FileManager *parentFileManager, SymbolTable *parentMem
 // returns number of errors
 int taREAD::handleAREAD(string currentLine, int correspondingLineNumber){
 	globalCurrentLine = currentLine;
-	cout << "\t\t[aREAD]: Compiling Line " << correspondingLineNumber << ": " << globalCurrentLine << endl;
+	// cout << "\t\t[aREAD]: Compiling Line " << correspondingLineNumber << ": " << globalCurrentLine << endl;
 
 	globalNumErrors = 0;
 
@@ -49,7 +49,7 @@ int taREAD::handleAREAD(string currentLine, int correspondingLineNumber){
 
 	if (globalNumErrors == 0){
 		outputAREADCommand();
-		cout << "\t\t[aREAD]: Successfully compiled aREAD command\n";
+		// cout << "\t\t[aREAD]: Successfully compiled aREAD command\n";
 	}
 	else {
 		cout << "\t\t[aREAD]: Failed to compile aREAD command in line "<< correspondingLineNumber << " with " << globalNumErrors << " errors\n";
@@ -72,7 +72,7 @@ void taREAD::parseParameters(){
 
 	// Parse START Index
 	if (continueParsingParameters){
-		if ((isdigit(globalCurrentLine[currentCharIterator])) || (globalCurrentLine[currentCharIterator] == '.')){
+		if ((isdigit(globalCurrentLine[currentCharIterator])) || (globalCurrentLine[currentCharIterator] == '.') || (globalCurrentLine[currentCharIterator] == '-')){
 			continueParsingParameters = parseConstant(&currentCharIterator, START_INDEX_ID_CODE);
 		}
 		else {
@@ -86,7 +86,7 @@ void taREAD::parseParameters(){
 
 	// Parse END Index
 	if (continueParsingParameters){
-		if ((isdigit(globalCurrentLine[currentCharIterator])) || (globalCurrentLine[currentCharIterator] == '.')){
+		if ((isdigit(globalCurrentLine[currentCharIterator])) || (globalCurrentLine[currentCharIterator] == '.') || (globalCurrentLine[currentCharIterator] == '-')){
 			continueParsingParameters = parseConstant(&currentCharIterator, END_INDEX_ID_CODE);
 		}
 		else {
@@ -235,6 +235,14 @@ bool taREAD::parseConstant(int *currentCharIterator, int parameterNumber){
 	bool readingDecimal = false;
 	bool caseFound;
 
+	// Handle Negatives
+	if (currentChar == '-'){
+		currentVariableName += currentChar;
+		numCharactersInVarName++;
+		(*currentCharIterator)++;
+		// cout << "\t\t\t[CDUMP]: Current Variable Name: " << currentVariableName << endl;
+	}
+
 	while (continueParsingVariable){
 		currentChar = globalCurrentLine[(*currentCharIterator)];
 		caseFound = false;
@@ -366,11 +374,11 @@ void taREAD::outputAREADCommand(){
 
 	(*currentFileManager).writeStringToObj(AREAD_OP_CODE);
 	(*currentFileManager).writeStringToObj(" ");
-	(*currentFileManager).writeNumToObj((float) globalArrayObject.memoryLocation);
+	(*currentFileManager).writeNumToObj((double) globalArrayObject.memoryLocation);
 	(*currentFileManager).writeStringToObj(" ");
-	(*currentFileManager).writeNumToObj((float) globalStartIndex.memoryLocation);
+	(*currentFileManager).writeNumToObj((double) globalStartIndex.memoryLocation);
 	(*currentFileManager).writeStringToObj(" ");
-	(*currentFileManager).writeNumToObj((float) globalEndIndex.memoryLocation);
+	(*currentFileManager).writeNumToObj((double) globalEndIndex.memoryLocation);
 
 	(*currentFileManager).writeStringToObj("\n");
 	// cout << "\t\t[aREAD]: Wrote to .obj\n";

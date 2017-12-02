@@ -37,7 +37,7 @@ void tNOP::prepareNOP(FileManager *parentFileManager){
 // returns num errors
 int tNOP::handleNOP(string currentLine, int correspondingLineNumber){
 	globalCurrentLine = currentLine;
-	cout << "\t\t[NOP]: Compiling Line " << correspondingLineNumber << ": " << globalCurrentLine << endl;
+	// cout << "\t\t[NOP]: Compiling Line " << correspondingLineNumber << ": " << globalCurrentLine << endl;
 
 	globalNumErrors = 0;
 
@@ -45,7 +45,7 @@ int tNOP::handleNOP(string currentLine, int correspondingLineNumber){
 
 	if (globalNumErrors == 0){
 		outputNOPCommand();
-		cout << "\t\t[NOP]: Successfully compiled NOP command\n";
+		// cout << "\t\t[NOP]: Successfully compiled NOP command\n";
 	}
 	else {
 		cout << "\t\t[NOP]: Failed to compile NOP command in line " << correspondingLineNumber << " with " << globalNumErrors << " errors\n";

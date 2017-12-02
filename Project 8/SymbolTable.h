@@ -109,6 +109,9 @@ public:
 	// returns the value at the specified memoryLocation - For Executor
 	string getValue(int memoryLocation);
 
+	// returns the value at the specified memoryLocation - For Executor
+	double getValueAsDouble(int memoryLocation);
+
 	// returns true if the variable already exists in the SymbolTable
 	bool currentlyExists(string variableName);
 

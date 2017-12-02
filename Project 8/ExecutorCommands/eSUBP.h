@@ -74,5 +74,5 @@ private:
 	============================================================================== */
 
 	// Executes the Command
-	void executeSUBPCommand(int operationCode, int variableMemLocation, int variableValue, int IdValue);
+	void executeSUBPCommand(int operationCode, int variableMemLocation, double variableValue, double IdValue);
 };

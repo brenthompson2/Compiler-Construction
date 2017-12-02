@@ -34,7 +34,7 @@ void tLOOPEND::prepareLOOPEND(FileManager *parentFileManager){
 // calls the functions necessary to parse the line and print the object code to the file while counting errors
 // returns num errors
 int tLOOPEND::handleLOOPEND(string currentLine, int correspondingLineNumber){
-	cout << "\t\t[LOOPEND]: Compiling Line " << correspondingLineNumber << ": " << globalCurrentLine << endl;
+	// cout << "\t\t[LOOPEND]: Compiling Line " << correspondingLineNumber << ": " << globalCurrentLine << endl;
 	globalNumErrors = 0;
 
 	globalCurrentLine = currentLine;
@@ -43,7 +43,7 @@ int tLOOPEND::handleLOOPEND(string currentLine, int correspondingLineNumber){
 
 	if (globalNumErrors == 0){
 		outputLOOPENDCommand();
-		cout << "\t\t[LOOPEND]: Successfully compiled LOOP-END command\n";
+		// cout << "\t\t[LOOPEND]: Successfully compiled LOOP-END command\n";
 	}
 	else {
 		cout << "\t\t[LOOPEND]: Failed to compile LOOP-END command in line " << correspondingLineNumber << " with " << globalNumErrors << " errors\n";

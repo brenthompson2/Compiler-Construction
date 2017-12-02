@@ -40,7 +40,7 @@ void tIFA::prepareIFA(FileManager *parentFileManager, SymbolTable *parentMemoryM
 // returns num errors
 int tIFA::handleIFA(string currentLine, int correspondingLineNumber){
 	globalCurrentLine = currentLine;
-	cout << "\t\t[IFA]: Compiling Line: " << globalCurrentLine << endl;
+	// cout << "\t\t[IFA]: Compiling Line: " << globalCurrentLine << endl;
 
 	globalNumErrors = 0;
 
@@ -51,7 +51,7 @@ int tIFA::handleIFA(string currentLine, int correspondingLineNumber){
 
 	if (globalNumErrors == 0){
 		outputIFACommand();
-		cout << "\t\t[IFA]: Successfully completed IFA command\n";
+		// cout << "\t\t[IFA]: Successfully completed IFA command\n";
 	}
 	else {
 		cout << "\t\t[IFA]: Failed to complete IFA command with " << globalNumErrors << " errors\n";

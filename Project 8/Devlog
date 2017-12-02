@@ -21,6 +21,8 @@ I) Summary of Work:
 		- Added -std=c++11 to Core Memory for std::to_string()
 	- Changed some floats to doubles
 	- Silenced A Lot of Debugging Output
+	- Started Handling Negatives for Constants
+	- Started Handling Doubles for IDs
 
 II) Need to Implement:
 	- Compiler:
@@ -160,11 +162,57 @@ V) Log Of Activity:
 	- Added -std=c++11 flag to symbolTable and overloaded the setValue function to also take a double
 		- put burden of double to string conversion on the stupidly implemented Core Memory (Symbol Table)
 
-- Changed some floats to doubles
-	- LoopManager
-	- eSUBP
-
 - Silenced A Lot of Debugging Output
+
+- Started Handling Negatives in Constants
+	-For Negatives:
+		- When Calling Parser: if ((isDigit(firstChar)) || (firstChar == '-')) { parseConstant() }
+		- When parsingConstant, before starting loop:
+			// Handle Negatives
+			currentChar = globalCurrentLine[(*currentCharIterator)];
+			if (currentChar == '-'){
+				currentVariableName += currentChar;
+				numCharactersInVarName++;
+				(*currentCharIterator)++;
+				// cout << "\t\t\t[CDUMP]: Current Variable Name: " << currentVariableName << endl;
+			}
+	- Where Handled:
+		- tCDUMP
+		- tIF
+		- taREAD
+		- taWRITE
+		- tSUBP
+		- tLOOP
+	- Where Still Bad:
+		- infixToPostfix() for Assignment
+
+- Started Handling Doubles for IDs
+	- For Doubles:
+		- created getValueAsDouble in SymbolTable
+		- already had created a convertToFloat(), but not using it
+	- Where Handled:
+		- tCommands:
+			- probably didn't need to do since all memLocations are int
+			- tCDUMP
+			- tIF
+			- tREAD
+			- tWRITE
+			- tDIM
+			- taREAD
+			- taWRITE
+			- tSUBP
+			- tGOTO
+			- tLOOP
+			- tIFA
+			- tlREAD
+			- tlWRITE
+		- eCommands:
+			- eSUBP
+		- Objects:
+			- FileManager
+			- LoopManager
+	- Where Still Bad:
+		- Every place that a value from Core Memory is used (pretty much all are int)
 
 =========================================================
 =========================================================

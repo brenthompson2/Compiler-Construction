@@ -38,7 +38,7 @@ void tGOTO::prepareGOTO(FileManager *parentFileManager, LineLabelTable *parentLi
 // returns number of errors
 int tGOTO::handleGOTO(string currentLine, int correspondingLineNumber){
 	globalCurrentLine = currentLine;
-	cout << "\t\t[GOTO]: Compiling Line " << correspondingLineNumber << ": " << globalCurrentLine << endl;
+	// cout << "\t\t[GOTO]: Compiling Line " << correspondingLineNumber << ": " << globalCurrentLine << endl;
 
 	globalNumErrors = 0;
 
@@ -55,7 +55,7 @@ int tGOTO::handleGOTO(string currentLine, int correspondingLineNumber){
 
 	if (globalNumErrors == 0){
 		outputGOTOCommand();
-		cout << "\t\t[GOTO]: Successfully completed GOTO command\n";
+		// cout << "\t\t[GOTO]: Successfully completed GOTO command\n";
 	}
 	else {
 		cout << "\t\t[GOTO]: Error: Failed to complete GOTO command in line " << correspondingLineNumber << " with " << globalNumErrors << " errors\n";
@@ -178,7 +178,7 @@ void tGOTO::outputGOTOCommand(){
 
 	(*currentFileManager).writeStringToObj(GOTO_OP_CODE);
 	(*currentFileManager).writeStringToObj(" ");
-	(*currentFileManager).writeNumToObj((float) globalLineLabelLineNumber);
+	(*currentFileManager).writeNumToObj((double) globalLineLabelLineNumber);
 
 	(*currentFileManager).writeStringToObj("\n");
 	return;

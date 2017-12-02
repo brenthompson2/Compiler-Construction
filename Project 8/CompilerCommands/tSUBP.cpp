@@ -39,7 +39,7 @@ void tSUBP::prepareSUBP(FileManager *parentFileManager, SymbolTable *parentMemor
 // returns num errors
 int tSUBP::handleSUBP(string currentLine, int correspondingLineNumber){
 	globalCurrentLine = currentLine;
-	cout << "\t\t[SUBP]: Compiling Line: " << globalCurrentLine << endl;
+	// cout << "\t\t[SUBP]: Compiling Line: " << globalCurrentLine << endl;
 
 	globalNumErrors = 0;
 
@@ -50,7 +50,7 @@ int tSUBP::handleSUBP(string currentLine, int correspondingLineNumber){
 
 	if (globalNumErrors == 0){
 		outputSUBPCommand();
-		cout << "\t\t[SUBP]: Successfully completed SUBP command\n";
+		// cout << "\t\t[SUBP]: Successfully completed SUBP command\n";
 	}
 	else {
 		cout << "\t\t[SUBP]: Failed to complete SUBP command with " << globalNumErrors << " errors\n";
@@ -89,10 +89,10 @@ void tSUBP::outputSUBPCommand(){
 	(*currentFileManager).writeNumToObj(globalOperation);
 	(*currentFileManager).writeStringToObj(" ");
 
-	(*currentFileManager).writeNumToObj((float) globalVariable.memoryLocation);
+	(*currentFileManager).writeNumToObj((double) globalVariable.memoryLocation);
 	(*currentFileManager).writeStringToObj(" ");
 
-	(*currentFileManager).writeNumToObj((float) secondID.memoryLocation);
+	(*currentFileManager).writeNumToObj((double) secondID.memoryLocation);
 	(*currentFileManager).writeStringToObj("\n");
 
 	return;
@@ -139,11 +139,11 @@ void tSUBP::parseParameters(){
 	}
 	else {
 		currentChar = globalCurrentLine[currentCharIterator];
-		if (isalpha(currentChar)){
-			continueParsingParameters = parseVariable(&currentCharIterator, OTHER_ID_CODE);
+		if ((isdigit(currentChar)) || (currentChar == '.') || (currentChar == '-')){
+			continueParsingParameters = parseConstant(&currentCharIterator, OTHER_ID_CODE);
 		}
 		else {
-			continueParsingParameters = parseConstant(&currentCharIterator, OTHER_ID_CODE);
+			continueParsingParameters = parseVariable(&currentCharIterator, OTHER_ID_CODE);
 		}
 	}
 
@@ -304,6 +304,15 @@ bool tSUBP::parseConstant(int *currentCharIterator, int parameterNumber){
 	bool isValidVariableName = true;
 	bool readingDecimal = false;
 	bool caseFound;
+
+	// Handle Negatives
+	currentChar = globalCurrentLine[(*currentCharIterator)];
+	if (currentChar == '-'){
+		currentVariableName += currentChar;
+		numCharactersInVarName++;
+		(*currentCharIterator)++;
+		// cout << "\t\t\t[CDUMP]: Current Variable Name: " << currentVariableName << endl;
+	}
 
 	while (continueParsingVariable){
 		currentChar = globalCurrentLine[(*currentCharIterator)];

@@ -153,6 +153,31 @@ string SymbolTable::getValue(int memoryLocation){
 	return currentValue;
 }
 
+// returns the value at the specified memoryLocation - For Executor
+double SymbolTable::getValueAsDouble(int memoryLocation){
+	string currentValue_string;
+	double currentValue_double;
+	if ((memoryLocation >= 0) && (memoryLocation < MAX_NUM_VARIABLES)){
+		currentValue_string = globalCoreMemoryArray[memoryLocation];
+	}
+	else {
+		currentValue_string = "failed to get value: invalid memory location";
+	}
+
+	std::stringstream str0(currentValue_string);
+	str0 >> currentValue_double;
+
+	if (useZeroFlag){
+		// cout << "\t\t\t[Core Memory]: Current value is " << currentValue_double << endl;
+		if (currentValue_double == UNDEFINED_VALUE){
+			currentValue_double = 0;
+		}
+	}
+
+	return currentValue_double;
+
+}
+
 // returns true if the variable already exists in the SymbolTable
 bool SymbolTable::currentlyExists(string variableName){
 	bool existsInTable;

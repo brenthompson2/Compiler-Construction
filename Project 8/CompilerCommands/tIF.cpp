@@ -40,7 +40,7 @@ void tIF::prepareIF(FileManager *parentFileManager, SymbolTable *parentMemoryMan
 // returns num errors
 int tIF::handleIF(string currentLine, int correspondingLineNumber){
 	globalCurrentLine = currentLine;
-	cout << "\t\t[IF]: Compiling Line: " << globalCurrentLine << endl;
+	// cout << "\t\t[IF]: Compiling Line: " << globalCurrentLine << endl;
 
 	globalNumErrors = 0;
 
@@ -51,7 +51,7 @@ int tIF::handleIF(string currentLine, int correspondingLineNumber){
 
 	if (globalNumErrors == 0){
 		outputIFCommand();
-		cout << "\t\t[IF]: Successfully completed IF command\n";
+		// cout << "\t\t[IF]: Successfully completed IF command\n";
 	}
 	else {
 		cout << "\t\t[IF]: Failed to complete IF command with " << globalNumErrors << " errors\n";
@@ -94,16 +94,16 @@ void tIF::outputIFCommand(){
 	(*currentFileManager).writeStringToObj(IF_OP_CODE);
 	(*currentFileManager).writeStringToObj(" ");
 
-	(*currentFileManager).writeNumToObj((float) firstID.memoryLocation);
+	(*currentFileManager).writeNumToObj((double) firstID.memoryLocation);
 	(*currentFileManager).writeStringToObj(" ");
 
-	(*currentFileManager).writeNumToObj((float) secondID.memoryLocation);
+	(*currentFileManager).writeNumToObj((double) secondID.memoryLocation);
 	(*currentFileManager).writeStringToObj(" ");
 
-	(*currentFileManager).writeNumToObj((float) testCondition);
+	(*currentFileManager).writeNumToObj((double) testCondition);
 	(*currentFileManager).writeStringToObj(" ");
 
-	(*currentFileManager).writeNumToObj((float) globalLineLabel.memoryLocation);
+	(*currentFileManager).writeNumToObj((double) globalLineLabel.memoryLocation);
 	(*currentFileManager).writeStringToObj("\n");
 
 	return;
@@ -131,11 +131,11 @@ void tIF::parseParameters(){
 	currentChar = globalCurrentLine[currentCharIterator];
 
 	// Get First ID
-	if (isalpha(currentChar)){
-		continueParsingParameters = parseVariable(&currentCharIterator, FIRST_ID_CODE);
+	if ((isdigit(currentChar)) || (currentChar == '.') || (currentChar == '-')){
+		continueParsingParameters = parseConstant(&currentCharIterator, FIRST_ID_CODE);
 	}
 	else {
-		continueParsingParameters = parseConstant(&currentCharIterator, FIRST_ID_CODE);
+		continueParsingParameters = parseVariable(&currentCharIterator, FIRST_ID_CODE);
 	}
 
 	// Get test-condition
@@ -154,11 +154,11 @@ void tIF::parseParameters(){
 	}
 	else {
 		currentChar = globalCurrentLine[currentCharIterator];
-		if (isalpha(currentChar)){
-			continueParsingParameters = parseVariable(&currentCharIterator, SECOND_ID_CODE);
+		if ((isdigit(currentChar)) || (currentChar == '.') || (currentChar == '-')){
+			continueParsingParameters = parseConstant(&currentCharIterator, SECOND_ID_CODE);
 		}
 		else {
-			continueParsingParameters = parseConstant(&currentCharIterator, SECOND_ID_CODE);
+			continueParsingParameters = parseVariable(&currentCharIterator, SECOND_ID_CODE);
 		}
 	}
 
@@ -326,6 +326,15 @@ bool tIF::parseConstant(int *currentCharIterator, int parameterNumber){
 	bool isValidVariableName = true;
 	bool readingDecimal = false;
 	bool caseFound;
+
+	// Handle Negatives
+	currentChar = globalCurrentLine[(*currentCharIterator)];
+	if (currentChar == '-'){
+		currentVariableName += currentChar;
+		numCharactersInVarName++;
+		(*currentCharIterator)++;
+		// cout << "\t\t\t[CDUMP]: Current Variable Name: " << currentVariableName << endl;
+	}
 
 	while (continueParsingVariable){
 		currentChar = globalCurrentLine[(*currentCharIterator)];

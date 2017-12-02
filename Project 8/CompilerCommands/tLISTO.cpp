@@ -37,7 +37,7 @@ void tLISTO::prepareLISTO(FileManager *parentFileManager){
 // returns num errors
 int tLISTO::handleLISTO(string currentLine, int correspondingLineNumber){
 	globalCurrentLine = currentLine;
-	cout << "\t\t[LISTO]: Compiling Line " << correspondingLineNumber << ": " << globalCurrentLine << endl;
+	// cout << "\t\t[LISTO]: Compiling Line " << correspondingLineNumber << ": " << globalCurrentLine << endl;
 
 	globalNumErrors = 0;
 
@@ -45,7 +45,7 @@ int tLISTO::handleLISTO(string currentLine, int correspondingLineNumber){
 
 	if (globalNumErrors == 0){
 		outputLISTOCommand();
-		cout << "\t\t[LISTO]: Successfully compiled LISTO command\n";
+		// cout << "\t\t[LISTO]: Successfully compiled LISTO command\n";
 	}
 	else {
 		cout << "\t\t[LISTO]: Failed to compile LISTO command in line " << correspondingLineNumber << " with " << globalNumErrors << " errors\n";

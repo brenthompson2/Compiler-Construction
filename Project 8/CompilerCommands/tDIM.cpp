@@ -39,7 +39,7 @@ void tDIM::prepareDIM(FileManager *parentFileManager, SymbolTable *parentMemoryM
 // returns num errors
 int tDIM::handleDIM(string currentLine, int correspondingLineNumber){
 	globalCurrentLine = currentLine;
-	cout << "\t\t[DIM]: Compiling Line: " << globalCurrentLine << endl;
+	// cout << "\t\t[DIM]: Compiling Line: " << globalCurrentLine << endl;
 
 	numVariablesInArray = 0;
 	globalNumErrors = 0;
@@ -51,7 +51,7 @@ int tDIM::handleDIM(string currentLine, int correspondingLineNumber){
 
 	if (globalNumErrors == 0){
 		outpuDIMCommand();
-		cout << "\t\t[DIM]: Successfully completed DIM command\n";
+		// cout << "\t\t[DIM]: Successfully completed DIM command\n";
 	}
 	else {
 		cout << "\t\t[DIM]: Failed to complete DIM command with " << globalNumErrors << " errors\n";
@@ -357,10 +357,10 @@ void tDIM::outpuDIMCommand(){
 	for (int i = 0; i < numVariablesInArray; i++){
 		(*currentFileManager).writeStringToObj(" ");
 		currentMemoryLocation = (variableArray[i]).memoryLocation;
-		(*currentFileManager).writeNumToObj((float) currentMemoryLocation);
+		(*currentFileManager).writeNumToObj((double) currentMemoryLocation);
 		(*currentFileManager).writeStringToObj(" ");
 		size = (variableArray[i]).size;
-		(*currentFileManager).writeNumToObj((float) size);
+		(*currentFileManager).writeNumToObj((double) size);
 	}
 
 	(*currentFileManager).writeStringToObj("\n");

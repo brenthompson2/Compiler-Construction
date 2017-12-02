@@ -39,7 +39,7 @@ void tLOOP::prepareLOOP(FileManager *parentFileManager, SymbolTable *parentMemor
 // returns num errors
 int tLOOP::handleLOOP(string currentLine, int correspondingLineNumber){
 	globalCurrentLine = currentLine;
-	cout << "\t\t[LOOP]: Compiling Line: " << globalCurrentLine << endl;
+	// cout << "\t\t[LOOP]: Compiling Line: " << globalCurrentLine << endl;
 
 	globalNumErrors = 0;
 
@@ -50,7 +50,7 @@ int tLOOP::handleLOOP(string currentLine, int correspondingLineNumber){
 
 	if (globalNumErrors == 0){
 		outputLOOPCommand();
-		cout << "\t\t[LOOP]: Successfully completed LOOP command\n";
+		// cout << "\t\t[LOOP]: Successfully completed LOOP command\n";
 	}
 	else {
 		cout << "\t\t[LOOP]: Failed to complete LOOP command with " << globalNumErrors << " errors\n";
@@ -73,7 +73,7 @@ void tLOOP::parseParameters(){
 	for (int i = 0; i < 4; i++){
 
 		// If Starts With A Digit
-		if ((isdigit(globalCurrentLine[currentCharIterator])) || (globalCurrentLine[currentCharIterator] == '.')){
+		if ((isdigit(globalCurrentLine[currentCharIterator])) || (globalCurrentLine[currentCharIterator] == '.') || (globalCurrentLine[currentCharIterator] == '-')){
 			continueParsingParameters = parseConstant(&currentCharIterator, i);
 		}
 		else { // Doesn't Start With A Digit
@@ -244,6 +244,15 @@ bool tLOOP::parseConstant(int *currentCharIterator, int parameterNumber){
 	bool readingDecimal = false;
 	bool caseFound;
 
+	// Handle Negatives
+	currentChar = globalCurrentLine[(*currentCharIterator)];
+	if (currentChar == '-'){
+		currentVariableName += currentChar;
+		numCharactersInVarName++;
+		(*currentCharIterator)++;
+		// cout << "\t\t\t[CDUMP]: Current Variable Name: " << currentVariableName << endl;
+	}
+
 	while (continueParsingVariable){
 		currentChar = globalCurrentLine[(*currentCharIterator)];
 		caseFound = false;
@@ -405,16 +414,16 @@ void tLOOP::outputLOOPCommand(){
 	(*currentFileManager).writeStringToObj(LOOP_OP_CODE);
 	(*currentFileManager).writeStringToObj(" ");
 
-	(*currentFileManager).writeNumToObj((float) indexVariable.memoryLocation);
+	(*currentFileManager).writeNumToObj((double) indexVariable.memoryLocation);
 	(*currentFileManager).writeStringToObj(" ");
 
-	(*currentFileManager).writeNumToObj((float) startIndex.memoryLocation);
+	(*currentFileManager).writeNumToObj((double) startIndex.memoryLocation);
 	(*currentFileManager).writeStringToObj(" ");
 
-	(*currentFileManager).writeNumToObj((float) endIndex.memoryLocation);
+	(*currentFileManager).writeNumToObj((double) endIndex.memoryLocation);
 	(*currentFileManager).writeStringToObj(" ");
 
-	(*currentFileManager).writeNumToObj((float) incrementAmount.memoryLocation);
+	(*currentFileManager).writeNumToObj((double) incrementAmount.memoryLocation);
 	(*currentFileManager).writeStringToObj("\n");
 
 	return;

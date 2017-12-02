@@ -38,7 +38,7 @@ void tlREAD::prepareLREAD(FileManager *parentFileManager, LiteralTable *parentLi
 // returns number of errors
 int tlREAD::handleLREAD(string currentLine, int correspondingLineNumber){
 	globalCurrentLine = currentLine;
-	cout << "\t\t[tlREAD]: Compiling Line " << correspondingLineNumber << ": " << globalCurrentLine << endl;
+	// cout << "\t\t[tlREAD]: Compiling Line " << correspondingLineNumber << ": " << globalCurrentLine << endl;
 
 	globalNumErrors = 0;
 
@@ -51,7 +51,7 @@ int tlREAD::handleLREAD(string currentLine, int correspondingLineNumber){
 	if (globalNumErrors == 0){
 		syncLiteralToLiteralTable();
 		outputLREADCommand();
-		cout << "\t\t[tlREAD]: Successfully completed tlREAD command\n";
+		// cout << "\t\t[tlREAD]: Successfully completed tlREAD command\n";
 	}
 	else {
 		cout << "\t\t[tlREAD]: Failed to complete tlREAD command in line "<< correspondingLineNumber << " with " << globalNumErrors << " errors\n";
@@ -203,7 +203,7 @@ void tlREAD::outputLREADCommand(){
 
 	(*currentFileManager).writeStringToObj(" ");
 	currentMemoryLocation = globalLiteralObject.memoryLocation;
-	(*currentFileManager).writeNumToObj((float) currentMemoryLocation);
+	(*currentFileManager).writeNumToObj((double) currentMemoryLocation);
 
 	(*currentFileManager).writeStringToObj("\n");
 	return;

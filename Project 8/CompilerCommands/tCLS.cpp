@@ -37,7 +37,7 @@ void tCLS::prepareCLS(FileManager *parentFileManager){
 // returns num errors
 int tCLS::handleCLS(string currentLine, int correspondingLineNumber){
 	globalCurrentLine = currentLine;
-	cout << "\t\t[CLS]: Compiling Line " << correspondingLineNumber << ": " << globalCurrentLine << endl;
+	// cout << "\t\t[CLS]: Compiling Line " << correspondingLineNumber << ": " << globalCurrentLine << endl;
 
 	globalNumErrors = 0;
 
@@ -45,7 +45,7 @@ int tCLS::handleCLS(string currentLine, int correspondingLineNumber){
 
 	if (globalNumErrors == 0){
 		outputCLSCommand();
-		cout << "\t\t[CLS]: Successfully completed CLS command\n";
+		// cout << "\t\t[CLS]: Successfully completed CLS command\n";
 	}
 	else {
 		cout << "\t\t[CLS]: Failed to complete CLS command in line " << correspondingLineNumber << " with " << globalNumErrors << " errors\n";

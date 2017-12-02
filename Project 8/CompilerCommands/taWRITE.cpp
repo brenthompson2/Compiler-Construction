@@ -39,7 +39,7 @@ void taWRITE::prepareAWRITE(FileManager *parentFileManager, SymbolTable *parentM
 // returns number of errors
 int taWRITE::handleAWRITE(string currentLine, int correspondingLineNumber){
 	globalCurrentLine = currentLine;
-	cout << "\t\t[aWRITE]: Compiling Line " << correspondingLineNumber << ": " << globalCurrentLine << endl;
+	// cout << "\t\t[aWRITE]: Compiling Line " << correspondingLineNumber << ": " << globalCurrentLine << endl;
 
 	// numVariablesInArray = 0;
 	globalNumErrors = 0;
@@ -50,7 +50,7 @@ int taWRITE::handleAWRITE(string currentLine, int correspondingLineNumber){
 
 	if (globalNumErrors == 0){
 		outputAWRITECommand();
-		cout << "\t\t[aWRITE]: Successfully compiled aWRITE command\n";
+		// cout << "\t\t[aWRITE]: Successfully compiled aWRITE command\n";
 	}
 	else {
 		cout << "\t\t[aWRITE]: Failed to compile aWRITE command in line " << correspondingLineNumber << " with " << globalNumErrors << " errors\n";
@@ -73,7 +73,7 @@ void taWRITE::parseParameters(){
 
 	// Parse START Index
 	if (continueParsingParameters){
-		if ((isdigit(globalCurrentLine[currentCharIterator])) || (globalCurrentLine[currentCharIterator] == '.')){
+		if ((isdigit(globalCurrentLine[currentCharIterator])) || (globalCurrentLine[currentCharIterator] == '.') || (globalCurrentLine[currentCharIterator] == '-')){
 			continueParsingParameters = parseConstant(&currentCharIterator, START_INDEX_CODE);
 		}
 		else {
@@ -87,7 +87,7 @@ void taWRITE::parseParameters(){
 
 	// Parse END Index
 	if (continueParsingParameters){
-		if ((isdigit(globalCurrentLine[currentCharIterator])) || (globalCurrentLine[currentCharIterator] == '.')){
+		if ((isdigit(globalCurrentLine[currentCharIterator])) || (globalCurrentLine[currentCharIterator] == '.') || (globalCurrentLine[currentCharIterator] == '-')){
 			continueParsingParameters = parseConstant(&currentCharIterator, END_INDEX_CODE);
 		}
 		else {
@@ -236,6 +236,15 @@ bool taWRITE::parseConstant(int *currentCharIterator, int parameterNumber){
 	bool readingDecimal = false;
 	bool caseFound;
 
+	// Handle Negatives
+	currentChar = globalCurrentLine[(*currentCharIterator)];
+	if (currentChar == '-'){
+		currentVariableName += currentChar;
+		numCharactersInVarName++;
+		(*currentCharIterator)++;
+		// cout << "\t\t\t[CDUMP]: Current Variable Name: " << currentVariableName << endl;
+	}
+
 	while (continueParsingVariable){
 		currentChar = globalCurrentLine[(*currentCharIterator)];
 		caseFound = false;
@@ -367,11 +376,11 @@ void taWRITE::outputAWRITECommand(){
 
 	(*currentFileManager).writeStringToObj(AWRITE_OP_CODE);
 	(*currentFileManager).writeStringToObj(" ");
-	(*currentFileManager).writeNumToObj((float) globalArrayObject.memoryLocation);
+	(*currentFileManager).writeNumToObj((double) globalArrayObject.memoryLocation);
 	(*currentFileManager).writeStringToObj(" ");
-	(*currentFileManager).writeNumToObj((float) globalStartIndex.memoryLocation);
+	(*currentFileManager).writeNumToObj((double) globalStartIndex.memoryLocation);
 	(*currentFileManager).writeStringToObj(" ");
-	(*currentFileManager).writeNumToObj((float) globalEndIndex.memoryLocation);
+	(*currentFileManager).writeNumToObj((double) globalEndIndex.memoryLocation);
 
 	(*currentFileManager).writeStringToObj("\n");
 	// cout << "\t\t[aWRITE]: Wrote to .obj\n";

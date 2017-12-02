@@ -38,7 +38,7 @@ void tlWRITE::prepareLWRITE(FileManager *parentFileManager, LiteralTable *parent
 // returns number of errors
 int tlWRITE::handleLWRITE(string currentLine, int correspondingLineNumber){
 	globalCurrentLine = currentLine;
-	cout << "\t\t[tlWRITE]: Compiling Line " << correspondingLineNumber << ": " << globalCurrentLine << endl;
+	// cout << "\t\t[tlWRITE]: Compiling Line " << correspondingLineNumber << ": " << globalCurrentLine << endl;
 
 	globalNumErrors = 0;
 
@@ -51,7 +51,7 @@ int tlWRITE::handleLWRITE(string currentLine, int correspondingLineNumber){
 	if (globalNumErrors == 0){
 		syncLiteralToLiteralTable();
 		outputLWRITECommand();
-		cout << "\t\t[tlWRITE]: Successfully completed tlWRITE command\n";
+		// cout << "\t\t[tlWRITE]: Successfully completed tlWRITE command\n";
 	}
 	else {
 		cout << "\t\t[tlWRITE]: Failed to complete tlWRITE command in line "<< correspondingLineNumber << " with " << globalNumErrors << " errors\n";
@@ -279,7 +279,7 @@ void tlWRITE::outputLWRITECommand(){
 
 	(*currentFileManager).writeStringToObj(" ");
 	currentMemoryLocation = globalLiteralObject.memoryLocation;
-	(*currentFileManager).writeNumToObj((float) currentMemoryLocation);
+	(*currentFileManager).writeNumToObj((double) currentMemoryLocation);
 
 	(*currentFileManager).writeStringToObj("\n");
 	return;

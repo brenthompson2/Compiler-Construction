@@ -39,7 +39,7 @@ void tCDUMP::prepareCDUMP(FileManager *parentFileManager, SymbolTable *parentMem
 // returns num errors
 int tCDUMP::handleCDUMP(string currentLine, int correspondingLineNumber){
 	globalCurrentLine = currentLine;
-	cout << "\t\t[CDUMP]: Compiling Line: " << globalCurrentLine << endl;
+	// cout << "\t\t[CDUMP]: Compiling Line: " << globalCurrentLine << endl;
 
 	globalNumErrors = 0;
 
@@ -48,7 +48,7 @@ int tCDUMP::handleCDUMP(string currentLine, int correspondingLineNumber){
 	if (globalNumErrors == 0){
 		syncVariablesToSymbolTable();
 		outputCDUMPCommand();
-		cout << "\t\t[CDUMP]: Successfully completed CDUMP command\n";
+		// cout << "\t\t[CDUMP]: Successfully completed CDUMP command\n";
 	}
 	else {
 		cout << "\t\t[CDUMP]: Failed to complete CDUMP command with " << globalNumErrors << " errors\n";
@@ -69,7 +69,7 @@ void tCDUMP::parseParameters(){
 	string currentArrayName;
 
 	// Parse START Index
-	if ((isdigit(globalCurrentLine[currentCharIterator])) || (globalCurrentLine[currentCharIterator] == '.')){
+	if ((isdigit(globalCurrentLine[currentCharIterator])) || (globalCurrentLine[currentCharIterator] == '.') || (globalCurrentLine[currentCharIterator] == '-')){
 		continueParsingParameters = parseConstant(&currentCharIterator, START_ID_CODE);
 	}
 	else {
@@ -223,12 +223,21 @@ bool tCDUMP::parseConstant(int *currentCharIterator, int parameterNumber){
 	bool readingDecimal = false;
 	bool caseFound;
 
+	// Handle Negatives
+	currentChar = globalCurrentLine[(*currentCharIterator)];
+	if (currentChar == '-'){
+		currentVariableName += currentChar;
+		numCharactersInVarName++;
+		(*currentCharIterator)++;
+		// cout << "\t\t\t[CDUMP]: Current Variable Name: " << currentVariableName << endl;
+	}
+
 	while (continueParsingVariable){
 		currentChar = globalCurrentLine[(*currentCharIterator)];
 		caseFound = false;
 		// cout << "\t\t\t[CDUMP]: Current Character: " << currentChar << endl;
 
-		// Alphabetic
+		// Alphabetic (wont happen first time since already checked)
 		if (isalpha(currentChar)){
 			currentVariableName += currentChar;
 			numCharactersInVarName++;
@@ -348,10 +357,10 @@ void tCDUMP::outputCDUMPCommand(){
 	(*currentFileManager).writeStringToObj(CDUMP_OP_CODE);
 	(*currentFileManager).writeStringToObj(" ");
 
-	(*currentFileManager).writeNumToObj((float) globalStartIndex.memoryLocation);
+	(*currentFileManager).writeNumToObj((double) globalStartIndex.memoryLocation);
 	(*currentFileManager).writeStringToObj(" ");
 
-	(*currentFileManager).writeNumToObj((float) globalEndIndex.memoryLocation);
+	(*currentFileManager).writeNumToObj((double) globalEndIndex.memoryLocation);
 	(*currentFileManager).writeStringToObj("\n");
 
 	return;

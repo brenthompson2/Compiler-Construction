@@ -37,7 +37,8 @@ void eSUBP::handleSUBP(ProgramLineObject *currentLine){
 	int operationCode;
 
 	string variableValue_string, IdMemLocation_string, IdValue_string;
-	int variableMemoryLocation_int, variableValue_int, IdMemLocation_int, IdValue_int;
+	int variableMemoryLocation_int, IdMemLocation_int;
+	double variableValue_double, IdValue_double;
 
 	operationCode = ((*globalCurrentLine).lineOfCodeArray)[1];
 	variableMemoryLocation_int = ((*globalCurrentLine).lineOfCodeArray)[2];
@@ -50,13 +51,13 @@ void eSUBP::handleSUBP(ProgramLineObject *currentLine){
 	// cout << "\t\t[SUBP]: Executing SUBP operation " << operationCode << " on " << variableValue_string << " using " << IdValue_string << endl;
 
 	std::stringstream str0(variableValue_string);
-	str0 >> variableValue_int;
+	str0 >> variableValue_double;
 	std::stringstream str1(IdValue_string);
-	str1 >> IdValue_int;
+	str1 >> IdValue_double;
 
-	// cout << "\t\t[SUBP]: Executing SUBP operation " << operationCode << " on " << variableValue_int << " using " << IdValue_int << endl;
+	// cout << "\t\t[SUBP]: Executing SUBP operation " << operationCode << " on " << variableValue_double << " using " << IdValue_double << endl;
 
-	executeSUBPCommand(operationCode, variableMemoryLocation_int, variableValue_int, IdValue_int);
+	executeSUBPCommand(operationCode, variableMemoryLocation_int, variableValue_double, IdValue_double);
 	return;
 }
 
@@ -65,7 +66,7 @@ void eSUBP::handleSUBP(ProgramLineObject *currentLine){
 ============================================================================== */
 
 // executes the command
-void eSUBP::executeSUBPCommand(int operationCode, int variableMemLocation, int variableValue, int IdValue){
+void eSUBP::executeSUBPCommand(int operationCode, int variableMemLocation, double variableValue, double IdValue){
 	double newValue;
 	string newValue_string;
 
