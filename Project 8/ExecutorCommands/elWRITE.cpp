@@ -42,16 +42,32 @@ void elWRITE::handleLWRITE(ProgramLineObject *currentLine){
 	Private Manipulator Methods
 ============================================================================== */
 
-// executes the command
+// executes the command (prepared to handle multiple literals on one line)
 void elWRITE::executeLWRITECommand(){
 	int currentMemoryLocation;
-	string tempValue;
+	string currentLiteral;
+	char currentChar;
+	int currentLiteralIterator;
 	// cout << "\t\t[elWRITE]: Attempting to Execute Object Code...\n";
 
 	for (int i = 1; i < (*globalCurrentLine).numElementsInLine; i++){
 		currentMemoryLocation = (*globalCurrentLine).lineOfCodeArray[i];
-		tempValue = (*ParentLiteralManager).getValue(currentMemoryLocation);
-		cout << tempValue << " ";
+		currentLiteral = (*ParentLiteralManager).getValue(currentMemoryLocation);
+		currentLiteralIterator = 0;
+		currentChar = currentLiteral[currentLiteralIterator];
+
+		// Print line one character at a time
+		while (currentChar != '\0'){
+			if ((currentChar == '\\') && (currentLiteral[currentLiteralIterator + 1] == 'n')){
+				cout << endl;
+				currentLiteralIterator = currentLiteralIterator + 2;
+			}
+			else {
+				cout << currentChar;
+				currentLiteralIterator++;
+			}
+			currentChar = currentLiteral[currentLiteralIterator];
+		}
 	}
 
 	return;

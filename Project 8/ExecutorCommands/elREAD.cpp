@@ -42,7 +42,7 @@ void elREAD::handleLREAD(ProgramLineObject *currentLine){
 	Private Manipulator Methods
 ============================================================================== */
 
-// executes the command
+// executes the command (prepared to handle multiple literals on one line)
 void elREAD::executeLREADCommand(){
 	int currentMemoryLocation;
 	string tempValue;
