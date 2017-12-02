@@ -1,2 +1,6 @@
 *.o
-Compiler
+*.obj
+*.core
+*.literal
+BRENxCompiler
+BRENxExecutor
