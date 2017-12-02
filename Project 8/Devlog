@@ -16,10 +16,10 @@ Brendan Thompson
 I) Summary of Work:
 	- Finished Implementing SUBP
 	- Handled \n printing newLine for lWRITE
+	- Handled -x Compiler Flag
 
 II) Need to Implement:
 	- Compiler:
-		- -x Auto Execute flag not working
 		- handle negatives and decimals when parsing constants
 			- if only the parser was its own object...
 		- handle no id after operator in assignment (x = y + 4 * _)
@@ -144,6 +144,11 @@ V) Log Of Activity:
 	log = log(10)
 
 - Handled \n printing newLine for lWRITE
+
+- Handled -x Compiler Flag
+	- got system() working
+		- #include <cstdlib>
+	- Had to explicitly call ~FileManager at end of compilation
 
 =========================================================
 =========================================================
@@ -306,6 +311,7 @@ V) Log Of Activity:
 	-x = automatically execute after compilation
 		- not working properly
 		- Compiler Driver attempts to call system("./BRENxExecutor <filename>");
+		- https://stackoverflow.com/questions/5460421/how-do-you-write-a-c-program-to-execute-another-program
 
 =========================================================
 =========================================================

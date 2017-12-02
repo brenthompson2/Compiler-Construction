@@ -61,14 +61,10 @@ int main (int argc, char**argv){
 
 	cout << "\n\n[Executor Driver]: Executing...\n\n\n\n";
 	executedSuccesfully = mainExecutor.execute();
-	int returnValue = 0;
-	if (!executedSuccesfully){
-		returnValue = 1;
-	}
 
 	cout << "\n\n[Executor Driver]: Finished Execution\n";
 
-	return returnValue;
+	return 0;
 }
 
 /* ==============================================================================
@@ -81,9 +77,9 @@ bool parseArguments(int numArguments, char* *arrayOfArgs, char *arrayOfFlags, st
 	string currentArg;
 	bool gotFilename = false;
 
-	// If No File Specified
+	// If No Arguments
 	if (numArguments == 1){
-		(*fileName) = "test1.transy";
+		(*fileName) = "test1.obj";
 		return true;
 	}
 
@@ -114,7 +110,6 @@ bool parseArguments(int numArguments, char* *arrayOfArgs, char *arrayOfFlags, st
 				(*fileName) = (arrayOfArgs[i]);
 				gotFilename = true;
 			}
-
 		}
 	}
 
@@ -122,8 +117,6 @@ bool parseArguments(int numArguments, char* *arrayOfArgs, char *arrayOfFlags, st
 		(*fileName) = "test1.obj";
 	}
 
-	// cout << "[Executor Driver]: Got Filename: " << (*fileName) << endl;
-
+	cout << "[Executor Driver]: Got Filename: " << (*fileName) << endl;
 	return true;
-
 }

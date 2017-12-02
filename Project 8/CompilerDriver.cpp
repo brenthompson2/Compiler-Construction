@@ -18,6 +18,7 @@
 #include "Compiler.h"
 #include <iostream>	// Console IO
 #include <stdlib.h>	// Exit()
+#include <cstdlib> // system(./BRENxExecutor)
 
 /* ==============================================================================
 	Symbolic Constants
@@ -45,33 +46,43 @@ int main (int argc, char**argv){
 	string fileName;
 	char arrayOfFlags[MAX_NUM_FLAGS];
 	bool gotFilename = false;
-	bool continueWithCompilation = true;
+	bool completedSuccessfully = true;
+	int statusOfExecution;
 
 	cout << "\n[Compiler Driver]: Preparing for Compilation...\n";
-	continueWithCompilation = parseArguments(argc, argv, arrayOfFlags, &fileName, &numFlags);
-	if (!continueWithCompilation){
+	completedSuccessfully = parseArguments(argc, argv, arrayOfFlags, &fileName, &numFlags);
+	if (!completedSuccessfully){
 		cout << "[Compiler Driver]: Error Parsing Command Line Arguments, aborting...\n";
 		exit(1);
 	}
 
 	BREN_Compiler mainCompiler;
-	continueWithCompilation = mainCompiler.prepareForCompilation(fileName, arrayOfFlags, numFlags);
-	if (!continueWithCompilation){
+	completedSuccessfully = mainCompiler.prepareForCompilation(fileName, arrayOfFlags, numFlags);
+	if (!completedSuccessfully){
 		cout << "[Compiler Driver]: Error Preparing for Compilation, aborting...\n";
 		exit(1);
 	}
 
 	cout << "\n\n[Compiler Driver]: Compiling...\n";
-	mainCompiler.compile();
-
+	completedSuccessfully = mainCompiler.compile();
 	cout << "\n\n[Compiler Driver]: Finished Compilation\n";
 
 	if (checkForExecutionFlag(fileName, arrayOfFlags, numFlags)){
-		cout << "[Compiler Driver]: Calling Executor...\n";
-		string executorFunctionCall = "./BRENxExecutor";
-		// executorFunctionCall += " ";
-		// executorFunctionCall += fileName;
-		system(executorFunctionCall.c_str());
+		if (completedSuccessfully){
+			string executorFunctionCall = "./BRENxExecutor ";
+			// executorFunctionCall += " ";
+			executorFunctionCall += fileName;
+			// try {
+				cout << "[Compiler Driver]: Attempting to Execute " << executorFunctionCall << "...\n";
+				statusOfExecution = system(executorFunctionCall.c_str());
+			// }
+			// catch (const commandNotFound& e){
+			//	cout << "[Compiler Driver]: Failed To Locate Executor. Exiting...\n";
+			// }
+		}
+		else {
+			cout << "[Compiler Driver]: Executor flag was set but compilation failed. Exiting...\n";
+		}
 	}
 
 	return 0;

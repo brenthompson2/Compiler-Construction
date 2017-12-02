@@ -61,11 +61,12 @@ bool BREN_Compiler::prepareForCompilation(string fileToCompile, char *arrayOfFla
 }
 
 // Compiles the preprocessed .noblanks file into the final .obj, getting one line at a time and calling getCommand()
-void BREN_Compiler::compile(){
+bool BREN_Compiler::compile(){
 	string currentLine;
 	bool continueCompiling = true;
 	int lineCount = 0;
 	int actualLineNumber;
+	bool compiledSuccessfully;
 
 
 	currentLine = globalFileManager.getNextLine();
@@ -93,12 +94,15 @@ void BREN_Compiler::compile(){
 
 	// Manage Compilation Result
 	if (numErrors == 0){
+		compiledSuccessfully = true;
 		cout << "\n\t[Compiler]: Successfully Compiled the file\n";
-		globalFileManager.setCompilationResult(true);
+		globalFileManager.setCompilationResult(compiledSuccessfully);
 		globalMemoryManager.setCompilationResult(SUCCESSFULLY_COMPILED);
 	}
 	else {
+		compiledSuccessfully = false;
 		cout << "\n\t[Compiler]: Completed Compiling with " << numErrors << " errors\n";
+		globalFileManager.setCompilationResult(compiledSuccessfully);
 		globalMemoryManager.setCompilationResult(FAILED_COMPILATION);
 	}
 
@@ -110,7 +114,9 @@ void BREN_Compiler::compile(){
 	// globalLineManager.printLineLabelTable();
 	// globalLineManager.printLineMapping();
 
-	return;
+	globalFileManager.~FileManager();
+
+	return compiledSuccessfully;
 }
 
 /* ==============================================================================

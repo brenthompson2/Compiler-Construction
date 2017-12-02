@@ -12,7 +12,7 @@ This GitHub Repository was created for testing the code on a lab computer remote
 
 ## Use
 
-#### Compiling the Transy Compiler
+#### Compiling the Transy Compiler & Executor
 
 In order to use this Transy Language (.transy) to Transy Object Code (.obj) compiler, the C++ code that it is written in must first be compiled into an executable. The Executor needs to be compiled as well, and is compiled using the same command below.
 
@@ -22,7 +22,7 @@ To remove all of the files run `make clean`
 
 #### Using the Transy Compiler
 
-On Ubuntu: The Transy Compiler must first be Compiled. Then, navigate the terminal to the directory with the `Compiler` executable and type `./Compiler <fileName.transy>`
+On Ubuntu: The Transy Compiler must first be Compiled. Then, navigate the terminal to the directory with the `BRENxCompiler` executable and type `./BRENxCompiler <fileName.transy>`
 
 Flags:
 

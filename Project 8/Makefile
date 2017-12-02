@@ -2,19 +2,19 @@
 # 11/30/17
 # Makefile for Compiler V6
 
-# "make main" = Compile and Link Both BREN_Compiler & BREN_Executor
-# "make clean" = removes all created files (BREN_Compiler, BREN_Executor, *.o, *.noblanks, *.obj, *.core, *.literal)
-# "./BREN_Compiler <fileName.transy>" = Compiles the fileName
-# "./BREN_Executor <fileName.obj>" = Executes the fileName
+# "make main" = Compile and Link Both BRENxCompiler & BREN_Executor
+# "make clean" = removes all created files (BRENxCompiler, BREN_Executor, *.o, *.noblanks, *.obj, *.core, *.literal)
+# "./BRENxCompiler <fileName.transy>" = Compiles the fileName
+# "./BRENxExecutor <fileName.obj>" = Executes the fileName
 
-main: BREN_Compiler BREN_Executor
+main: BRENxCompiler BRENxExecutor
 
 ###########################
 ### Compiler Components ###
 ###########################
 
-BREN_Compiler: CompilerDriver.o Compiler.o FileManager.o SymbolTable.o LiteralTable.o LineLabelTable.o ExpressionConvertingMatrix.o ExpressionFixConverter.o tREAD.o tWRITE.o tSTOP.o tDIM.o taREAD.o taWRITE.o tGOTO.o tLOOP.o tLOOPEND.o tIFA.o tNOP.o tLISTO.o tlREAD.o tlWRITE.o tIF.o tCLS.o tCDUMP.o tSUBP.o tASSIGNMENT.o
-	g++ -o BREN_Compiler CompilerDriver.o Compiler.o FileManager.o SymbolTable.o LiteralTable.o LineLabelTable.o ExpressionConvertingMatrix.o ExpressionFixConverter.o tREAD.o tWRITE.o tSTOP.o tDIM.o taREAD.o taWRITE.o tGOTO.o tLOOP.o tLOOPEND.o tIFA.o tNOP.o tLISTO.o tlREAD.o tlWRITE.o tIF.o tCLS.o tCDUMP.o tSUBP.o tASSIGNMENT.o
+BRENxCompiler: CompilerDriver.o Compiler.o FileManager.o SymbolTable.o LiteralTable.o LineLabelTable.o ExpressionConvertingMatrix.o ExpressionFixConverter.o tREAD.o tWRITE.o tSTOP.o tDIM.o taREAD.o taWRITE.o tGOTO.o tLOOP.o tLOOPEND.o tIFA.o tNOP.o tLISTO.o tlREAD.o tlWRITE.o tIF.o tCLS.o tCDUMP.o tSUBP.o tASSIGNMENT.o
+	g++ -o BRENxCompiler CompilerDriver.o Compiler.o FileManager.o SymbolTable.o LiteralTable.o LineLabelTable.o ExpressionConvertingMatrix.o ExpressionFixConverter.o tREAD.o tWRITE.o tSTOP.o tDIM.o taREAD.o taWRITE.o tGOTO.o tLOOP.o tLOOPEND.o tIFA.o tNOP.o tLISTO.o tlREAD.o tlWRITE.o tIF.o tCLS.o tCDUMP.o tSUBP.o tASSIGNMENT.o
 
 CompilerDriver.o: CompilerDriver.cpp Compiler.o
 	g++ -c CompilerDriver.cpp
@@ -38,8 +38,8 @@ ExpressionFixConverter.o: ExpressionFixConverter.cpp ExpressionFixConverter.h Ex
 ### Executor Components ###
 ###########################
 
-BREN_Executor: ExecutorDriver.o Executor.o EFileManager.o FileManager.o SymbolTable.o LiteralTable.o LineLabelTable.o ProgramLineTable.o LoopManager.o eREAD.o eWRITE.o eDIM.o eaREAD.o eaWRITE.o eIFA.o elREAD.o elWRITE.o eIF.o eCDUMP.o eSUBP.o
-	g++ -o BREN_Executor ExecutorDriver.o Executor.o EFileManager.o FileManager.o SymbolTable.o LiteralTable.o LineLabelTable.o ProgramLineTable.o LoopManager.o eREAD.o eWRITE.o eDIM.o eaREAD.o eaWRITE.o eIFA.o elREAD.o elWRITE.o eIF.o eCDUMP.o eSUBP.o
+BRENxExecutor: ExecutorDriver.o Executor.o EFileManager.o FileManager.o SymbolTable.o LiteralTable.o LineLabelTable.o ProgramLineTable.o LoopManager.o eREAD.o eWRITE.o eDIM.o eaREAD.o eaWRITE.o eIFA.o elREAD.o elWRITE.o eIF.o eCDUMP.o eSUBP.o
+	g++ -o BRENxExecutor ExecutorDriver.o Executor.o EFileManager.o FileManager.o SymbolTable.o LiteralTable.o LineLabelTable.o ProgramLineTable.o LoopManager.o eREAD.o eWRITE.o eDIM.o eaREAD.o eaWRITE.o eIFA.o elREAD.o elWRITE.o eIF.o eCDUMP.o eSUBP.o
 
 ExecutorDriver.o: ExecutorDriver.cpp Executor.o
 	g++ -c ExecutorDriver.cpp
@@ -168,4 +168,4 @@ tASSIGNMENT.o: ./CompilerCommands/tASSIGNMENT.cpp ./CompilerCommands/tASSIGNMENT
 #####################
 
 clean:
-	rm BREN_Compiler BREN_Executor *.o *.noblanks *.obj *.core *.literal
+	rm BRENxCompiler BRENxExecutor *.o *.noblanks *.obj *.core *.literal

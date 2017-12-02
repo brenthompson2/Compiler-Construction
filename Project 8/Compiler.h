@@ -85,7 +85,7 @@ public:
 	bool prepareForCompilation(string fileToCompile, char *arrayOfFlags, int numberOfFlags);
 
 	// Compiles the preprocessed .noblanks file into the final .obj, getting one line at a time and calling getCommand()
-	void compile();
+	bool compile();
 
 private:
 	/* ==============================================================================

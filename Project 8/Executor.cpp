@@ -44,11 +44,11 @@ bool BREN_Executor::prepareForExecution(string fileToExecute, char *arrayOfFlags
 	for (int i = 0; i < numberOfFlags; i++){
 		currentFlag = arrayOfFlags[i];
 		if ((currentFlag == 'r') || (currentFlag == 'R')){
-			cout << "\n\t[Warning]: Found -r flag\n";
+			// cout << "\n\t[Executor]: Found -r flag\n";
 			globalMemoryManager.turnOnRangeCheckingFlag();
 		}
 		if ((currentFlag == 'z') || (currentFlag == 'Z')){
-			cout << "\n\t[Warning]: Found -z flag\n";
+			// cout << "\n\t[Executor]: Found -z flag\n";
 			globalMemoryManager.turnOnZeroForUndefinedFlag();
 		}
 	}
@@ -81,7 +81,7 @@ bool BREN_Executor::execute(){
 		}
 		else {
 			if (!globalFoundStopCommand){
-				cout << "\n\t[Warning]: Finished Executing without STOP command\n";
+				cout << "\n\t[Executor]: Warning! Finished Executing without STOP command\n";
 			}
 			continueExecuting = false;
 		}
