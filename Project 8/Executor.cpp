@@ -18,8 +18,6 @@
 
 // Instantiates a BREN_Executor object, tell FileManager to preprocess .transy file, and instantiates objects for handling commands
 BREN_Executor::BREN_Executor (){
-	globalFoundStopCommand = false;
-	globalNumErrors = 0;
 	instantiateCommandObjects();
 	cout << "\t[Executor]: Initialized Executor\n";
 	return;
@@ -38,6 +36,8 @@ BREN_Executor::~BREN_Executor (){
 // Tells the FileManager to prepare the fileToExecute, handle flags, and fills the ProgramLineTable
 bool BREN_Executor::prepareForExecution(string fileToExecute, char *arrayOfFlags, int numberOfFlags){
 	bool successfullyPrepared = false;
+	globalFoundStopCommand = false;
+	globalNumErrors = 0;
 
 	// Handle Flags
 	char currentFlag;
@@ -68,11 +68,11 @@ bool BREN_Executor::prepareForExecution(string fileToExecute, char *arrayOfFlags
 // Executes the .obj file by getting a line from globalProgramManager and calling handleCommand()
 void BREN_Executor::execute(){
 	ProgramLineObject *currentProgramLine;
-	bool continueCompiling = true;
+	bool continueExecuting = true;
 	int linesRunCount = 0;
 	int programCounter = 0;
 
-	while (continueCompiling){
+	while (continueExecuting){
 		currentProgramLine = globalProgramManager.getCopyOfNextProgramObject(programCounter);
 		if ((*currentProgramLine).numElementsInLine != END_OF_PROGRAM){
 			handleCommand((*currentProgramLine), &programCounter);
@@ -82,11 +82,11 @@ void BREN_Executor::execute(){
 			if (!globalFoundStopCommand){
 				cout << "\n\t[Warning]: Finished Executing without STOP command\n";
 			}
-			continueCompiling = false;
+			continueExecuting = false;
 		}
 
 		if (globalFoundStopCommand){
-			continueCompiling = false;
+			continueExecuting = false;
 		}
 
 	}
@@ -94,12 +94,12 @@ void BREN_Executor::execute(){
 	// globalMemoryManager.printCoreMemory();
 
 	// Manage Execution Result
-	if (globalNumErrors == 0){
-		cout << "\n\t[Executor]: Successfully Executed the file\n";
-	}
-	else {
-		cout << "\n\t[Executor]: Completed Executing with " << globalNumErrors << " errors\n";
-	}
+	// if (globalNumErrors == 0){
+	// 	cout << "\n\n\n\t[Executor]: Successfully Executed the file\n";
+	// }
+	// else {
+	// 	cout << "\n\n\n\t[Executor]: Completed Executing with " << globalNumErrors << " errors\n";
+	// }
 
 	return;
 }

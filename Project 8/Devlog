@@ -2,11 +2,148 @@
 =========================================================
 
 Devlog
-Project 7 - Emulator V2 & Compiler V8
+Project 8 - Emulator V2 & Compiler V8
 Brendan Thompson
 
 - A detailed documentation of daily work, current status, what needs to be implemented, and other thoughts
 - Includes Work Cited
+
+=========================================================
+=========================================================
+
+12/01/17
+
+I) Summary of Work:
+	- Finished Implementing SUBP
+	- Handled \n printing newLine for lWRITE
+
+II) Need to Implement:
+	- Compiler:
+		- -x Auto Execute flag not working
+		- handle negatives and decimals when parsing constants
+			- if only the parser was its own object...
+		- handle no id after operator in assignment (x = y + 4 * _)
+	- eCOMMANDS:
+		- Executor V3 = Assignment
+
+II.IV) Should Implement
+	- Check all functions for missing lines
+	- Change all floats to doubles
+	- Core Memory:
+		- Core Memory should be doubles instead of strings
+		- Should separate CoreMemory out of SymbolTable
+			- They both have a bunch of functions and share none of them
+			- Needs to bring the table of Array Dimensions with it
+	- Use try {} catch {} for exception handling
+	- Compiler Specific:
+		- 128 Character Limit on Variable Names
+		- Abstract the parser out of the tCommands into its own object
+			- tIF has most of them
+
+III) Thoughts:
+	- Each command has a parser function and they are all super similar
+		- Could possibly abstract them away into less function
+		- aread & awrite = identical
+		- read & write = identical
+
+IV) Status:
+	- Executor Driver:
+		- creates an instance of Executor, tells it to prepare for execution, tells it to execute, and shutdowns the Executor
+		- takes in flags and a fileName as a parameter
+	- Executor:
+		- creates an instance of EFileManager, SymbolTable, LiteralTable, and ProgramLineTable
+		- gets one line at a time and manages commands with command handling objects
+	- EFileManager:
+		- opens .obj, .literal, and .core files
+		- syncs objInputFile with ParentProgramManager
+		- syncs literalInputFile with ParentLiteralManager
+		- syncs coreInputFile with ParentMemoryManager
+	- SymbolTable:
+		- manages IDs (variables or Constants) and their associated values and virtual memory locations
+		- sets all initial values to 0.123456789
+		- coreMemoryArray[1000] = bool failedCompilation; (0 = success, 1 = failed)
+		- calls on the FileManager to output .core file
+		*** SymbolTable is also Core Memory (I wish it wasn't)
+		- handles memory management during execution
+		- loads coreMemory from .core file
+	- LiteralTable:
+		- manages literal phrases and their associated virtual memory locations
+		- calls on the FileManager to output .literal file
+	- ProgramLineTable
+		- loads every line from the .obj file
+	- LoopManager
+		- Handles setting the PC and testing the conditionals for loops
+		- Needs SymbolTable (Core Memory)
+	- eCommands:
+		1) READ:
+			- Reads in strings & sets the associated RValues in MemoryManager
+			- Needs SymbolTable (Core Memory)
+		2) WRITE:
+			- Outputs the RValues at the specified memory locations
+			- Needs SymbolTable (Core Memory)
+		3) STOP:
+			- NOT USED = Executor sees command and stops executing
+		4) DIM:
+			- Adds arrays to SymbolTable::globalArrayOfArrayDimensions
+			- Needs SymbolTable (Core Memory)
+		5) aREAD:
+			- reads in strings and sets RValues in core memory for the designated array indexes
+			- Needs SymbolTable (Core Memory)
+		6) aWRITE:
+			- outputs RValues from core memory for the designated array indexes
+			- Needs SymbolTable (Core Memory)
+		7) GOTO:
+			- NOT USED = Executor sees command and sets the programCounter to the specified lineLocation
+		8) LOOP:
+			- NOT USED = Executor sees command and loopManager handles it and sets the programCounter
+			- Needs SymbolTable (Core Memory)
+			- Needs LineLabelTable
+		9) LOOPEND:
+			- NOT USED = Executor sees command and loopManager handles it and sets the programCounter
+		10) IFA:
+			- jumps to the line location corresponding with whether the value was negative, zero, or positive
+			- Needs SymbolTable (Core Memory)
+			- Needs LineLabelTable
+		11) NOP:
+			- NOT USED = Executor sees command and increments PC
+		12) LISTO:
+			- NOT USED = Executor sees command and tells ProgramLineManger to print
+		13) lREAD:
+			- reads in the literal to the specified memory location
+			- Needs LiteralTable
+		14) lWRITE:
+			- writes the literal for the specified memory location
+			- Needs LiteralTable
+		15) IF:
+			- (<  : -1)	 (<= : -2)  (=  : -3)  (>  : -4)  (>= : -5)  (!  : -6)
+			- Conditionally jumps to the line location
+			- Needs SymbolTable (Core Memory)
+			- Needs LineLabelTable
+		16) CLS
+			- NOT USED = Executor sees command and prints 100 blank lines
+		17) CDUMP:
+			- outputs each CoreMemory value between startIndex & endIndex
+			- Needs SymbolTable (Core Memory)
+		18) SUBP:
+			- (sin : -10)  (cos : -11)  (exp : -12)  (abs : -13)  (alg : -14)  (aln : -15)  (log : -16)  (sqr : -17)
+			- sets the RValue in core memory of the variable specified to the mathematical output given the operation and the ID
+			- Needs SymbolTable (Core Memory)
+
+	- eCommands Not Yet Implemented:
+		19) ASSIGNMENT:
+			- (= : -1)  ([ : -2)  (^ : -3)  (* : -4)  (/ : -5)  (+ : -6)  (- : -7)
+			- handles ASSIGNMENT command, tells parent FileManager to write op code to .obj and tells MemoryManager to manage IDs
+			- MAX_NUM_INPUT_VALUES = 40
+				- from ExpressionFixConverter
+
+V) Log Of Activity:
+
+- Finished Implementing SUBP
+	alg = log(2)
+	aln = ln
+	log = log(10)
+
+- Handled \n printing newLine for lWRITE
 
 =========================================================
 =========================================================
@@ -22,10 +159,14 @@ I) Summary of Work:
 
 II) Still Need to Implement:
 	- eCOMMANDS:
-		- SUBP difference between alg, aln, and log?
+		- SUBP difference between
+			alg = log(2)
+			aln = ln
+			log = log(10)
 		- Executor V3 = Assignment
 	- \n prints new line for lwrite
 	- Compiler:
+		- -x Auto Execute flag not working
 		- handle floats everywhere
 		- handle no id after operator in assignment (x = y + 4 * _)
 
@@ -59,60 +200,75 @@ IV) Status:
 	- SymbolTable:
 		- manages IDs (variables or Constants) and their associated values and virtual memory locations
 		- sets all initial values to 0.123456789
-		- coreMemoryArray[1000] = (bool) failedCompilation; (0 = success, 1 = failed)
+		- coreMemoryArray[1000] = bool failedCompilation; (0 = success, 1 = failed)
 		- calls on the FileManager to output .core file
+		*** SymbolTable is also Core Memory (I wish it wasn't)
+		- handles memory management during execution
 		- loads coreMemory from .core file
 	- LiteralTable:
 		- manages literal phrases and their associated virtual memory locations
 		- calls on the FileManager to output .literal file
 	- ProgramLineTable
-		- loads every line from .obj file
+		- loads every line from the .obj file
 	- LoopManager
 		- Handles setting the PC and testing the conditionals for loops
+		- Needs SymbolTable (Core Memory)
 	- eCommands:
 		1) READ:
 			- Reads in strings & sets the associated RValues in MemoryManager
+			- Needs SymbolTable (Core Memory)
 		2) WRITE:
 			- Outputs the RValues at the specified memory locations
+			- Needs SymbolTable (Core Memory)
 		3) STOP:
 			- NOT USED = Executor sees command and stops executing
 		4) DIM:
 			- Adds arrays to SymbolTable::globalArrayOfArrayDimensions
+			- Needs SymbolTable (Core Memory)
 		5) aREAD:
 			- reads in strings and sets RValues in core memory for the designated array indexes
+			- Needs SymbolTable (Core Memory)
 		6) aWRITE:
 			- outputs RValues from core memory for the designated array indexes
+			- Needs SymbolTable (Core Memory)
 		7) GOTO:
 			- NOT USED = Executor sees command and sets the programCounter to the specified lineLocation
 		8) LOOP:
 			- NOT USED = Executor sees command and loopManager handles it and sets the programCounter
+			- Needs SymbolTable (Core Memory)
+			- Needs LineLabelTable
 		9) LOOPEND:
 			- NOT USED = Executor sees command and loopManager handles it and sets the programCounter
-
+		10) IFA:
+			- jumps to the line location corresponding with whether the value was negative, zero, or positive
+			- Needs SymbolTable (Core Memory)
+			- Needs LineLabelTable
 		11) NOP:
 			- NOT USED = Executor sees command and increments PC
 		12) LISTO:
 			- NOT USED = Executor sees command and tells ProgramLineManger to print
 		13) lREAD:
 			- reads in the literal to the specified memory location
+			- Needs LiteralTable
 		14) lWRITE:
 			- writes the literal for the specified memory location
-
+			- Needs LiteralTable
+		15) IF:
+			- (<  : -1)	 (<= : -2)  (=  : -3)  (>  : -4)  (>= : -5)  (!  : -6)
+			- Conditionally jumps to the line location
+			- Needs SymbolTable (Core Memory)
+			- Needs LineLabelTable
 		16) CLS
 			- NOT USED = Executor sees command and prints 100 blank lines
 		17) CDUMP:
-			- outputs each CoreMemory value between startIndex & endIndex, from SymbolTable
+			- outputs each CoreMemory value between startIndex & endIndex
+			- Needs SymbolTable (Core Memory)
 		18) SUBP:
 			- (sin : -10)  (cos : -11)  (exp : -12)  (abs : -13)  (alg : -14)  (aln : -15)  (log : -16)  (sqr : -17)
 			- sets the RValue in core memory of the variable specified to the mathematical output given the operation and the ID
-
+			- Needs SymbolTable (Core Memory)
 
 	- eCommands Not Yet Implemented:
-		10) IFA:
-			- handles IFA command, tells parent FileManager to write op code to .obj, tells MemoryManager to manage variables, and gets Line Label Location from LineLabelTable
-		15) IF:
-			- (<  : -1)	 (<= : -2)  (=  : -3)  (>  : -4)  (>= : -5)  (!  : -6)
-			- handles IF command, tells parent FileManager to write op code to .obj, tells MemoryManager to manage variables, and gets Line Label Location from LineLabelTable
 		19) ASSIGNMENT:
 			- (= : -1)  ([ : -2)  (^ : -3)  (* : -4)  (/ : -5)  (+ : -6)  (- : -7)
 			- handles ASSIGNMENT command, tells parent FileManager to write op code to .obj and tells MemoryManager to manage IDs

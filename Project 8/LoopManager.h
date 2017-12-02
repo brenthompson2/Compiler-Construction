@@ -21,7 +21,7 @@
 #include "SymbolTable.h"
 
 #include <iostream>	// Console IO
-#include <sstream> // used in convertToFloat()
+#include <sstream> //std::stringstream str(" ")
 using std::cin;
 using std::cout;
 using std::cerr;

@@ -1,8 +1,8 @@
 c* Brendan Thompson
 c* test1.transy
-c* Updated 11/20/17
-C* Test File for Project 7 - Compiler & Executor
-C* Compiles Commands for the Executor
+c* Updated 12/01/17
+C* Test File for Project 8 - Compiler & Executor
+C* For testing Commands within the Executor
 
 c* ===============================
 c* ======= Read / Write ==========
@@ -10,19 +10,19 @@ c* ===============================
 
 // listo
 
-// lwrite "Hello, What is your name? \n"
-// lread $userName
-// lwrite "\n Welcome "
-// lwrite $userName
+lwrite "Hello, What is your name: "
+lread $userName
+lwrite "\nWelcome "
+lwrite $userName
 
-// lwrite "\n Please Supply Three Variables "
+lwrite "\nPlease Supply Three Variables: "
 
-// read apple, banana, carrot
-// lwrite "\n You Supplied "
-// write apple, banana, carrot
+read apple, banana, carrot
+lwrite "\nYou Supplied: "
+write apple, banana, carrot
 
-// cdump 0, 5
-// stop
+cdump 0, 5
+stop
 
 c* =======================
 c* ======= Arrays ========
@@ -106,6 +106,6 @@ c* ======================
 // stop
 
 // Testing Undefined Values
-lwrite "Undefined value: "
-write undefinedVariable
-stop
+// lwrite "Undefined value: "
+// write undefinedVariable
+// stop
