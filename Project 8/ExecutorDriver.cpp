@@ -43,6 +43,7 @@ int main (int argc, char**argv){
 	char arrayOfFlags[MAX_NUM_FLAGS];
 	bool gotFilename = false;
 	bool continueWithExecution = true;
+	bool executedSuccesfully = false;
 
 	cout << "\n[Executor Driver]: Preparing for Execution...\n";
 	continueWithExecution = parseArguments(argc, argv, arrayOfFlags, &fileName, &numFlags);
@@ -59,10 +60,15 @@ int main (int argc, char**argv){
 	}
 
 	cout << "\n\n[Executor Driver]: Executing...\n\n\n\n";
-	mainExecutor.execute();
+	executedSuccesfully = mainExecutor.execute();
+	int returnValue = 0;
+	if (!executedSuccesfully){
+		returnValue = 1;
+	}
 
 	cout << "\n\n[Executor Driver]: Finished Execution\n";
-	return 0;
+
+	return returnValue;
 }
 
 /* ==============================================================================

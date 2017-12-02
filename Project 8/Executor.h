@@ -75,7 +75,7 @@ public:
 	bool prepareForExecution(string fileToExecute, char *arrayOfFlags, int numberOfFlags);
 
 	// Executes the .obj file by getting a line from ProgramLineTable and calling handleCommand()
-	void execute();
+	bool execute();
 
 private:
 	/* ==============================================================================

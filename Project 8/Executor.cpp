@@ -66,11 +66,12 @@ bool BREN_Executor::prepareForExecution(string fileToExecute, char *arrayOfFlags
 }
 
 // Executes the .obj file by getting a line from globalProgramManager and calling handleCommand()
-void BREN_Executor::execute(){
+bool BREN_Executor::execute(){
 	ProgramLineObject *currentProgramLine;
 	bool continueExecuting = true;
 	int linesRunCount = 0;
 	int programCounter = 0;
+	bool executionStatus;
 
 	while (continueExecuting){
 		currentProgramLine = globalProgramManager.getCopyOfNextProgramObject(programCounter);
@@ -94,14 +95,16 @@ void BREN_Executor::execute(){
 	// globalMemoryManager.printCoreMemory();
 
 	// Manage Execution Result
-	// if (globalNumErrors == 0){
-	// 	cout << "\n\n\n\t[Executor]: Successfully Executed the file\n";
-	// }
-	// else {
-	// 	cout << "\n\n\n\t[Executor]: Completed Executing with " << globalNumErrors << " errors\n";
-	// }
+	if (globalNumErrors == 0){
+		executionStatus = 0;
+		cout << "\n\n\n\t[Executor]: Successfully Executed the file\n";
+	}
+	else {
+		executionStatus = 1;
+		cout << "\n\n\n\t[Executor]: Completed Executing with " << globalNumErrors << " errors\n";
+	}
 
-	return;
+	return executionStatus;
 }
 
 /* ==============================================================================
