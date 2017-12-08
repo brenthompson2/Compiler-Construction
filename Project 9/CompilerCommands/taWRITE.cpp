@@ -198,7 +198,7 @@ bool taWRITE::parseVariable(int *currentCharIterator, int parameterNumber){
 		}
 
 		if (!caseFound){
-			cout << "\t\t\t[aWRITE]: Invalid Syntax: Unknown Character in line: " << globalCurrentLine << endl;
+			cout << "\t\t\t[aWRITE]: Invalid Syntax: Unknown Character ->" << currentChar << "<- in line: " << globalCurrentLine << endl;
 			(*currentCharIterator)++;
 			globalNumErrors++;
 		}
@@ -236,15 +236,6 @@ bool taWRITE::parseConstant(int *currentCharIterator, int parameterNumber){
 	bool readingDecimal = false;
 	bool caseFound;
 
-	// Handle Negatives
-	currentChar = globalCurrentLine[(*currentCharIterator)];
-	if (currentChar == '-'){
-		currentVariableName += currentChar;
-		numCharactersInVarName++;
-		(*currentCharIterator)++;
-		// cout << "\t\t\t[CDUMP]: Current Variable Name: " << currentVariableName << endl;
-	}
-
 	while (continueParsingVariable){
 		currentChar = globalCurrentLine[(*currentCharIterator)];
 		caseFound = false;
@@ -264,24 +255,6 @@ bool taWRITE::parseConstant(int *currentCharIterator, int parameterNumber){
 			currentVariableName += currentChar;
 			numCharactersInVarName++;
 			(*currentCharIterator)++;
-			caseFound = true;
-			// cout << "\t\t\t[aWRITE]: Current Variable Name: " << currentVariableName << endl;
-		}
-
-		// Decimal Point
-		if (currentChar == '.'){
-			if (readingDecimal){
-				cout << "\t\t\t[aWRITE]: Invalid Syntax: Multiple Decimal Points in One Constant: " << globalCurrentLine << endl;
-				isValidVariableName = false;
-				globalNumErrors++;
-				isNotLastParameter = true;
-			}
-			else {
-				readingDecimal = true;
-				currentVariableName += currentChar;
-				numCharactersInVarName++;
-				(*currentCharIterator)++;
-			}
 			caseFound = true;
 			// cout << "\t\t\t[aWRITE]: Current Variable Name: " << currentVariableName << endl;
 		}
@@ -323,7 +296,7 @@ bool taWRITE::parseConstant(int *currentCharIterator, int parameterNumber){
 		}
 
 		if (!caseFound){
-			cout << "\t\t\t[aWRITE]: Invalid Syntax: Unknown Character in line: " << globalCurrentLine << endl;
+			cout << "\t\t\t[aWRITE]: Invalid Syntax: Unknown Character ->" << currentChar << "<- in line: " << globalCurrentLine << endl;
 			(*currentCharIterator)++;
 			globalNumErrors++;
 		}

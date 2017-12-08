@@ -194,7 +194,7 @@ bool tDIM::parseVariable(int *currentCharIterator, string *arrayName){
 		}
 
 		if (!caseFound){
-			cout << "\t\t\t[GOTO]: Invalid Syntax: Unknown Character in line: " << globalCurrentLine << endl;
+			cout << "\t\t\t[DIM]: Invalid Syntax: Unknown Character in line: " << globalCurrentLine << endl;
 			(*currentCharIterator)++;
 			globalNumErrors++;
 		}
@@ -216,9 +216,11 @@ bool tDIM::parseSize(int *currentCharIterator, int *arraySize){
 	bool continueParsingSize = true;
 	bool isNotLastParameter = false;
 	bool isValidSize = false;
+	bool caseFound;
 
 	while (continueParsingSize){
 		currentChar = globalCurrentLine[(*currentCharIterator)];
+		caseFound = false;
 		// cout << "\t\t[DIM]: Current Character: " << currentChar << endl;
 
 		// Alphabetic
@@ -235,19 +237,8 @@ bool tDIM::parseSize(int *currentCharIterator, int *arraySize){
 			currentSizeString += currentChar;
 			numCharactersInSize++;
 			(*currentCharIterator)++;
+			caseFound = true;
 		}
-
-		// Underscore
-		// if (currentChar == '_'){
-		// 	if (numCharactersInSize == 0){
-		// 		cout << "\t\t[DIM]: Invalid Syntax: Variables can not start with an underscore: " << globalCurrentLine << endl;
-		// 		isValidSize = false;
-		// 		globalNumErrors++;
-		// 	}
-		// 	currentSizeString += currentChar;
-		// 	numCharactersInSize++;
-		// 	(*currentCharIterator)++;
-		// }
 
 		// Close Bracket ]
 		if (currentChar == ']'){
@@ -275,6 +266,7 @@ bool tDIM::parseSize(int *currentCharIterator, int *arraySize){
 			}
 			continueParsingSize = false;
 			(*currentCharIterator)++;
+			caseFound = true;
 		}
 
 		// Comma
@@ -290,6 +282,7 @@ bool tDIM::parseSize(int *currentCharIterator, int *arraySize){
 			continueParsingSize = false;
 			(*currentCharIterator)++;
 			isNotLastParameter = true;
+			caseFound = true;
 		}
 
 		// End Of Line
@@ -300,6 +293,13 @@ bool tDIM::parseSize(int *currentCharIterator, int *arraySize){
 			}
 			continueParsingSize = false;
 			isNotLastParameter = false;
+			caseFound = true;
+		}
+
+		if (!caseFound){
+			cout << "\t\t\t[DIM]: Invalid Syntax: Invalid Character ->" << currentChar << "<- in dimension in line: " << globalCurrentLine << endl;
+			(*currentCharIterator)++;
+			globalNumErrors++;
 		}
 	}
 

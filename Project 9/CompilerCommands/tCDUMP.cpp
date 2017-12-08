@@ -188,7 +188,7 @@ bool tCDUMP::parseVariable(int *currentCharIterator, int parameterNumber){
 		}
 
 		if (!caseFound){
-			cout << "\t\t\t[GOTO]: Invalid Syntax: Unknown Character in line: " << globalCurrentLine << endl;
+			cout << "\t\t\t[CDUMP]: Invalid Syntax: Unknown Character ->" << currentChar << "<- in line: " << globalCurrentLine << endl;
 			(*currentCharIterator)++;
 			globalNumErrors++;
 		}
@@ -255,24 +255,6 @@ bool tCDUMP::parseConstant(int *currentCharIterator, int parameterNumber){
 			// cout << "\t\t\t[CDUMP]: Current Variable Name: " << currentVariableName << endl;
 		}
 
-		// Decimal Point
-		if (currentChar == '.'){
-			if (readingDecimal){
-				cout << "\t\t\t[CDUMP]: Invalid Syntax: Multiple Decimal Points in One Constant: " << globalCurrentLine << endl;
-				isValidVariableName = false;
-				globalNumErrors++;
-				isNotLastParameter = true;
-			}
-			else {
-				readingDecimal = true;
-				currentVariableName += currentChar;
-				numCharactersInVarName++;
-				(*currentCharIterator)++;
-			}
-			caseFound = true;
-			// cout << "\t\t\t[CDUMP]: Current Variable Name: " << currentVariableName << endl;
-		}
-
 		// Comma ,
 		if (currentChar == ','){
 			if (parameterNumber == END_ID_CODE){
@@ -310,7 +292,7 @@ bool tCDUMP::parseConstant(int *currentCharIterator, int parameterNumber){
 		}
 
 		if (!caseFound){
-			cout << "\t\t\t[GOTO]: Invalid Syntax: Unknown Character in line: " << globalCurrentLine << endl;
+			cout << "\t\t\t[CDUMP]: Invalid Syntax: Unknown Character ->" << currentChar << "<- in line: " << globalCurrentLine << endl;
 			(*currentCharIterator)++;
 			globalNumErrors++;
 		}

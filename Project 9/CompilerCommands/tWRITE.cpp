@@ -157,7 +157,7 @@ bool tWRITE::parseVariable(int *currentCharIterator){
 		}
 
 		if (!caseFound){
-			cout << "\t\t\t[GOTO]: Invalid Syntax: Unknown Character in line: " << globalCurrentLine << endl;
+			cout << "\t\t\t[tWRITE]: Invalid Syntax: Unknown Character in line: " << globalCurrentLine << endl;
 			(*currentCharIterator)++;
 			globalNumErrors++;
 		}

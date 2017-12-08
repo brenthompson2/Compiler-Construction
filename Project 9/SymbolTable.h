@@ -2,7 +2,7 @@
 
 	File: SymbolTable.cpp
 	Author: Brendan Thompson
-	Updated: 11/30/17
+	Updated: 12/07/17
 
 	Description: Interface for SymbolTable for Compiler object made for Transylvania University University Fall Term 2017 Compiler Construction class
 		- manages IDs (variables or Constants) and their associated values and virtual memory locations
@@ -21,7 +21,7 @@
 #include "FileManager.h"
 
 #include <iostream>	// Console IO
-#include <sstream> // used in convertToFloat()
+#include <sstream> // used in convertToDouble()
 using std::cin;
 using std::cout;
 using std::cerr;
@@ -51,7 +51,7 @@ const string UNDECLARED_VALUE = "_NA";
 struct memoryTableObject {
 	string variableName;
 	unsigned int memoryLocation;
-	float value;
+	double value;
 	bool isConstant;
 	bool isArray;
 	unsigned int size;
@@ -131,7 +131,7 @@ public:
 	void printCoreMemory(int startIndex, int endIndex);
 
 	// prints out the globalArrayofArrayDimensions
-	void printArrayDimension();
+	// void printArrayDimension();
 
 	// iterates through the SymbolTable and prints the variableName & memoryLocation
 	void printSymbolTable();
@@ -139,8 +139,8 @@ public:
 	// iterates through the SymbolTable and outputs the variableName & memoryLocation to .core file
 	void outputCoreFile();
 
-	// takes in currentString, sets the numberAsFloat, and returns if successful
-	bool convertToFloat(string currentString, float &numberAsFloat);
+	// takes in currentString, sets the numberAsDouble, and returns if successful
+	bool convertToDouble(string currentString, double &numberAsDouble);
 
 protected:
 
@@ -172,5 +172,4 @@ protected:
 
 	// adds the variable to the table and returns the index
 	int insertInto(memoryTableObject *currentMemoryObject);
-
 };

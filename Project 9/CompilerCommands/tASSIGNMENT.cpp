@@ -2,7 +2,7 @@
 
 	File: tASSIGNMENT.cpp
 	Author: Brendan Thompson
-	Updated: 11/10/17
+	Updated: 12/07/17
 
 	Description: Implementation of Functions for processing ASSIGNMENT command for Compiler object made for Transylvania University University Fall Term 2017 Compiler Construction class
 
@@ -75,6 +75,12 @@ void tASSIGNMENT::syncExpressionToVariableArray(string newExpression[], int numV
 			globalVariableArray[globalNumVariablesInArray].variableName = newExpression[i];
 			globalNumVariablesInArray++;
 		}
+		if (firstChar == '-') { // Check for negative numbers
+			if ((newExpression[i]).length() > 1){
+				globalVariableArray[globalNumVariablesInArray].variableName = newExpression[i];
+				globalNumVariablesInArray++;
+			}
+		}
 	}
 	return;
 }
@@ -111,7 +117,15 @@ void tASSIGNMENT::outputASSIGNMENTCommand(string newExpression[], int numValsInN
 			idCounter++;
 		}
 		else {
-			valueToOutput = getObjectCodeMapping(newExpression[i]);
+			if (firstChar == '-') { // Check for negative numbers
+				if ((newExpression[i]).length() > 1){
+					valueToOutput = (globalVariableArray[idCounter]).memoryLocation;
+					idCounter++;
+				}
+			}
+			else {
+				valueToOutput = getObjectCodeMapping(newExpression[i]);
+			}
 		}
 		(*currentFileManager).writeNumToObj((double) valueToOutput);
 		(*currentFileManager).writeStringToObj(" ");

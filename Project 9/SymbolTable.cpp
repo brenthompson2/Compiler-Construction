@@ -2,7 +2,7 @@
 
 	File: SymbolTable.cpp
 	Author: Brendan Thompson
-	Updated: 11/29/17
+	Updated: 12/07/17
 
 	Description: 	Implementation for SymbolTable for Compiler object made for Transylvania University University Fall Term 2017 Compiler Construction class
 		- manages IDs (variables or Constants) and their associated values and virtual memory locations
@@ -40,6 +40,7 @@ SymbolTable::~SymbolTable(){
 // sets the global currentFileManager to point to the Compiler's parentFileManager
 void SymbolTable::linkWithParentFileManager(FileManager *parentFileManager){
 	currentFileManager = parentFileManager;
+	return;
 }
 
 /* ==============================================================================
@@ -49,12 +50,10 @@ void SymbolTable::linkWithParentFileManager(FileManager *parentFileManager){
 // adds a new line of core to the SymbolTable
 void SymbolTable::loadLine(string newLine){
 	// cout << "\t\t\t[Core Memory]: Adding " << newLine << " to Core Memory Manager\n";
-
 	if (newLine[0] != '\0'){
 		globalCoreMemoryArray[globalSizeCoreMemory] = newLine;
 		globalSizeCoreMemory++;
 	}
-
 	return;
 }
 
@@ -75,7 +74,7 @@ void SymbolTable::setValue(int memoryLocation, double newValue){
 		globalCoreMemoryArray[memoryLocation] = newValue_string;
 		// cout << "\t\t[Core Memory]: Set RValue of location " << memoryLocation << " to \""  << globalCoreMemoryArray[memoryLocation] << "\"\n";
 	}
-		return;
+	return;
 }
 
 // Sets the RValue of the destinationAddress to the RValue of the sourceAddress
@@ -92,21 +91,19 @@ void SymbolTable::addNewArray(int memoryLocationOfNewArray, int sizeOfNewArray){
 		globalArrayofArrayDimensions[globalNumArrayDimension].size = sizeOfNewArray;
 		globalNumArrayDimension++;
 	}
+	return;
 }
 
 // if the variable doesn't already exist, calls insertInto(), and regardless returns the index for the currentMemoryObject
 void SymbolTable::manageMemoryTableObject(memoryTableObject *currentMemoryObject){
 	// cout << "\t\t\t[SymbolTable]: Managing Memory for " << (*currentMemoryObject).variableName <<endl;
-
 	int locationInMemory = lookup((*currentMemoryObject).variableName);
-
 	if (locationInMemory == NOT_FOUND_IN_ARRAY){
 		(*currentMemoryObject).memoryLocation = insertInto(currentMemoryObject);
 	}
 	else {
 		(*currentMemoryObject).memoryLocation = locationInMemory;
 	}
-
 	return;
 }
 
@@ -117,16 +114,19 @@ void SymbolTable::setCompilationResult(bool completedSuccessfully){
 	symbolTableArray[INDEX_COMPILATION_RESULT].memoryLocation = 1000;
 	symbolTableArray[INDEX_COMPILATION_RESULT].isArray = false;
 	symbolTableArray[INDEX_COMPILATION_RESULT].size = 1;
+	return;
 }
 
 // sets the flag to true
 void SymbolTable::turnOnRangeCheckingFlag(){
 	checkRangesFlag = true;
+	return;
 }
 
 // sets the flag to true
 void SymbolTable::turnOnZeroForUndefinedFlag(){
 	useZeroFlag = true;
+	return;
 }
 
 /* ==============================================================================
@@ -149,7 +149,6 @@ string SymbolTable::getValue(int memoryLocation){
 			currentValue = "0";
 		}
 	}
-
 	return currentValue;
 }
 
@@ -175,7 +174,6 @@ double SymbolTable::getValueAsDouble(int memoryLocation){
 	}
 
 	return currentValue_double;
-
 }
 
 // returns true if the variable already exists in the SymbolTable
@@ -188,7 +186,6 @@ bool SymbolTable::currentlyExists(string variableName){
 	else {
 		existsInTable = true;
 	}
-
 	return existsInTable;
 }
 
@@ -200,7 +197,6 @@ int SymbolTable::lookup(string variableName){
 // returns the lookup table index for the variable
 int SymbolTable::getSymbolTableIndex(string variableNameToGet){
  	string currentVariableName;
-
  	for (int i = 0; i < numObjectsInArray; i++){
  		currentVariableName = symbolTableArray[i].variableName;
 
@@ -209,7 +205,6 @@ int SymbolTable::getSymbolTableIndex(string variableNameToGet){
 			return i;
 		}
 	}
-
 	return NOT_FOUND_IN_ARRAY;
 }
 
@@ -252,6 +247,7 @@ void SymbolTable::printCoreMemory(){
 	for (int i = 0; i < globalSizeCoreMemory; i++){
 		cout << "\t\t\t\t" << i << ": " << globalCoreMemoryArray[i] << endl;
 	}
+	return;
 }
 
 // prints out the Rvalue for every memoryLocation in CoreMemory from startIndex to endIndex
@@ -261,17 +257,17 @@ void SymbolTable::printCoreMemory(int startIndex, int endIndex){
 			cout << "\t\t\t\t" << i << ": " << globalCoreMemoryArray[i] << endl;
 		}
 	}
+	return;
 }
 
 // prints out the globalArrayofArrayDimensions
-void SymbolTable::printArrayDimension(){
-
-}
+// void SymbolTable::printArrayDimension(){
+	// return;
+// }
 
 // iterates through the SymbolTable and prints the variableName & memoryLocation
 void SymbolTable::printSymbolTable(){
 	cout << "\t\t\t[SymbolTable]: Symbol Table currently has " << numObjectsInArray << " declared locations\n";
-
 	for (int i = 0; i < numObjectsInArray; i++){
 		cout << "\t\t\t\t" << i << ":\t" << symbolTableArray[i].value;
 		if (symbolTableArray[i].isArray){
@@ -279,9 +275,7 @@ void SymbolTable::printSymbolTable(){
 		}
 		cout << endl;
 	}
-
 	cout << "\t\t\t\t" << INDEX_COMPILATION_RESULT << ":\t" << symbolTableArray[INDEX_COMPILATION_RESULT].variableName << ": " << symbolTableArray[INDEX_COMPILATION_RESULT].value << endl;
-
 	return;
 }
 
@@ -298,14 +292,12 @@ void SymbolTable::outputCoreFile(){
 	return;
 }
 
-// takes in currentString, sets the numberAsFloat, and returns if successful (from https://stackoverflow.com/questions/3825392/string-to-float-conversion)
-bool SymbolTable::convertToFloat(string currentString, float& numberAsFloat){
+// takes in currentString, sets the numberAsDouble, and returns if successful (from https://stackoverflow.com/questions/3825392/string-to-Double-conversion)
+bool SymbolTable::convertToDouble(string currentString, double& numberAsDouble){
     std::istringstream i(currentString);
-
-    if (!(i >> numberAsFloat)) {
+    if (!(i >> numberAsDouble)) {
     	return false;
     }
-
     return true;
 }
 
@@ -329,9 +321,9 @@ int SymbolTable::insertInto(memoryTableObject *currentMemoryObject){
 			symbolTableArray[numObjectsInArray].isConstant = true;
 
 			string currentVariableName = (*currentMemoryObject).variableName;
-			float numAsFloat;
-			if (convertToFloat(currentVariableName, numAsFloat)){
-				symbolTableArray[numObjectsInArray].value = numAsFloat;
+			double numAsDouble;
+			if (convertToDouble(currentVariableName, numAsDouble)){
+				symbolTableArray[numObjectsInArray].value = numAsDouble;
 			}
 		}
 		symbolTableArray[numObjectsInArray].variableName = (*currentMemoryObject).variableName;
@@ -339,6 +331,5 @@ int SymbolTable::insertInto(memoryTableObject *currentMemoryObject){
 	}
 
 	// printSymbolTable();
-
 	return firstMemoryLocation;
 }

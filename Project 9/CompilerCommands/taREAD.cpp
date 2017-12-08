@@ -197,7 +197,7 @@ bool taREAD::parseVariable(int *currentCharIterator, int parameterNumber){
 		}
 
 		if (!caseFound){
-			cout << "\t\t\t[aREAD]: Invalid Syntax: Unknown Character in line: " << globalCurrentLine << endl;
+			cout << "\t\t\t[aREAD]: Invalid Syntax: Unknown Character ->" << currentChar << "<- in line: " << globalCurrentLine << endl;
 			(*currentCharIterator)++;
 			globalNumErrors++;
 		}
@@ -235,14 +235,6 @@ bool taREAD::parseConstant(int *currentCharIterator, int parameterNumber){
 	bool readingDecimal = false;
 	bool caseFound;
 
-	// Handle Negatives
-	if (currentChar == '-'){
-		currentVariableName += currentChar;
-		numCharactersInVarName++;
-		(*currentCharIterator)++;
-		// cout << "\t\t\t[CDUMP]: Current Variable Name: " << currentVariableName << endl;
-	}
-
 	while (continueParsingVariable){
 		currentChar = globalCurrentLine[(*currentCharIterator)];
 		caseFound = false;
@@ -262,24 +254,6 @@ bool taREAD::parseConstant(int *currentCharIterator, int parameterNumber){
 			currentVariableName += currentChar;
 			numCharactersInVarName++;
 			(*currentCharIterator)++;
-			caseFound = true;
-			// cout << "\t\t\t[aREAD]: Current Variable Name: " << currentVariableName << endl;
-		}
-
-		// Decimal Point
-		if (currentChar == '.'){
-			if (readingDecimal){
-				cout << "\t\t\t[aREAD]: Invalid Syntax: Multiple Decimal Points in One Constant: " << globalCurrentLine << endl;
-				isValidVariableName = false;
-				globalNumErrors++;
-				isNotLastParameter = true;
-			}
-			else {
-				readingDecimal = true;
-				currentVariableName += currentChar;
-				numCharactersInVarName++;
-				(*currentCharIterator)++;
-			}
 			caseFound = true;
 			// cout << "\t\t\t[aREAD]: Current Variable Name: " << currentVariableName << endl;
 		}
@@ -321,7 +295,7 @@ bool taREAD::parseConstant(int *currentCharIterator, int parameterNumber){
 		}
 
 		if (!caseFound){
-			cout << "\t\t\t[aREAD]: Invalid Syntax: Unknown Character in line: " << globalCurrentLine << endl;
+			cout << "\t\t\t[aREAD]: Invalid Syntax: Unknown Character ->" << currentChar << "<- in line: " << globalCurrentLine << endl;
 			(*currentCharIterator)++;
 			globalNumErrors++;
 		}
