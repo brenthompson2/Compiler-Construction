@@ -23,7 +23,7 @@ eIF::~eIF(){
 }
 
 // Connects global pointer to ParentMemoryManager
-void eIF::prepareIF(SymbolTable *currentMemoryManager){
+void eIF::prepareIF(CoreMemory *currentMemoryManager){
 	parentMemoryManager = currentMemoryManager;
 }
 

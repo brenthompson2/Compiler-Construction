@@ -17,7 +17,7 @@
 #include <iostream>	// Console IO
 #include <string.h> // strcpy & strcat
 
-#include "../SymbolTable.h"
+#include "../CoreMemory.h"
 #include "../ExpressionFixConverter.h"
 
 using std::cin;
@@ -60,10 +60,10 @@ public:
 		Public Manipulator Methods
 	============================================================================== */
 
-	// Connects local pointer to SymbolTable with the parent's (compiler's) versions
-	void prepareASSIGNMENT(SymbolTable *parentMemoryManager);
+	// Connects local pointer to CoreMemory with the parent's (compiler's) versions
+	void prepareASSIGNMENT(CoreMemory *parentMemoryManager);
 
-	// calls the functions necessary to parse the line, sync the variables with the SymbolTable, and print the object code to the file while counting errors
+	// calls the functions necessary to parse the line, sync the variables with the CoreMemory, and print the object code to the file while counting errors
 	// returns num errors
 	int handleASSIGNMENT(string currentLine, int correspondingLineNumber);
 
@@ -78,11 +78,11 @@ private:
 	ExpressionFixConverter mainExpressionConverter;
 
 	// Arguments
-	memoryTableObject globalVariableArray[MAX_NUM_INPUT_VALUES]; // memoryTableObject declared in SymbolTable
+	memoryTableObject globalVariableArray[MAX_NUM_INPUT_VALUES]; // memoryTableObject declared in CoreMemory
 	unsigned int globalNumVariablesInArray;
 
 	// Parent's Objects
-	SymbolTable *currentMemoryManager; // pointer to the Compiler's (parent's) SymbolTable
+	CoreMemory *currentMemoryManager; // pointer to the Compiler's (parent's) CoreMemory
 
 	/* ==============================================================================
 		Private Accessor Methods
@@ -92,7 +92,7 @@ private:
 	void syncExpressionToVariableArray(string newExpression[], int numValsInNewExpression);
 
 	// tells the memoryManager to conditionally add the global memoryTableObject arguments to the symbol table
-	void syncVariablesToSymbolTable();
+	void syncVariablesToCoreMemory();
 
 	// tells the FileManager to print the object code for the command, which includes the command op code and the variable memoryLocations
 	void outputASSIGNMENTCommand(string newExpression[], int numValsInNewExpression);

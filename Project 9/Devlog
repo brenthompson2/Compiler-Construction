@@ -24,9 +24,6 @@ II) Need to Implement:
 II.IV) Should Implement
 	- Core Memory:
 		- Core Memory should be doubles instead of strings
-		- Should separate CoreMemory out of SymbolTable
-			- They both have a bunch of functions and share none of them
-			- Needs to bring the table of Array Dimensions with it
 	- Use try {} catch {} for exception handling
 	- eCommands return numErrors, just like tCommands (only used when range checking)
 	- Compiler Specific:
@@ -52,14 +49,10 @@ IV) Status:
 		- syncs objInputFile with ParentProgramManager
 		- syncs literalInputFile with ParentLiteralManager
 		- syncs coreInputFile with ParentMemoryManager
-	- SymbolTable:
-		- manages IDs (variables or Constants) and their associated values and virtual memory locations
-		- sets all initial values to 0.123456789
-		- coreMemoryArray[1000] = bool failedCompilation; (0 = success, 1 = failed)
-		- calls on the FileManager to output .core file
-		*** SymbolTable is also Core Memory (I wish it wasn't)
+	- CoreMemory:
 		- handles memory management during execution
 		- loads coreMemory from .core file
+		- managed array dimensions for range checking
 	- LiteralTable:
 		- manages literal phrases and their associated virtual memory locations
 		- calls on the FileManager to output .literal file
@@ -147,6 +140,8 @@ V) Log Of Activity:
 - Changed all doubles to floats
 
 - Formatted all code (removed many blank lines, added return on void, etc)
+
+- Separated Core Memory out of Symbol Table
 
 =========================================================
 =========================================================

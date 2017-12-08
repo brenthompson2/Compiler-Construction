@@ -39,7 +39,7 @@ EFileManager::~EFileManager(){
 ============================================================================== */
 
 // Sets the EFileManagers's Global FileNames and links with the parentProgramManager, parentMemoryManager, parentLiteralManager
-bool EFileManager::prepareForExecution(string fileToExecute, ProgramLineTable *currentProgramManager, SymbolTable *currentMemoryManager, LiteralTable *currentLiteralManager){
+bool EFileManager::prepareForExecution(string fileToExecute, ProgramLineTable *currentProgramManager, CoreMemory *currentMemoryManager, LiteralTable *currentLiteralManager){
 	// cout << "\t\t[FILE MANAGER]: Preparing For Execution..." << endl;
 	bool successfullyPrepared = false;
 

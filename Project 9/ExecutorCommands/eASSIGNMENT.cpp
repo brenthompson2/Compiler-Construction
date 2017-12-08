@@ -26,13 +26,13 @@ eASSIGNMENT::~eASSIGNMENT(){
 	Public Manipulator Methods
 ============================================================================== */
 
-// Connects local pointer to SymbolTable with the parent's (compiler's) versions
-void eASSIGNMENT::prepareASSIGNMENT(SymbolTable *parentMemoryManager){
+// Connects local pointer to CoreMemory with the parent's (compiler's) versions
+void eASSIGNMENT::prepareASSIGNMENT(CoreMemory *parentMemoryManager){
 	currentMemoryManager = parentMemoryManager;
 }
 
 
-// calls the functions necessary to parse the line, sync the variables with the SymbolTable, and print the object code to the file while counting errors
+// calls the functions necessary to parse the line, sync the variables with the CoreMemory, and print the object code to the file while counting errors
 // returns num errors
 int eASSIGNMENT::handleASSIGNMENT(string currentLine, int correspondingLineNumber){
 	cout << "\t\t[ASSIGNMENT]: Compiling Line: " << currentLine << endl;
@@ -46,7 +46,7 @@ int eASSIGNMENT::handleASSIGNMENT(string currentLine, int correspondingLineNumbe
 	// printPostfixExpression(postfixExpression, numInputValues);
 
 	syncExpressionToVariableArray(postfixExpression, numInputValues);
-	syncVariablesToSymbolTable();
+	syncVariablesToCoreMemory();
 
 	outputASSIGNMENTCommand(postfixExpression, numInputValues);
 
@@ -83,14 +83,14 @@ void eASSIGNMENT::syncExpressionToVariableArray(string newExpression[], int numV
 ============================================================================== */
 
 // tells the memoryManager to conditionally add the global memoryTableObject arguments to the symbol table
-void eASSIGNMENT::syncVariablesToSymbolTable(){
+void eASSIGNMENT::syncVariablesToCoreMemory(){
 // 	// cout << "\t\t[ASSIGNMENT]: Attempting to Add Arguments to Lookup Table...\n";
 	for (int i = 0; i < globalNumVariablesInArray; i++){
 		globalVariableArray[i].isArray = false;
 		globalVariableArray[i].size = 1;
 		(*currentMemoryManager).manageMemoryTableObject(&globalVariableArray[i]);
 	}
-	// (*currentMemoryManager).printSymbolTable();
+	// (*currentMemoryManager).printCoreMemory();
 	return;
 }
 

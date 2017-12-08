@@ -5,7 +5,7 @@
 	Updated: 11/30/17
 
 	Description: Interface for Main Executor Object made for Transylvania University University Fall Term 2017 Executor Construction class
-		- creates an instance of FileManager, SymbolTable, LiteralTable, LineLabelTable, and ProgramLineTable
+		- creates an instance of FileManager, CoreMemory, LiteralTable, LineLabelTable, and ProgramLineTable
 		- gets one line at a time and manages commands with command handling objects
 
 ============================================================================== */
@@ -26,7 +26,7 @@ using std::ofstream;
 using std::string;
 
 #include "EFileManager.h"
-#include "SymbolTable.h"
+#include "CoreMemory.h"
 #include "LiteralTable.h"
 #include "ProgramLineTable.h"
 #include "LoopManager.h"
@@ -86,7 +86,7 @@ private:
 
 	// Global Helper Objects
 	EFileManager globalFileManager;
-	SymbolTable globalMemoryManager;
+	CoreMemory globalMemoryManager;
 	LiteralTable globalLiteralManager;
 	ProgramLineTable globalProgramManager;
 	LoopManager globalLoopManager;
@@ -112,7 +112,7 @@ private:
 	// tells the appropriate object to handle the command in the line
 	void handleCommand(ProgramLineObject currentLineObject, int *currentProgramCounter);
 
-	// instantiates objects for handling commands by passing the FileManager, MemoryManager, SymbolTable, LineLabelTable, and/or LiteralTable by reference
+	// instantiates objects for handling commands by passing the FileManager, MemoryManager, CoreMemory, LineLabelTable, and/or LiteralTable by reference
 	void instantiateCommandObjects();
 };
 

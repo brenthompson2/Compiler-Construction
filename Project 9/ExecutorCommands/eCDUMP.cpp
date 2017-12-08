@@ -27,13 +27,13 @@ eCDUMP::~eCDUMP(){
 	Public Manipulator Methods
 ============================================================================== */
 
-// Connects local pointer to SymbolTable with the parent's (compiler's) versions
-void eCDUMP::prepareCDUMP(SymbolTable *parentMemoryManager){
+// Connects local pointer to CoreMemory with the parent's (compiler's) versions
+void eCDUMP::prepareCDUMP(CoreMemory *parentMemoryManager){
 	currentMemoryManager = parentMemoryManager;
 }
 
 
-// calls the functions necessary to parse the line, sync the variables with the SymbolTable, and print the object code to the file while counting errors
+// calls the functions necessary to parse the line, sync the variables with the CoreMemory, and print the object code to the file while counting errors
 void eCDUMP::handleCDUMP(ProgramLineObject *currentLine){
 	globalCurrentLine = currentLine;
 	string startIndexValue_string, endIndexValue_string, startIndexMemLocation_string, endIndexMemLocation_string;

@@ -20,7 +20,7 @@
 
 #include "ProgramLineTable.h"
 #include "LiteralTable.h"
-#include "SymbolTable.h"
+#include "CoreMemory.h"
 
 #include <iostream>	// Console IO
 #include <iomanip> // std::setprecision()
@@ -71,7 +71,7 @@ public:
 	============================================================================== */
 
 	// Sets the EFileManagers's Global FileNames & Links to the Parent's LineManager
-	bool prepareForExecution(string fileToExecute, ProgramLineTable *currentProgramManager, SymbolTable *currentMemoryManager, LiteralTable *currentLiteralManager);
+	bool prepareForExecution(string fileToExecute, ProgramLineTable *currentProgramManager, CoreMemory *currentMemoryManager, LiteralTable *currentLiteralManager);
 
 	// Loads the objInputFile, literalInputFile, and coreInputFile into their associated data structure
 	void loadProgram();
@@ -92,7 +92,7 @@ private:
 	// Parent's Objects
 	ProgramLineTable *ParentProgramManager;
 	LiteralTable *ParentLiteralManager;
-	SymbolTable *ParentMemoryManager;
+	CoreMemory *ParentMemoryManager;
 
 	/* ==============================================================================
 		Private File Management Functions

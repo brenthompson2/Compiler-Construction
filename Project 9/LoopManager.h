@@ -18,7 +18,7 @@
 ============================================================================== */
 
 #include "ProgramLineTable.h"
-#include "SymbolTable.h"
+#include "CoreMemory.h"
 
 #include <iostream>	// Console IO
 #include <sstream> //std::stringstream str(" ")
@@ -59,7 +59,7 @@ public:
 	~LoopManager();
 
 	// sets the global parentMemoryManager & parentProgramManager to point to the Compiler's
-	void prepareLoopManager(SymbolTable *currentMemoryManager, ProgramLineTable *currentProgramManager);
+	void prepareLoopManager(CoreMemory *currentMemoryManager, ProgramLineTable *currentProgramManager);
 
 	/* ==============================================================================
 		Public Manipulator Methods
@@ -87,7 +87,7 @@ private:
 	loopObject globalLoopArray[MAX_NUM_LOOPS];
 	int globalIndexTopLoopObject;
 
-	SymbolTable *parentMemoryManager;
+	CoreMemory *parentMemoryManager;
 	ProgramLineTable *parentProgramManager;
 
 	/* ==============================================================================

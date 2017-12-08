@@ -23,7 +23,7 @@ eWRITE::~eWRITE(){
 }
 
 // Connects local pointer to ParentMemoryManager
-void eWRITE::prepareWRITE(SymbolTable *currentMemoryManager){
+void eWRITE::prepareWRITE(CoreMemory *currentMemoryManager){
 	ParentMemoryManager = currentMemoryManager;
 }
 

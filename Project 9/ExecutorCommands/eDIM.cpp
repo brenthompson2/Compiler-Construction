@@ -23,7 +23,7 @@ eDIM::~eDIM(){
 }
 
 // Connects global pointer to ParentMemoryManager
-void eDIM::prepareDIM(SymbolTable *currentMemoryManager){
+void eDIM::prepareDIM(CoreMemory *currentMemoryManager){
 	ParentMemoryManager = currentMemoryManager;
 }
 

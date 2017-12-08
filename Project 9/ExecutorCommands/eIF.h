@@ -16,7 +16,7 @@
 
 #include <iostream>	// Console IO
 
-#include "../SymbolTable.h"
+#include "../CoreMemory.h"
 #include "../ProgramLineTable.h"
 
 using std::cin;
@@ -48,7 +48,7 @@ public:
 	~eIF();
 
 	// Connects local pointer to parentMemoryManager
-	void prepareIF(SymbolTable *currentMemoryManager);
+	void prepareIF(CoreMemory *currentMemoryManager);
 
 	/* ==============================================================================
 		Public Manipulator Methods
@@ -64,7 +64,7 @@ private:
 	============================================================================== */
 	ProgramLineObject *globalCurrentLine;
 
-	SymbolTable *parentMemoryManager; // pointer to the Executor's (parent's) SymbolTable
+	CoreMemory *parentMemoryManager; // pointer to the Executor's (parent's) CoreMemory
 
 	/* ==============================================================================
 		Private Manipulator Methods

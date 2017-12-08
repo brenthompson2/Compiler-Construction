@@ -22,7 +22,7 @@
 // #include <string.h> // strcpy & strcat
 #include <sstream> //std::stringstream str(" ")
 
-#include "../SymbolTable.h"
+#include "../CoreMemory.h"
 #include "../ProgramLineTable.h"
 
 // using std::cin;
@@ -55,10 +55,10 @@ public:
 		Public Manipulator Methods
 	============================================================================== */
 
-	// Connects local pointer to SymbolTable with the parent's (compiler's) versions
-	void prepareCDUMP(SymbolTable *parentMemoryManager);
+	// Connects local pointer to CoreMemory with the parent's (compiler's) versions
+	void prepareCDUMP(CoreMemory *parentMemoryManager);
 
-	// calls the functions necessary to parse the line, sync the variables with the SymbolTable, and print the object code to the file while counting errors
+	// calls the functions necessary to parse the line, sync the variables with the CoreMemory, and print the object code to the file while counting errors
 	void handleCDUMP(ProgramLineObject *currentLine);
 
 private:
@@ -69,7 +69,7 @@ private:
 	ProgramLineObject *globalCurrentLine;
 
 	// Parent's Objects
-	SymbolTable *currentMemoryManager; // pointer to the Compiler's (parent's) SymbolTable
+	CoreMemory *currentMemoryManager; // pointer to the Compiler's (parent's) CoreMemory
 
 
 	/* ==============================================================================

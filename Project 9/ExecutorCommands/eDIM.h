@@ -16,7 +16,7 @@
 
 #include <iostream>	// Console IO
 
-#include "../SymbolTable.h"
+#include "../CoreMemory.h"
 #include "../ProgramLineTable.h"
 
 using std::cin;
@@ -37,7 +37,7 @@ public:
 	~eDIM();
 
 	// Connects local pointer to ParentMemoryManager
-	void prepareDIM(SymbolTable *currentMemoryManager);
+	void prepareDIM(CoreMemory *currentMemoryManager);
 
 	/* ==============================================================================
 		Public Manipulator Methods
@@ -53,7 +53,7 @@ private:
 	============================================================================== */
 	ProgramLineObject *globalCurrentLine;
 
-	SymbolTable *ParentMemoryManager; // pointer to the Executor's (parent's) SymbolTable
+	CoreMemory *ParentMemoryManager; // pointer to the Executor's (parent's) CoreMemory
 
 	/* ==============================================================================
 		Private Manipulator Methods

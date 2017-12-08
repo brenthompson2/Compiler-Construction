@@ -17,7 +17,7 @@
 #include <iostream>	// Console IO
 #include <cmath> // All Math Commands
 
-#include "../SymbolTable.h"
+#include "../CoreMemory.h"
 #include "../ProgramLineTable.h"
 
 using std::cin;
@@ -51,7 +51,7 @@ public:
 	~eSUBP();
 
 	// Connects local pointer to ParentMemoryManager
-	void prepareSUBP(SymbolTable *currentMemoryManager);
+	void prepareSUBP(CoreMemory *currentMemoryManager);
 
 	/* ==============================================================================
 		Public Manipulator Methods
@@ -67,7 +67,7 @@ private:
 	============================================================================== */
 	ProgramLineObject *globalCurrentLine;
 
-	SymbolTable *ParentMemoryManager; // pointer to the Executor's (parent's) SymbolTable
+	CoreMemory *ParentMemoryManager; // pointer to the Executor's (parent's) CoreMemory
 
 	/* ==============================================================================
 		Private Manipulator Methods

@@ -22,6 +22,9 @@ CompilerDriver.o: CompilerDriver.cpp Compiler.o
 Compiler.o: Compiler.cpp Compiler.h FileManager.o SymbolTable.o LiteralTable.o LineLabelTable.o ExpressionConvertingMatrix.o ExpressionFixConverter.o tREAD.o tWRITE.o tSTOP.o tDIM.o taREAD.o taWRITE.o tGOTO.o tLOOP.o tLOOPEND.o tIFA.o tNOP.o tLISTO.o tlREAD.o tlWRITE.o tIF.o tCLS.o tCDUMP.o tSUBP.o tASSIGNMENT.o
 	g++ -c Compiler.cpp
 
+SymbolTable.o: SymbolTable.cpp SymbolTable.h FileManager.h
+	g++ -c -std=c++11 SymbolTable.cpp
+
 FileManager.o: FileManager.cpp FileManager.h LiteralTable.h LineLabelTable.h
 	g++ -c FileManager.cpp
 
@@ -38,16 +41,19 @@ ExpressionFixConverter.o: ExpressionFixConverter.cpp ExpressionFixConverter.h Ex
 ### Executor Components ###
 ###########################
 
-BRENxExecutor: ExecutorDriver.o Executor.o EFileManager.o FileManager.o SymbolTable.o LiteralTable.o LineLabelTable.o ProgramLineTable.o LoopManager.o eREAD.o eWRITE.o eDIM.o eaREAD.o eaWRITE.o eIFA.o elREAD.o elWRITE.o eIF.o eCDUMP.o eSUBP.o
-	g++ -o BRENxExecutor ExecutorDriver.o Executor.o EFileManager.o FileManager.o SymbolTable.o LiteralTable.o LineLabelTable.o ProgramLineTable.o LoopManager.o eREAD.o eWRITE.o eDIM.o eaREAD.o eaWRITE.o eIFA.o elREAD.o elWRITE.o eIF.o eCDUMP.o eSUBP.o
+BRENxExecutor: ExecutorDriver.o Executor.o EFileManager.o FileManager.o CoreMemory.o LiteralTable.o LineLabelTable.o ProgramLineTable.o LoopManager.o eREAD.o eWRITE.o eDIM.o eaREAD.o eaWRITE.o eIFA.o elREAD.o elWRITE.o eIF.o eCDUMP.o eSUBP.o
+	g++ -o BRENxExecutor ExecutorDriver.o Executor.o EFileManager.o FileManager.o CoreMemory.o LiteralTable.o LineLabelTable.o ProgramLineTable.o LoopManager.o eREAD.o eWRITE.o eDIM.o eaREAD.o eaWRITE.o eIFA.o elREAD.o elWRITE.o eIF.o eCDUMP.o eSUBP.o
 
 ExecutorDriver.o: ExecutorDriver.cpp Executor.o
 	g++ -c ExecutorDriver.cpp
 
-Executor.o: Executor.cpp Executor.h EFileManager.o FileManager.o SymbolTable.o LiteralTable.o LineLabelTable.o ProgramLineTable.o LoopManager.o eREAD.o eWRITE.o eDIM.o eaREAD.o eaWRITE.o eIFA.o elREAD.o elWRITE.o eIF.o eCDUMP.o eSUBP.o
+Executor.o: Executor.cpp Executor.h EFileManager.o FileManager.o CoreMemory.o LiteralTable.o LineLabelTable.o ProgramLineTable.o LoopManager.o eREAD.o eWRITE.o eDIM.o eaREAD.o eaWRITE.o eIFA.o elREAD.o elWRITE.o eIF.o eCDUMP.o eSUBP.o
 	g++ -c Executor.cpp
 
-EFileManager.o: EFileManager.cpp EFileManager.h LiteralTable.h
+CoreMemory.o: CoreMemory.cpp CoreMemory.h FileManager.h
+	g++ -c -std=c++11 CoreMemory.cpp
+
+EFileManager.o: EFileManager.cpp EFileManager.h LiteralTable.h CoreMemory.h
 	g++ -c EFileManager.cpp
 
 ProgramLineTable.o: ProgramLineTable.cpp ProgramLineTable.h
@@ -59,9 +65,6 @@ LoopManager.o: LoopManager.cpp LoopManager.h
 ###########################
 ### Shared Components ###
 ###########################
-
-SymbolTable.o: SymbolTable.cpp SymbolTable.h FileManager.h
-	g++ -c -std=c++11 SymbolTable.cpp
 
 LiteralTable.o: LiteralTable.cpp LiteralTable.h FileManager.h
 	g++ -c LiteralTable.cpp

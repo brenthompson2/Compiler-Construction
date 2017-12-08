@@ -23,7 +23,7 @@ eIFA::~eIFA(){
 }
 
 // Connects global pointer to ParentMemoryManager
-void eIFA::prepareIFA(SymbolTable *currentMemoryManager){
+void eIFA::prepareIFA(CoreMemory *currentMemoryManager){
 	parentMemoryManager = currentMemoryManager;
 }
 

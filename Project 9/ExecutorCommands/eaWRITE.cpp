@@ -23,7 +23,7 @@ eaWRITE::~eaWRITE(){
 }
 
 // Connects global pointer to ParentMemoryManager
-void eaWRITE::prepareAWRITE(SymbolTable *currentMemoryManager){
+void eaWRITE::prepareAWRITE(CoreMemory *currentMemoryManager){
 	ParentMemoryManager = currentMemoryManager;
 
 }

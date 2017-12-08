@@ -23,7 +23,7 @@ eREAD::~eREAD(){
 }
 
 // Connects global pointer to ParentMemoryManager
-void eREAD::prepareREAD(SymbolTable *currentMemoryManager){
+void eREAD::prepareREAD(CoreMemory *currentMemoryManager){
 	ParentMemoryManager = currentMemoryManager;
 }
 

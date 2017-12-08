@@ -29,7 +29,7 @@ LoopManager::~LoopManager(){
 }
 
 // sets the global parentMemoryManager & parentProgramManager to point to the Compiler's
-void LoopManager::prepareLoopManager(SymbolTable *currentMemoryManager, ProgramLineTable *currentProgramManager){
+void LoopManager::prepareLoopManager(CoreMemory *currentMemoryManager, ProgramLineTable *currentProgramManager){
 	parentMemoryManager = currentMemoryManager;
 	parentProgramManager = currentProgramManager;
 }

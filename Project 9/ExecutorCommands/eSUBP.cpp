@@ -23,7 +23,7 @@ eSUBP::~eSUBP(){
 }
 
 // Connects global pointer to ParentMemoryManager
-void eSUBP::prepareSUBP(SymbolTable *currentMemoryManager){
+void eSUBP::prepareSUBP(CoreMemory *currentMemoryManager){
 	ParentMemoryManager = currentMemoryManager;
 }
 

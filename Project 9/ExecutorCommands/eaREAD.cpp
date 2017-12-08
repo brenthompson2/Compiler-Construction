@@ -23,7 +23,7 @@ eaREAD::~eaREAD(){
 }
 
 // Connects global pointer to ParentMemoryManager
-void eaREAD::prepareAREAD(SymbolTable *currentMemoryManager){
+void eaREAD::prepareAREAD(CoreMemory *currentMemoryManager){
 	ParentMemoryManager = currentMemoryManager;
 
 }

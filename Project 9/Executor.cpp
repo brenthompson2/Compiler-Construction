@@ -5,7 +5,7 @@
 	Updated: 11/30/17
 
 	Description: Interface for Main Executor Object made for Transylvania University University Fall Term 2017 Executor Construction class
-		- creates an instance of FileManager, SymbolTable, LiteralTable, and LineLabelTable
+		- creates an instance of FileManager, CoreMemory, LiteralTable, and LineLabelTable
 		- gets one line at a time and manages commands with command handling objects
 
 ============================================================================== */
@@ -222,7 +222,7 @@ void BREN_Executor::handleCommand(ProgramLineObject currentLineObject, int *curr
 	}
 }
 
-// instantiates objects for handling commands by passing the FileManager, MemoryManager, SymbolTable, LineLabelTable, and/or LiteralTable by reference
+// instantiates objects for handling commands by passing the FileManager, MemoryManager, CoreMemory, LineLabelTable, and/or LiteralTable by reference
 void BREN_Executor::instantiateCommandObjects(){
 	mainREADHandler.prepareREAD(&globalMemoryManager);
 	mainWRITEHandler.prepareWRITE(&globalMemoryManager);
