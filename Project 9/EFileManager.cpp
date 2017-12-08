@@ -62,13 +62,10 @@ bool EFileManager::prepareForExecution(string fileToExecute, ProgramLineTable *c
 
 // Loads the objInputFile, literalInputFile, and coreInputFile into their associated data structure
 void EFileManager::loadProgram(){
-
 	loadProgramLines();
 	loadLiterals();
 	loadCoreMemory();
-
 	closeFiles();
-
 	return;
 }
 
@@ -161,35 +158,29 @@ void EFileManager::closeFiles(){
 // Reads the objInputFile and syncs lines with the ParentProgramManager
 void EFileManager::loadProgramLines(){
 	string currentLine;
-
 	while (!(objInputFile.eof())){
 		getline(objInputFile, currentLine);
 		(*ParentProgramManager).addLine(currentLine);
 	}
-
 	return;
 }
 
 // Parses the literalInputFile and syncs lines with the ParentLiteralManager
 void EFileManager::loadLiterals(){
 	string currentLine;
-
 	while (!(literalInputFile.eof())){
 		getline(literalInputFile, currentLine);
 		(*ParentLiteralManager).loadLine(currentLine);
 	}
-
 	return;
 }
 
 // Parses the coreInputFile and syncs lines with the ParentMemoryManager
 void EFileManager::loadCoreMemory(){
 	string currentLine;
-
 	while (!(coreInputFile.eof())){
 		getline(coreInputFile, currentLine);
 		(*ParentMemoryManager).loadLine(currentLine);
 	}
-
 	return;
 }

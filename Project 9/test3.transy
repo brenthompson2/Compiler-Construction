@@ -1,0 +1,56 @@
+c* Brendan Thompson
+c* test3.transy
+c* Updated 12/07/17
+C* Test File for Project 9 - Compiler & Executor
+C* For testing Assignment
+
+
+c* =====================================
+c* ======= Decimals & Negatives ========
+c* =====================================
+
+// lwrite "Hello, pick a decimal: "
+// read decimalNumber
+// lwrite "\nYou supplied: "
+// write decimalNumber
+
+// lwrite "Now pick a negative number: "
+// read negativeNumber
+// lwrite "\nYou supplied: "
+// write negativeNumber
+
+// subp sin (a, -6.28)
+
+// loop x=0, 3.8, 1.2
+// 		lwrite "\n Please Supply a Variable "
+// 		read apple
+// loop-end
+// cdump 0, 5
+
+// conditional:
+// if (banana < 6.2) then true
+// goto after
+// true:
+// lwrite "\nInsert next variable to compare to 6.2: "
+// read banana
+// goto conditional
+// after:
+// lwrite "\nWe're done!"
+
+c* ======= BAD Decimals & Negatives ========
+// dim badArray[3.5]
+// dim goodArray[10]
+// aread goodArray, 2.5, 6.8
+// awrite goodArray, 2.5, 6.8
+// cdump 0, 6.3
+
+stop
+
+c* ===========================
+c* ======= Assignment ========
+c* ===========================
+
+// a = -4.3
+
+// cdump 0, 5
+// stop

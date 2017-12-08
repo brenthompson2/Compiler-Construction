@@ -117,5 +117,4 @@ private:
 
 	// returns true if the variable already exists in the LoopManager
 	bool currentlyExists(int lineNumberOfLoop);
-
 };

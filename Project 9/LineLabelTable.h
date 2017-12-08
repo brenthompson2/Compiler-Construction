@@ -94,12 +94,10 @@ private:
 	int globalNumLinesOfCode;
 	int globalNumLabels;
 
-
 	/* ==============================================================================
 		Private Methods
 	============================================================================== */
 
 	// returns whether or not the line label already exists
 	bool alreadyExists(string currentLineLabel);
-
 };

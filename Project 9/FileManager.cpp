@@ -102,13 +102,6 @@ string FileManager::getNextLine(){
 	return currentLine;
 }
 
-// Writes the char "value" to the .obj output file
-// void FileManager::writeCharToObj (char value){
-// 	objOutFile << value;
-// 	// cout << "\t\t[FILE MANAGER]: Wrote " << value << " to .obj\n";
-// 	return;
-// }
-
 // Writes the int "value" to the .obj output file
 void FileManager::writeNumToObj (double value){
 	objOutFile << std::setprecision(8) << value;
@@ -205,7 +198,6 @@ void FileManager::setCompilationResult(bool completedSuccessfully){
 
 // Sets the global file names
 void FileManager::createFileNames(string originalFileName){
-
 	// Clear the File Names
 	strcpy(globalFileStem, "");
 	strcpy(globalPreprocessedFileName, "");
@@ -326,6 +318,7 @@ void FileManager::removeFiles(){
 		// cout << "\t\t[FILE MANAGER]: Removing " << globalCoreFileName << "...\n";
 		remove(globalCoreFileName);
 	}
+	return;
 }
 
 /* ==============================================================================
@@ -351,6 +344,7 @@ void FileManager::gatherLineLabels(){
 		}
 		currentLineNumber++;
 	}
+	return;
 }
 
 // Parses the line looking for a : to signify a line label, and returns index
@@ -407,7 +401,6 @@ int FileManager::checkForLineLabel(string currentLine){
 
 		currentCharIndex++;
 	}
-
 	return indexColonInLabel;
 }
 
@@ -449,7 +442,6 @@ bool FileManager::checkCurrentLine(string *currentLine) {
 	char currentCharacter;
 	int oldLineCursor = 0;
 	int newLineCursor = 0;
-
 	int lengthOfString = (*currentLine).length();
 	bool parsingLiteral = false;
 	bool continueParsingLine = true;
@@ -548,11 +540,6 @@ bool FileManager::checkCurrentLine(string *currentLine) {
 			}
 		}
 	}
-
-	// Catch if line is missing an end-quote (commented out because testing during compilation)
-	// if (parsingLiteral){
-	// 	validLineToAdd = false;
-	// }
 
 	// cout << "\t\t\t[FILE MANAGER]: Changing -->" << (*currentLine) << "<-- to -->" << newVersionOfLine << "<--\n";
 	(*currentLine) = newVersionOfLine;

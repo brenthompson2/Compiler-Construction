@@ -2,7 +2,7 @@
 =========================================================
 
 Devlog
-Project 8 - Emulator V2 & Compiler V8
+Project 9 - Emulator V3 & Compiler V9
 Brendan Thompson
 
 - A detailed documentation of daily work, current status, what needs to be implemented, and other thoughts
@@ -17,15 +17,11 @@ I) Summary of Work:
 
 II) Need to Implement:
 	- Compiler:
-		- handle negatives and decimals when parsing constants
-			- if only the parser was its own object...
 		- handle no id after operator in assignment (x = y + 4 * _)
 	- eCOMMANDS:
 		- Executor V3 = Assignment
 
 II.IV) Should Implement
-	- Check all functions for missing lines
-	- Change all floats to doubles
 	- Core Memory:
 		- Core Memory should be doubles instead of strings
 		- Should separate CoreMemory out of SymbolTable
@@ -37,8 +33,12 @@ II.IV) Should Implement
 		- 128 Character Limit on Variable Names
 		- Abstract the parser out of the tCommands into its own object
 			- tIF has most of them
+	- Simplifying:
+		- Each tCommand calls on a parser object
+		- SymbolTable can be just an array of strings
 
 III) Thoughts:
+	- Should tWRITE print out constants?
 
 IV) Status:
 	- Executor Driver:
@@ -138,6 +138,15 @@ V) Log Of Activity:
 	- Nothing helpful at: https://stackoverflow.com/questions/1814270-gcc-g-option-to-place-all-object-files-into-separate-directory
 
 - Fixed issue with LOOP being flagged as Assignment
+
+- Handled Negatives and Decimals everywhere that I can find them in compilation
+	- loops, subp, assignment, if
+	- Shouldn't handle: dim, aread, awrite, ifa, cdump
+	- Should write be able to output constants? (write)
+
+- Changed all doubles to floats
+
+- Formatted all code (removed many blank lines, added return on void, etc)
 
 =========================================================
 =========================================================

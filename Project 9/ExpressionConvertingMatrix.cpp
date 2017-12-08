@@ -46,10 +46,8 @@ ActionToken ExpressionConvertingMatrix::getActionToken(ValueToken currentInputVa
 
 // Calls upon private print functions to help print out the matrix
 void ExpressionConvertingMatrix::printMatrix(){
-
 	InputObject *currentInput;
 	ActionToken currentActionToken;
-
 	printMatrixSTwoTokens();
 
 	for (ValueToken currentInputValueToken = VALUE_TOKEN_ID; currentInputValueToken < NUM_VALUE_TOKENS; currentInputValueToken++){
@@ -163,7 +161,6 @@ void ExpressionConvertingMatrix::printMatrixValueToken(ValueToken valueTokenNumb
 ============================================================================================ */
 
 void ExpressionConvertingMatrix::createMatrix(){
-
 	// Input ID
 	inputArray[VALUE_TOKEN_ID].topSTwoArray[VALUE_TOKEN_NULL] = ACTION_TOKEN_S_ONE;
 	inputArray[VALUE_TOKEN_ID].topSTwoArray[VALUE_TOKEN_EQUALS] = ACTION_TOKEN_S_ONE;

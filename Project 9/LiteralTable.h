@@ -125,5 +125,4 @@ protected:
 
 	// adds the variable to the table (HAVE NOT YET IMPLEMENTED SORT)
 	int insertInto(literalTableObject *currentMemoryObject);
-
 };

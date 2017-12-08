@@ -68,7 +68,6 @@ bool BREN_Compiler::compile(){
 	int actualLineNumber;
 	bool compiledSuccessfully;
 
-
 	currentLine = globalFileManager.getNextLine();
 	actualLineNumber = globalLineManager.getTransyLineNumber(lineCount);
 	// cout << "\t[Compiler]: Attempting to Compile Input File Line number: " << actualLineNumber << ": " << currentLine << endl;

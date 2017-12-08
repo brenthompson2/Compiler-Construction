@@ -111,9 +111,4 @@ private:
 	============================================================================== */
 	ProgramLineObject programLineArray[MAX_NUM_LINES]; // array of code indexed in order of objLineNumber
 	int globalNumLinesOfCode;
-
-	/* ==============================================================================
-		Private Methods
-	============================================================================== */
-
 };

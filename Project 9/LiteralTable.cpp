@@ -42,12 +42,10 @@ void LiteralTable::linkWithParentFileManager(FileManager *parentFileManager){
 // adds a new line of core to the LiteralTable
 void LiteralTable::loadLine(string newLine){
 	// cout << "\t\t\t[LiteralTable]: Adding " << newLine << " to Core Memory Manager\n";
-
 	if (newLine[0] != '\0'){
 		globalLiteralArray[globalSizeLiteralArray] = newLine;
 		globalSizeLiteralArray++;
 	}
-
 	return;
 }
 
@@ -101,7 +99,6 @@ bool LiteralTable::currentlyExists_Variable(string currentVariableName){
 	else {
 		existsInTable = true;
 	}
-
 	return existsInTable;
 }
 
@@ -109,7 +106,6 @@ bool LiteralTable::currentlyExists_Variable(string currentVariableName){
 bool LiteralTable::currentlyExists_Literal(string literalToFind){
 	bool existsInTable = false;
  	string currentLiteral;
-
  	for (int i = 0; i < numObjectsInArray; i++){
  		currentLiteral = LiteralTableArray[i].literalString;
 
@@ -118,7 +114,6 @@ bool LiteralTable::currentlyExists_Literal(string literalToFind){
 			existsInTable = true;
 		}
 	}
-
 	return existsInTable;
 }
 
@@ -144,7 +139,6 @@ int LiteralTable::lookup(string currentVariableName){
 int LiteralTable::lookup_Literal(string literalToFind){
 	int index = NOT_FOUND_IN_ARRAY;
  	string currentLiteral;
-
  	for (int i = 0; i < numObjectsInArray; i++){
  		currentLiteral = LiteralTableArray[i].literalString;
 
@@ -153,7 +147,6 @@ int LiteralTable::lookup_Literal(string literalToFind){
 			index = i;
 		}
 	}
-
 	return index;
 }
 
@@ -161,7 +154,6 @@ int LiteralTable::lookup_Literal(string literalToFind){
 int LiteralTable::getLiteralTableIndex(string literalVariableToFind){
 	int index = NOT_FOUND_IN_ARRAY;
  	string currentLiteral;
-
  	for (int i = 0; i < numObjectsInArray; i++){
  		currentLiteral = LiteralTableArray[i].variableName;
 
@@ -170,29 +162,24 @@ int LiteralTable::getLiteralTableIndex(string literalVariableToFind){
 			index = i;
 		}
 	}
-
 	return index;
  }
 
 // iterates through the LiteralTable and prints the variableName & memoryLocation
 void LiteralTable::ePrintLiteralTable(){
 	cout << "\t\t\t[LiteralTable]: Literal Table currently has " << globalSizeLiteralArray << " literals\n";
-
 	for (int i = 0; i < globalSizeLiteralArray; i++){
 		cout << "\t\t\t\t" << i << ": " << globalLiteralArray[i] << endl;
 	}
-
 	return;
 }
 
 // iterates through the LiteralTable and prints the variableName & memoryLocation
 void LiteralTable::printLiteralTable(){
 	cout << "\t\t\t[LiteralTable]: Literal Table currently has " << numObjectsInArray << " literals\n";
-
 	for (int i = 0; i < numObjectsInArray; i++){
 		cout << "\t\t\t\t" << i << ": Name: " << LiteralTableArray[i].variableName << "\tLiteral: \"" << LiteralTableArray[i].literalString << "\"\n";
 	}
-
 	return;
 }
 

@@ -65,7 +65,6 @@ void LoopManager::handleLOOP(ProgramLineObject *currentLine, int *currentProgram
 	}
 
 	// printLoopManager();
-
 	return;
 }
 
@@ -120,6 +119,7 @@ void LoopManager::addNewLoop(int newLineNumber, int newRunnerAddress, int newSta
 // Decrements the pointer to the top loop
 void LoopManager::popOffTopLoop(){
 	globalIndexTopLoopObject--;
+	return;
 }
 
 // Adds the topIncrementAmount to the topRunnerValue

@@ -67,10 +67,17 @@ string ExpressionFixConverter::getNextInputValue(int *currentCharIterator, strin
 	char currentChar;
 	string currentValueName = "";
 	int numCharactersInValueName = 0;
-
 	bool continueParsingValue = true;
 	bool parsingVariableName = false;
+	bool parsingDecimal = false;
 	bool caseFound;
+
+	currentChar = currentLine[(*currentCharIterator)];
+	if (currentChar == '-'){
+		currentValueName += currentChar;
+		numCharactersInValueName++;
+		(*currentCharIterator)++;
+	}
 
 	while (continueParsingValue){
 		currentChar = currentLine[(*currentCharIterator)];
@@ -84,6 +91,21 @@ string ExpressionFixConverter::getNextInputValue(int *currentCharIterator, strin
 			(*currentCharIterator)++;
 			caseFound = true;
 			// cout << "\t\t\t\t[ExpressionFixConverter]: Current ID Name: " << currentValueName << endl;
+		}
+
+		if (currentChar == '.') {
+			if (!parsingDecimal){
+				currentValueName += currentChar;
+				parsingDecimal = true;
+			}
+			else {
+				currentValueName += END_OF_LINE_SENTINEL;
+				continueParsingValue = false;
+				cout << "\t\t\t\t[ExpressionFixConverter]: Invalid Syntax: Multiple decimal points found in one value: " << currentLine << endl;
+			}
+			numCharactersInValueName++;
+			(*currentCharIterator)++;
+			caseFound = true;
 		}
 
 		// OPERATOR: = ^ + - * / ( ) [ ]
@@ -317,7 +339,6 @@ string ExpressionFixConverter::getTopSTwo(){
 ValueToken ExpressionFixConverter::getValueToken(string currentInputValue){
 	ValueToken currentValueToken;
 	bool caseFound = false;
-
 
 	if (currentInputValue == "NULL"){
 		currentValueToken = VALUE_TOKEN_NULL;

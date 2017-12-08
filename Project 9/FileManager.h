@@ -87,9 +87,6 @@ public:
 	// Returns the next line from the preprocessed file (.noblanks), else returns "@"
 	string getNextLine();
 
-	// Writes the char "value" to the .obj output file
-	// void writeCharToObj (char value);
-
 	// Writes the int "value" to the .obj output file
 	void writeNumToObj (double value);
 

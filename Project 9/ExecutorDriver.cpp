@@ -38,7 +38,6 @@ bool parseArguments(int numArguments, char* *arrayOfArgs, char *arrayOfFlags, st
 
 int main (int argc, char**argv){
 	int numFlags = 0;
-
 	string fileName;
 	char arrayOfFlags[MAX_NUM_FLAGS];
 	bool gotFilename = false;
@@ -75,7 +74,6 @@ int main (int argc, char**argv){
 
 // takes in the command line arguments passed to the Executor and parses them into flags and the fileName
 bool parseArguments(int numArguments, char* *arrayOfArgs, char *arrayOfFlags, string *fileName, int *numFlags){
-
 	string currentArg;
 	bool gotFilename = false;
 

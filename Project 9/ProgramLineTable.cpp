@@ -102,7 +102,6 @@ int ProgramLineTable::getIndexNextLoopend(int currentProgramLine){
 	bool continueSearching = true;
 	bool foundLoopEnd = false;
 	int currentOpCode;
-
 	while (continueSearching){
 		currentProgramLine++;
 		if (currentProgramLine <= globalNumLinesOfCode){
@@ -120,17 +119,13 @@ int ProgramLineTable::getIndexNextLoopend(int currentProgramLine){
 		}
 
 	}
-
 	return currentProgramLine;
-
 }
 
 // Returns a pointer to a copy of the ProgramLineObject for the next line indexed at nextProgramCounter
 ProgramLineObject* ProgramLineTable::getCopyOfNextProgramObject(int nextProgramCounter){
 	ProgramLineObject *nextProgramLine;
-
 	// cout << "\n\n\t\t[ProgramLineTable]: Next program: " << nextProgramCounter << "\tLines: " << globalNumLinesOfCode << endl;
-
 	if (nextProgramCounter < globalNumLinesOfCode){
 		nextProgramLine = getCopyOfProgramObject(programLineArray[nextProgramCounter]);
 	}
@@ -140,45 +135,24 @@ ProgramLineObject* ProgramLineTable::getCopyOfNextProgramObject(int nextProgramC
 		(*nextProgramLine).opCode = END_OF_PROGRAM;
 		// cout << "\t\t[ProgramLineTable]: Reached End Of Program " << (*nextProgramLine).numElementsInLine << "\n";
 	}
-
 	return nextProgramLine;
 }
 
 // Returns a pointer to a copy of the programObjectToCopy
 ProgramLineObject* ProgramLineTable::getCopyOfProgramObject(ProgramLineObject programObjectToCopy){
 	ProgramLineObject *newCopyOfProgramObject = new ProgramLineObject;
-
 	(*newCopyOfProgramObject).numElementsInLine = programObjectToCopy.numElementsInLine;
 	(*newCopyOfProgramObject).opCode = programObjectToCopy.opCode;
 	for (int i = 0; i < (*newCopyOfProgramObject).numElementsInLine; i++){
 		(*newCopyOfProgramObject).lineOfCodeArray[i] = programObjectToCopy.lineOfCodeArray[i];
 	}
-
 	return newCopyOfProgramObject;
 }
-
-// returns the op code for the line at objLineNumber
-// int ProgramLineTable::getOpCode(int objLineNumber){
-	// string currentLine = programLineArray[objLineNumber];
-	// string currentOpCode = "";
-	// int opCodeAsInt;
-
-	// currentOpCode += currentLine[0];
-	// if ((currentLine[1] != ' ') && (currentLine[1] != '\0')){
-	// 	currentOpCode += currentLine[1];
-	// }
-
-	// std::stringstream str(currentOpCode);
-	// str >> (opCodeAsInt);
-	// // cout << "\t\t[ProgramLineTable]: Found Op Code \"" << opCodeAsInt << "\"\n";
-	// return opCodeAsInt;
-// }
 
 // iterates through the ProgramLineTable and prints the labelName & transyLineNumber
 void ProgramLineTable::printProgramLineTable(){
 	cout << "\t\t\t[ProgramLineTable]: There are currently " << globalNumLinesOfCode << " lines of code\n";
 	ProgramLineObject *currentProgramLine;
-
 	for (int i = 0; i < globalNumLinesOfCode; i++){
 		cout << "\t\t\t" << i << ": ";
 		currentProgramLine = &(programLineArray[i]);
@@ -188,14 +162,5 @@ void ProgramLineTable::printProgramLineTable(){
 		}
 		cout << endl;
 	}
-
 	return;
 }
-
-/* ==============================================================================
-	Private Manipulator Methods
-============================================================================== */
-
-/* ==============================================================================
-	Private Accessor Methods
-============================================================================== */

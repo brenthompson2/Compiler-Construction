@@ -236,7 +236,6 @@ void BREN_Executor::instantiateCommandObjects(){
 	mainSUBPHandler.prepareSUBP(&globalMemoryManager);
 
 	globalLoopManager.prepareLoopManager(&globalMemoryManager, &globalProgramManager);
-	// mainGOTOHandler.prepareGOTO(&globalFileManager, &globalLineManager);
 	mainIFAHandler.prepareIFA(&globalMemoryManager);
 	mainIFHandler.prepareIF(&globalMemoryManager);
 

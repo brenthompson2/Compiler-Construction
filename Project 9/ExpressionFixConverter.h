@@ -66,8 +66,6 @@ public:
 	// takes in an infix expression, converts it to postfix and puts it into newExpression, and also manipulates numValsInNewExpression. Returns num errors
 	int infixToPostfix(string currentExpression, string newExpression[], int *numValsInNewExpression);
 
-
-
 private:
 
 	/* ==============================================================================
@@ -140,5 +138,4 @@ private:
 
 	// Gets ValueToken related to currentInputValue
 	ValueToken getValueToken(string currentInputValue);
-
 };
