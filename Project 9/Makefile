@@ -23,7 +23,7 @@ Compiler.o: Compiler.cpp Compiler.h FileManager.o SymbolTable.o LiteralTable.o L
 	g++ -c Compiler.cpp
 
 SymbolTable.o: SymbolTable.cpp SymbolTable.h FileManager.h
-	g++ -c -std=c++11 SymbolTable.cpp
+	g++ -c SymbolTable.cpp
 
 FileManager.o: FileManager.cpp FileManager.h LiteralTable.h LineLabelTable.h
 	g++ -c FileManager.cpp
