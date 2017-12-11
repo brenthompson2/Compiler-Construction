@@ -2,9 +2,9 @@
 
 	File: eASSIGNMENT.cpp
 	Author: Brendan Thompson
-	Updated: 11/13/17
+	Updated: 12/10/17
 
-	Description: Implementation of Functions for processing ASSIGNMENT command for Compiler object made for Transylvania University University Fall Term 2017 Compiler Construction class
+	Description: Implementation of Functions for handling ASSIGNMENT command for Executor object made for Transylvania University University Fall Term 2017 Compiler Construction class
 
 ============================================================================== */
 
@@ -22,59 +22,121 @@ eASSIGNMENT::~eASSIGNMENT(){
 	return;
 }
 
+// Connects local pointer to CoreMemory with the parent's (executor's) versions
+void eASSIGNMENT::prepareASSIGNMENT(CoreMemory *parentMemoryManager){
+	currentMemoryManager = parentMemoryManager;
+	return;
+}
+
 /* ==============================================================================
 	Public Manipulator Methods
 ============================================================================== */
 
-// Connects local pointer to CoreMemory with the parent's (compiler's) versions
-void eASSIGNMENT::prepareASSIGNMENT(CoreMemory *parentMemoryManager){
-	currentMemoryManager = parentMemoryManager;
-}
-
-
 // calls the functions necessary to parse the line, sync the variables with the CoreMemory, and print the object code to the file while counting errors
 // returns num errors
-int eASSIGNMENT::handleASSIGNMENT(string currentLine, int correspondingLineNumber){
-	cout << "\t\t[ASSIGNMENT]: Compiling Line: " << currentLine << endl;
+int eASSIGNMENT::handleASSIGNMENT(ProgramLineObject *currentLine){
+	// cout << "\t\t[ASSIGNMENT]: Executing Assignment\n";
+	setGlobals(currentLine);
+	// printCurrentExpression();
 
-	globalNumErrors = 0;
-	globalNumVariablesInArray = 0;
-	string postfixExpression[MAX_NUM_INPUT_VALUES];
-	int numInputValues;
+	int indexOperator;
 
-	globalNumErrors += mainExpressionConverter.infixToPostfix(currentLine, postfixExpression, &numInputValues);
-	// printPostfixExpression(postfixExpression, numInputValues);
+	while (globalNumElements > 2){
+		indexOperator = getIndexFirstOperator();
 
-	syncExpressionToVariableArray(postfixExpression, numInputValues);
-	syncVariablesToCoreMemory();
-
-	outputASSIGNMENTCommand(postfixExpression, numInputValues);
+		if (indexOperator > 1){
+			handleOperation(indexOperator);
+			// printCurrentExpression();
+		}
+	}
 
 	if (globalNumErrors == 0){
-		cout << "\t\t[ASSIGNMENT]: Successfully completed ASSIGNMENT command\n";
+		// cout << "\t\t[ASSIGNMENT]: Successfully completed ASSIGNMENT command\n";
 	}
 	else {
 		cout << "\t\t[ASSIGNMENT]: Failed to complete ASSIGNMENT command with " << globalNumErrors << " errors\n";
 	}
 
+	(*currentMemoryManager).clearTempMem();
 	return globalNumErrors;
 }
-
 
 /* ==============================================================================
 	Private Manipulator Methods
 ============================================================================== */
 
-// Conditionally adds the postfix input values to the globalVariableArray
-void eASSIGNMENT::syncExpressionToVariableArray(string newExpression[], int numValsInNewExpression){
-	char firstChar;
-	for (int i = 0; i <= numValsInNewExpression; i++){
-		firstChar = (newExpression[i])[0];
-		if ((isalpha(firstChar)) || (isdigit(firstChar))){
-			globalVariableArray[globalNumVariablesInArray].variableName = newExpression[i];
-			globalNumVariablesInArray++;
-		}
+void eASSIGNMENT::setGlobals(ProgramLineObject *currentLine){
+	int currentElement;
+	globalNumElements = (*currentLine).numElementsInLine - 2;
+	// cout << "\t\t[ASSIGNMENT]: Statement has " << globalNumElements << " elements\n";
+	for (int i = 0; i < globalNumElements; i++){
+		currentElement = ((*currentLine).lineOfCodeArray)[i + 1];
+		// cout << "\t\t[ASSIGNMENT]: Setting Element \"" << currentElement << "\" to index " << i << endl;
+		globalArrayOfElements[i] = currentElement;
+		// cout << "\t\t[ASSIGNMENT]: Index " << i << " = \"" << globalArrayOfElements[i] << endl;
 	}
+	globalNumErrors = 0;
+	return;
+}
+
+void eASSIGNMENT::handleOperation(int indexOfOperator){
+	int currentValueToken;
+	int firstValue_L, secondValue_L, returnValue_L;
+	double firstValue_R, secondValue_R, returnValue_R;
+
+	currentValueToken = globalArrayOfElements[indexOfOperator];
+	firstValue_L = globalArrayOfElements[indexOfOperator - 2];
+	secondValue_L = globalArrayOfElements[indexOfOperator - 1];
+	firstValue_R = (*currentMemoryManager).getValueAsDouble(firstValue_L);
+	secondValue_R = (*currentMemoryManager).getValueAsDouble(secondValue_L);
+
+	switch (currentValueToken){
+		case OBJ_VALUE_EQUALS:
+			// cout << "\t\t[ASSIGNMENT]: RValue at location " << firstValue_L << " now equal to that of " << secondValue_L << endl;
+			(*currentMemoryManager).deepCopy(firstValue_L, secondValue_L);
+			break;
+		case OBJ_VALUE_LEFT_BRACKET:
+			returnValue_R = firstValue_L + secondValue_R;
+			// cout << "\t\t[ASSIGNMENT]: Accessing the array starting at location" << firstValue_L << " at the index " << secondValue_R << ", which is " << returnValue_R << endl;
+			globalArrayOfElements[indexOfOperator - 2] = returnValue_R;
+			break;
+		case OBJ_VALUE_EXPONENT:
+			returnValue_R =	pow(firstValue_R, secondValue_R);
+			// cout << "\t\t[ASSIGNMENT]: " << firstValue_R << " ^ " << secondValue_R << " = " << returnValue_R << endl;
+			returnValue_L = (*currentMemoryManager).addNewTempMemValue(returnValue_R);
+			globalArrayOfElements[indexOfOperator - 2] = returnValue_L;
+			break;
+		case OBJ_VALUE_TIMES:
+			returnValue_R =	firstValue_R * secondValue_R;
+			returnValue_L = (*currentMemoryManager).addNewTempMemValue(returnValue_R);
+			globalArrayOfElements[indexOfOperator - 2] = returnValue_L;
+			break;
+		case OBJ_VALUE_DIVIDE:
+			returnValue_R =	firstValue_R / secondValue_R;
+			// cout << "\t\t[ASSIGNMENT]: " << firstValue_R << " / " << secondValue_R << " = " << returnValue_R << endl;
+			returnValue_L = (*currentMemoryManager).addNewTempMemValue(returnValue_R);
+			globalArrayOfElements[indexOfOperator - 2] = returnValue_L;
+			break;
+		case OBJ_VALUE_PLUS:
+			returnValue_R =	firstValue_R + secondValue_R;
+			// cout << "\t\t[ASSIGNMENT]: " << firstValue_R << " + " << secondValue_R << " = " << returnValue_R << endl;
+			returnValue_L = (*currentMemoryManager).addNewTempMemValue(returnValue_R);
+			globalArrayOfElements[indexOfOperator - 2] = returnValue_L;
+			break;
+		case OBJ_VALUE_MINUS:
+			returnValue_R =	firstValue_R - secondValue_R;
+			// cout << "\t\t[ASSIGNMENT]: " << firstValue_R << " - " << secondValue_R << " = " << returnValue_R << endl;
+			returnValue_L = (*currentMemoryManager).addNewTempMemValue(returnValue_R);
+			globalArrayOfElements[indexOfOperator - 2] = returnValue_L;
+			break;
+	}
+
+	// Shift rest of expression
+	for (int i = indexOfOperator - 1; ((i + 2) < globalNumElements); i++){
+		globalArrayOfElements[i] = globalArrayOfElements[i + 2];
+	}
+	globalNumElements += -2;
+
 	return;
 }
 
@@ -82,90 +144,38 @@ void eASSIGNMENT::syncExpressionToVariableArray(string newExpression[], int numV
 	Private Accessor Methods
 ============================================================================== */
 
-// tells the memoryManager to conditionally add the global memoryTableObject arguments to the symbol table
-void eASSIGNMENT::syncVariablesToCoreMemory(){
-// 	// cout << "\t\t[ASSIGNMENT]: Attempting to Add Arguments to Lookup Table...\n";
-	for (int i = 0; i < globalNumVariablesInArray; i++){
-		globalVariableArray[i].isArray = false;
-		globalVariableArray[i].size = 1;
-		(*currentMemoryManager).manageMemoryTableObject(&globalVariableArray[i]);
-	}
-	// (*currentMemoryManager).printCoreMemory();
-	return;
-}
+int eASSIGNMENT::getIndexFirstOperator(){
+	int indexNextOperator = OPERATOR_NOT_FOUND;
+	int indexOperator;
+	int currentElement;
+	bool continueParsing = true;
 
-// tells the FileManager to print the object code for the command, which includes the command op code and the variable memoryLocations
-void eASSIGNMENT::outputASSIGNMENTCommand(string newExpression[], int numValsInNewExpression){
-	// char firstChar;
-	// int idCounter = 0;
-	// int valueToOutput;
+	for (int i = 0; ((i < globalNumElements) && continueParsing); i++){
+		currentElement = globalArrayOfElements[i];
+		// cout << "\t\t[ASSIGNMENT]: Checking Element \"" << currentElement << "\"\n";
+		if (currentElement < 0){
+			indexNextOperator = i;
+			// cout << "\t\t[ASSIGNMENT]: Found operator \"" << currentElement << "\" at index " << indexNextOperator << endl;
+			continueParsing = false;
+		}
+	}
 
-	// (*currentFileManager).writeStringToObj(ASSIGNMENT_OP_CODE);
-	// (*currentFileManager).writeStringToObj(" ");
-
-	// for (int i = 0; i <= numValsInNewExpression; i++){
-	// 	firstChar = (newExpression[i])[0];
-	// 	if ((isalpha(firstChar)) || (isdigit(firstChar))){
-	// 		valueToOutput = (globalVariableArray[idCounter]).memoryLocation;
-	// 		idCounter++;
-	// 	}
-	// 	else {
-	// 		valueToOutput = getObjectCodeMapping(newExpression[i]);
-	// 	}
-	// 	(*currentFileManager).writeNumToObj((float) valueToOutput);
-	// 	(*currentFileManager).writeStringToObj(" ");
-	// }
-	// (*currentFileManager).writeStringToObj("\n");
-	return;
-}
-
-// Takes in an operator and returns the appropriate token for the obj file
-int eASSIGNMENT::getObjectCodeMapping(string currentInputValue){
-	int currentValueToken;
-	bool caseFound = false;
-
-	if (currentInputValue == "="){
-		currentValueToken = OBJ_VALUE_EQUALS;
-		caseFound = true;
-	}
-	if (currentInputValue == "["){
-		currentValueToken = OBJ_VALUE_LEFT_BRACKET;
-		caseFound = true;
-	}
-	if (currentInputValue == "^"){
-		currentValueToken = OBJ_VALUE_EXPONENT;
-		caseFound = true;
-	}
-	if (currentInputValue == "*"){
-		currentValueToken = OBJ_VALUE_TIMES;
-		caseFound = true;
-	}
-	if (currentInputValue == "/"){
-		currentValueToken = OBJ_VALUE_DIVIDE;
-		caseFound = true;
-	}
-	if (currentInputValue == "+"){
-		currentValueToken = OBJ_VALUE_PLUS;
-		caseFound = true;
-	}
-	if (currentInputValue == "-"){
-		currentValueToken = OBJ_VALUE_MINUS;
-		caseFound = true;
-	}
-	if (!caseFound) {
-		cout << "\t\t[ASSIGNMENT]: Failed to map operator to obj code \"" << currentInputValue << "\". Unclosed Container?\n";
-		currentValueToken = -1;
+	if (indexNextOperator == OPERATOR_NOT_FOUND){
+		cout << "\t\t[ASSIGNMENT]: Error! Unable to find operator\n";
 		globalNumErrors++;
 	}
 
-	return currentValueToken;
+	return indexNextOperator;
 }
 
-// Prints out the postfix array
-void eASSIGNMENT::printPostfixExpression(string newExpression[], int numValsInNewExpression){
-	cout << "\t\t[ASSIGNMENT]: Postfix:\t";
-	for (int i = 0; i <= numValsInNewExpression; i++){
-		cout << newExpression[i] << " ";
+// Prints out the postfix expression array
+void eASSIGNMENT::printCurrentExpression(){
+	cout << "\t\t[ASSIGNMENT]: Current Expression has " << globalNumElements << " elements:\t";
+	int currentElement;
+	for (int i = 0; i < globalNumElements; i++){
+		currentElement = globalArrayOfElements[i];
+		cout << currentElement << " ";
 	}
 	cout << endl;
+	return;
 }

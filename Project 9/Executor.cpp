@@ -210,10 +210,11 @@ void BREN_Executor::handleCommand(ProgramLineObject currentLineObject, int *curr
 			cout << string(100, '\n');
 			(*currentProgramCounter)++;
 			break;
-	// 	case ASSIGNMENT_OP_CODE: // 20
-	// 		// cout << "\t[Executor]: Found ASSIGNMENT Command\n";
-	// 		mainASSIGNMENTHandler.handleASSIGNMENT(&currentLineObject, *currentProgramCounter);
-	// 		break;
+		case ASSIGNMENT_OP_CODE: // 20
+			// cout << "\t[Executor]: Found ASSIGNMENT Command\n";
+			globalNumErrors += mainASSIGNMENTHandler.handleASSIGNMENT(&currentLineObject);
+			(*currentProgramCounter)++;
+			break;
 		default:
 			cout << "\t[Executor]: Error: Invalid Op Code \"" << currentOpCode << "\"\n";
 			globalNumErrors++;
@@ -226,7 +227,6 @@ void BREN_Executor::handleCommand(ProgramLineObject currentLineObject, int *curr
 void BREN_Executor::instantiateCommandObjects(){
 	mainREADHandler.prepareREAD(&globalMemoryManager);
 	mainWRITEHandler.prepareWRITE(&globalMemoryManager);
-
 	mainDIMHandler.prepareDIM(&globalMemoryManager);
 	mainAREADHandler.prepareAREAD(&globalMemoryManager);
 	mainAWRITEHandler.prepareAWRITE(&globalMemoryManager);
@@ -239,5 +239,5 @@ void BREN_Executor::instantiateCommandObjects(){
 	mainIFAHandler.prepareIFA(&globalMemoryManager);
 	mainIFHandler.prepareIF(&globalMemoryManager);
 
-	// mainASSIGNMENTHandler.prepareASSIGNMENT(&globalFileManager, &globalMemoryManager);
+	mainASSIGNMENTHandler.prepareASSIGNMENT(&globalMemoryManager);
 }

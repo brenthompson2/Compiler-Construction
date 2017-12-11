@@ -2,7 +2,7 @@
 
 	File: ExpressionFixConverter.cpp
 	Author: Brendan Thompson
-	Updated: 11/10/17
+	Updated: 12/10/17
 
 	Description: Implementation of Functions for ExpressionFixConverter for Compiler object made for Transylvania University University Fall Term 2017 Compiler Construction class
 		- only implemented infix to postfix
@@ -64,7 +64,7 @@ int ExpressionFixConverter::infixToPostfix(string currentExpression, string newE
 
 // parses through the expression one character at a time and returns the next InputValue
 string ExpressionFixConverter::getNextInputValue(int *currentCharIterator, string currentLine){
-	char currentChar;
+	// Prepare Parsing Information
 	string currentValueName = "";
 	int numCharactersInValueName = 0;
 	bool continueParsingValue = true;
@@ -72,15 +72,40 @@ string ExpressionFixConverter::getNextInputValue(int *currentCharIterator, strin
 	bool parsingDecimal = false;
 	bool caseFound;
 
+	// Get Current Values
+	char currentChar, nextChar, lastChar;
+	int nextCharIndex, lastCharIndex;
 	currentChar = currentLine[(*currentCharIterator)];
+	nextCharIndex = ((*currentCharIterator) + 1);
+	nextChar = currentLine[nextCharIndex];
+	lastCharIndex = ((*currentCharIterator) - 1);
+	lastChar = currentLine[lastCharIndex];
+
+	// Check For Negative Numbers
 	if (currentChar == '-'){
+		// cout << "\t\t\t\t[ExpressionFixConverter]: Current Character: " << currentChar << endl;
+		if (!((isdigit(lastChar)) || (isalpha(lastChar)) || (lastChar == '.'))){ // Found Negative
+			continueParsingValue = true;
+		}
+		else { // Found Operator
+			if (nextChar == '\0'){
+				cout << "\t\t\t\t[ExpressionFixConverter]: Invalid Syntax: End Of Line Found after ->" << currentChar << "<- in line: " << currentLine << endl;
+			}
+			continueParsingValue = false;
+		}
 		currentValueName += currentChar;
 		numCharactersInValueName++;
 		(*currentCharIterator)++;
+		caseFound = true;
 	}
 
 	while (continueParsingValue){
 		currentChar = currentLine[(*currentCharIterator)];
+		nextCharIndex = ((*currentCharIterator) + 1);
+		nextChar = currentLine[nextCharIndex];
+		lastCharIndex = ((*currentCharIterator) - 1);
+		lastChar = currentLine[lastCharIndex];
+
 		caseFound = false;
 		// cout << "\t\t\t\t[ExpressionFixConverter]: Current Character: " << currentChar << endl;
 
@@ -108,20 +133,30 @@ string ExpressionFixConverter::getNextInputValue(int *currentCharIterator, strin
 			caseFound = true;
 		}
 
-		// OPERATOR: = ^ + - * / ( ) [ ]
+		// OPERATOR: = ^ + * / ( ) [ ]
 		if ((currentChar == '=') || (currentChar == '^') ||
 				(currentChar == '+') || (currentChar == '-') ||
 				(currentChar == '*') || (currentChar == '/') ||
 				(currentChar == '(') || (currentChar == ')') ||
 				(currentChar == '[') || (currentChar == ']')){
 
-			if (numCharactersInValueName == 0){
+			continueParsingValue = false; // gets set back to true if the - operator is starting a negative number
+
+			if (numCharactersInValueName == 0){ // Operator is first thing in the value
 				currentValueName += currentChar;
 				numCharactersInValueName++;
 				(*currentCharIterator)++;
+				if (currentChar == '-') { // Negate Symbol is first thing in the value
+					if (!((isdigit(lastChar)) || (isalpha(lastChar)) || (lastChar == '.'))){ // Found Negative
+						continueParsingValue = true;
+					}
+				}
+				if ((nextChar == '\0') && (!((currentChar == ')') || (currentChar == ']')))){
+					cout << "\t\t\t\t[ExpressionFixConverter]: Invalid Syntax: End Of Line Found after ->" << currentChar << "<- in line: " << currentLine << endl;
+					globalNumErrors++;
+				}
 				// cout << "\t\t\t\t[ExpressionFixConverter]: Found Operator: " << currentValueName << endl;
 			}
-			continueParsingValue = false;
 			caseFound = true;
 		}
 
@@ -244,7 +279,6 @@ void ExpressionFixConverter::handleUFour(string currentInputValue){
 	while (openContainer) {
 		tempValue = getTopSTwo();
 		popSTwo();
-		cout << "yo " << tempValue << endl;
 		if (tempValue != "[") {
 			pushSOne(tempValue);
 		}

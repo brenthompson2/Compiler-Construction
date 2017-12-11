@@ -1,5 +1,5 @@
 # Brendan Thompson
-# 11/30/17
+# 12/10/17
 # Makefile for Compiler V6
 
 # "make main" = Compile and Link Both BRENxCompiler & BREN_Executor
@@ -41,13 +41,13 @@ ExpressionFixConverter.o: ExpressionFixConverter.cpp ExpressionFixConverter.h Ex
 ### Executor Components ###
 ###########################
 
-BRENxExecutor: ExecutorDriver.o Executor.o EFileManager.o FileManager.o CoreMemory.o LiteralTable.o LineLabelTable.o ProgramLineTable.o LoopManager.o eREAD.o eWRITE.o eDIM.o eaREAD.o eaWRITE.o eIFA.o elREAD.o elWRITE.o eIF.o eCDUMP.o eSUBP.o
-	g++ -o BRENxExecutor ExecutorDriver.o Executor.o EFileManager.o FileManager.o CoreMemory.o LiteralTable.o LineLabelTable.o ProgramLineTable.o LoopManager.o eREAD.o eWRITE.o eDIM.o eaREAD.o eaWRITE.o eIFA.o elREAD.o elWRITE.o eIF.o eCDUMP.o eSUBP.o
+BRENxExecutor: ExecutorDriver.o Executor.o EFileManager.o FileManager.o CoreMemory.o LiteralTable.o LineLabelTable.o ProgramLineTable.o LoopManager.o eREAD.o eWRITE.o eDIM.o eaREAD.o eaWRITE.o eIFA.o elREAD.o elWRITE.o eIF.o eCDUMP.o eSUBP.o eASSIGNMENT.o
+	g++ -o BRENxExecutor ExecutorDriver.o Executor.o EFileManager.o FileManager.o CoreMemory.o LiteralTable.o LineLabelTable.o ProgramLineTable.o LoopManager.o eREAD.o eWRITE.o eDIM.o eaREAD.o eaWRITE.o eIFA.o elREAD.o elWRITE.o eIF.o eCDUMP.o eSUBP.o eASSIGNMENT.o
 
 ExecutorDriver.o: ExecutorDriver.cpp Executor.o
 	g++ -c ExecutorDriver.cpp
 
-Executor.o: Executor.cpp Executor.h EFileManager.o FileManager.o CoreMemory.o LiteralTable.o LineLabelTable.o ProgramLineTable.o LoopManager.o eREAD.o eWRITE.o eDIM.o eaREAD.o eaWRITE.o eIFA.o elREAD.o elWRITE.o eIF.o eCDUMP.o eSUBP.o
+Executor.o: Executor.cpp Executor.h EFileManager.o FileManager.o CoreMemory.o LiteralTable.o LineLabelTable.o ProgramLineTable.o LoopManager.o eREAD.o eWRITE.o eDIM.o eaREAD.o eaWRITE.o eIFA.o elREAD.o elWRITE.o eIF.o eCDUMP.o eSUBP.o eASSIGNMENT.o
 	g++ -c Executor.cpp
 
 CoreMemory.o: CoreMemory.cpp CoreMemory.h FileManager.h
@@ -163,8 +163,8 @@ eSUBP.o: ./ExecutorCommands/eSUBP.cpp ./ExecutorCommands/eSUBP.h
 tASSIGNMENT.o: ./CompilerCommands/tASSIGNMENT.cpp ./CompilerCommands/tASSIGNMENT.h ExpressionFixConverter.o
 	g++ -c ./CompilerCommands/tASSIGNMENT.cpp
 
-# eASSIGNMENT.o: ./ExecutorCommands/eASSIGNMENT.cpp ./ExecutorCommands/eASSIGNMENT.h
-# 	g++ -c ./ExecutorCommands/eASSIGNMENT.cpp
+eASSIGNMENT.o: ./ExecutorCommands/eASSIGNMENT.cpp ./ExecutorCommands/eASSIGNMENT.h
+	g++ -c ./ExecutorCommands/eASSIGNMENT.cpp
 
 #####################
 ####### Other #######

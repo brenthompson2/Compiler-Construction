@@ -19,6 +19,7 @@ Constructor & Destructor
 CoreMemory::CoreMemory(){
 	globalSizeCoreMemory = 0;
 	globalNumArrayDimension = 0;
+	globalNumElementsInTempMem = 0;
 	checkRangesFlag = false;
 	useZeroFlag = false;
 	// cout << "\t\t[CoreMemory]: Initialized CoreMemory\n";
@@ -33,6 +34,29 @@ CoreMemory::~CoreMemory(){
 /* ==============================================================================
 	Public Manipulator Methods
 ============================================================================== */
+
+// Adds the value to temporary memory and returns the index
+int CoreMemory::addNewTempMemValue(double newTempValue){
+	string newValue_string;
+	int indexNewTemp = NOT_FOUND_IN_ARRAY;
+	if (globalNumElementsInTempMem < MAX_SIZE_TEMP_MEM){
+		indexNewTemp = INDEX_TEMP_MEM + globalNumElementsInTempMem;
+		newValue_string = std::to_string(newTempValue);
+		globalCoreMemoryArray[indexNewTemp] = newValue_string;
+		globalNumElementsInTempMem++;
+	}
+	else {
+		cout << "\t\t[CoreMemory]: Error! Temp Memory Full. Reduce the size of the assignment statement\n";
+	}
+	// cout << "\t\t\t[Core Memory]: Added " << globalCoreMemoryArray[indexNewTemp] << " to Temp Memory at index " << indexNewTemp << endl;
+	return indexNewTemp;
+}
+
+// Clears out temporary memory by managing globalNumElementsInTempMem
+void CoreMemory::clearTempMem(){
+	globalNumElementsInTempMem = 0;
+	return;
+}
 
 // adds a new line of core to the CoreMemory
 void CoreMemory::loadLine(string newLine){

@@ -39,7 +39,7 @@ using std::string;
 #define OBJ_VALUE_PLUS -6
 #define OBJ_VALUE_MINUS -7
 
-const string ASSIGNMENT_OP_CODE = "14";
+const string ASSIGNMENT_OP_CODE = "20";
 
 /* ==============================================================================
 	Type Definitions
@@ -100,7 +100,7 @@ private:
 	void outputASSIGNMENTCommand(string newExpression[], int numValsInNewExpression);
 
 	// Takes in an operator and returns the appropriate token for the obj file
-	int getObjectCodeMapping(string currentInputValue);
+	int getObjectCodeMapping(char currentInputValue);
 
 	// Prints out the postfix array
 	void printPostfixExpression(string newExpression[], int numValsInNewExpression);

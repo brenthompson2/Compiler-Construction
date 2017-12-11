@@ -1,8 +1,8 @@
 c* Brendan Thompson
 c* test3.transy
-c* Updated 12/07/17
+c* Updated 12/08/17
 C* Test File for Project 9 - Compiler & Executor
-C* For testing Assignment
+C* For testing Decimals, Negatives, and Assignment
 
 
 c* =====================================
@@ -44,13 +44,55 @@ c* ======= BAD Decimals & Negatives ========
 // awrite goodArray, 2.5, 6.8
 // cdump 0, 6.3
 
-stop
+// stop
 
 c* ===========================
 c* ======= Assignment ========
 c* ===========================
 
-// a = -4.3
+c* Test most of the commands
+// lwrite "Give two values to add: "
+// read first, second
+// a = first + second
+// write a
+// lwrite "Give five values to subtract: "
+// read first, second, third, fourth, fifth
+// a = first - second - third - fourth - fifth
+// write a
+// lwrite "Give two values to multiply: "
+// read first, second
+// a = first * second
+// write a
+// lwrite "Give two values to divide: "
+// read first, second
+// a = first / second
+// write a
+// lwrite "Give two values to exponentialize: "
+// read first, second
+// a = first ^ second
+// write a
+
+c* Test Negative Numbers & Subtraction
+// b = 50 - 10 - -5 - 10
+// write b
+
+
+c* Test Arrays
+dim originalArray[10]
+dim firstArray[10]
+lwrite "Give five array values to sum: "
+aread firstArray, 5, 9
+// cdump 0, 30
+c = firstArray[5] + firstArray[6] + firstArray[7] + firstArray[8] + firstArray[9]
+write c
+// cdump 0, 30
+// cdump 980, 990
+
+c* Comprehensive Test
+// lwrite "100 * 5 / 2 - ((5 ^ 2) * 2) = "
+// d = 100 * 5 / 2 - ((5 ^ 2) * 2)
+// write d
 
 // cdump 0, 5
-// stop
+// cdump 980, 990
+stop

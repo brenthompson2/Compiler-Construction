@@ -31,6 +31,8 @@ using std::string;
 ============================================================================== */
 
 #define MAX_NUM_VARIABLES 1001
+#define MAX_SIZE_TEMP_MEM 20
+#define INDEX_TEMP_MEM (MAX_NUM_VARIABLES - MAX_SIZE_TEMP_MEM - 1)
 #define NOT_FOUND_IN_ARRAY -1
 
 #define UNDEFINED_VALUE 0.123456789
@@ -60,6 +62,13 @@ public:
 	/* ==============================================================================
 		Public Manipulator Methods
 	============================================================================== */
+
+	// Adds the value to temporary memory
+	int addNewTempMemValue(double newTempValue);
+
+	// Clears out temporary memory by managing globalNumElementsInTempMem
+	void clearTempMem();
+
 	// loads the new line of core into the CoreMemory
 	void loadLine(string newLine);
 
@@ -119,6 +128,8 @@ protected:
 	// Core memory Array of Variables for Execution
 	string globalCoreMemoryArray[MAX_NUM_VARIABLES];
 	int globalSizeCoreMemory; // - For Executor
+
+	int globalNumElementsInTempMem;
 
 	// Array Of Arrays for Execution
 	arrayTableObject globalArrayofArrayDimensions[MAX_NUM_VARIABLES];

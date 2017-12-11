@@ -42,7 +42,7 @@ using std::string;
 #include "./ExecutorCommands/eSUBP.h"
 #include "./ExecutorCommands/eIFA.h"
 #include "./ExecutorCommands/eIF.h"
-// #include "./ExecutorCommands/eASSIGNMENT.h"
+#include "./ExecutorCommands/eASSIGNMENT.h"
 
 /* ==============================================================================
 	Symbolic Constants
@@ -103,7 +103,7 @@ private:
 	eSUBP mainSUBPHandler;
 	eIFA mainIFAHandler;
 	eIF mainIFHandler;
-	// eASSIGNMENT mainASSIGNMENTHandler;
+	eASSIGNMENT mainASSIGNMENTHandler;
 
 	/* ==============================================================================
 		Private Methods

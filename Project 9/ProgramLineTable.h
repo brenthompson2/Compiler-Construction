@@ -54,7 +54,7 @@ using std::string;
 #define LWRITE_OP_CODE 17
 #define IF_OP_CODE 18
 #define CLS_OP_CODE 19
-// #define ASSIGNMENT_OP_CODE 20
+#define ASSIGNMENT_OP_CODE 20
 
 /* ==============================================================================
 	Type Definitions

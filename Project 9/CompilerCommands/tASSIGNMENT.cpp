@@ -2,7 +2,7 @@
 
 	File: tASSIGNMENT.cpp
 	Author: Brendan Thompson
-	Updated: 12/07/17
+	Updated: 12/10/17
 
 	Description: Implementation of Functions for processing ASSIGNMENT command for Compiler object made for Transylvania University University Fall Term 2017 Compiler Construction class
 
@@ -103,67 +103,63 @@ void tASSIGNMENT::syncVariablesToSymbolTable(){
 
 // tells the FileManager to print the object code for the command, which includes the command op code and the variable memoryLocations
 void tASSIGNMENT::outputASSIGNMENTCommand(string newExpression[], int numValsInNewExpression){
-	char firstChar;
+	char firstChar, secondChar;
 	int idCounter = 0;
 	int valueToOutput;
 
 	(*currentFileManager).writeStringToObj(ASSIGNMENT_OP_CODE);
 	(*currentFileManager).writeStringToObj(" ");
 
+	// cout << "\t\t[ASSIGNMENT]: Outputting obj code: ";
 	for (int i = 0; i <= numValsInNewExpression; i++){
 		firstChar = (newExpression[i])[0];
-		if ((isalpha(firstChar)) || (isdigit(firstChar))){
+		secondChar = (newExpression[i])[1];
+		if ((isalpha(firstChar)) || (isdigit(firstChar))
+			|| ((firstChar == '-') && (isdigit(secondChar)))){
 			valueToOutput = (globalVariableArray[idCounter]).memoryLocation;
 			idCounter++;
 		}
 		else {
-			if (firstChar == '-') { // Check for negative numbers
-				if ((newExpression[i]).length() > 1){
-					valueToOutput = (globalVariableArray[idCounter]).memoryLocation;
-					idCounter++;
-				}
-			}
-			else {
-				valueToOutput = getObjectCodeMapping(newExpression[i]);
-			}
+			valueToOutput = getObjectCodeMapping(firstChar);
 		}
 		(*currentFileManager).writeNumToObj((double) valueToOutput);
 		(*currentFileManager).writeStringToObj(" ");
+		// cout << valueToOutput << " ";
 	}
 	(*currentFileManager).writeStringToObj("\n");
 	return;
 }
 
 // Takes in an operator and returns the appropriate token for the obj file
-int tASSIGNMENT::getObjectCodeMapping(string currentInputValue){
+int tASSIGNMENT::getObjectCodeMapping(char currentInputValue){
 	int currentValueToken;
 	bool caseFound = false;
 
-	if (currentInputValue == "="){
+	if (currentInputValue == '='){
 		currentValueToken = OBJ_VALUE_EQUALS;
 		caseFound = true;
 	}
-	if (currentInputValue == "["){
+	if (currentInputValue == '['){
 		currentValueToken = OBJ_VALUE_LEFT_BRACKET;
 		caseFound = true;
 	}
-	if (currentInputValue == "^"){
+	if (currentInputValue == '^'){
 		currentValueToken = OBJ_VALUE_EXPONENT;
 		caseFound = true;
 	}
-	if (currentInputValue == "*"){
+	if (currentInputValue == '*'){
 		currentValueToken = OBJ_VALUE_TIMES;
 		caseFound = true;
 	}
-	if (currentInputValue == "/"){
+	if (currentInputValue == '/'){
 		currentValueToken = OBJ_VALUE_DIVIDE;
 		caseFound = true;
 	}
-	if (currentInputValue == "+"){
+	if (currentInputValue == '+'){
 		currentValueToken = OBJ_VALUE_PLUS;
 		caseFound = true;
 	}
-	if (currentInputValue == "-"){
+	if (currentInputValue == '-'){
 		currentValueToken = OBJ_VALUE_MINUS;
 		caseFound = true;
 	}
