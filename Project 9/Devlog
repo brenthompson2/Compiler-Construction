@@ -16,9 +16,9 @@ Brendan Thompson
 I) Summary of Work:
 	- Implemented Assignment
 	- Fixed Assignment Compiler issues
+	- Now Checking Compilation Result before attempting execution
 
 II) Need to Implement:
-	- Check Compilation Result before attempting execution
 
 II.IV) Should Implement
 	- Run Compiler & Executor with just the filename (don't need a period)
@@ -167,6 +167,10 @@ V) Log Of Activity:
 		- Fixed the bug by handling as a negative only if the lastChar was an operation
 	- Also Handled checking for end of line after operator
 		- Found error by peeking ahead to see if nextChar is endOfLine
+
+- Now Checking Compilation Result before attempting execution
+	- Added function to CoreMemory
+	- Checked immediately after loading the core and stops before loading the rest of the files
 
 
 =========================================================

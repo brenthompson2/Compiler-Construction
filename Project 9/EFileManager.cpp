@@ -42,6 +42,7 @@ EFileManager::~EFileManager(){
 bool EFileManager::prepareForExecution(string fileToExecute, ProgramLineTable *currentProgramManager, CoreMemory *currentMemoryManager, LiteralTable *currentLiteralManager){
 	// cout << "\t\t[FILE MANAGER]: Preparing For Execution..." << endl;
 	bool successfullyPrepared = false;
+	int failedCompilation = false;
 
 	ParentProgramManager = currentProgramManager;
 	ParentMemoryManager = currentMemoryManager;
@@ -51,7 +52,13 @@ bool EFileManager::prepareForExecution(string fileToExecute, ProgramLineTable *c
 	createFileNames(fileToExecute);
 	successfullyPrepared = openFiles();
 	if (successfullyPrepared){
-		loadProgram();
+		successfullyPrepared = !loadCoreMemory();
+		if (successfullyPrepared){
+			loadProgram();
+		}
+		else {
+			cout << "\t\t[FILE MANAGER]: Error! Compilation Had Failed\n";
+		}
 	}
 	else {
 		cout << "\t\t[FILE MANAGER]: Error! Unable to Open Files for Input\n";
@@ -60,11 +67,10 @@ bool EFileManager::prepareForExecution(string fileToExecute, ProgramLineTable *c
 	return successfullyPrepared;
 }
 
-// Loads the objInputFile, literalInputFile, and coreInputFile into their associated data structure
+// Loads the objInputFile and literalInputFile into their associated data structure and then calls closeFiles()
 void EFileManager::loadProgram(){
 	loadProgramLines();
 	loadLiterals();
-	loadCoreMemory();
 	closeFiles();
 	return;
 }
@@ -175,12 +181,12 @@ void EFileManager::loadLiterals(){
 	return;
 }
 
-// Parses the coreInputFile and syncs lines with the ParentMemoryManager
-void EFileManager::loadCoreMemory(){
+// Parses the coreInputFile and syncs lines with the ParentMemoryManager and returns the result of the compilation bit
+bool EFileManager::loadCoreMemory(){
 	string currentLine;
 	while (!(coreInputFile.eof())){
 		getline(coreInputFile, currentLine);
 		(*ParentMemoryManager).loadLine(currentLine);
 	}
-	return;
+	return  (*ParentMemoryManager).getCompilationResult();
 }

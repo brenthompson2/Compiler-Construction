@@ -216,6 +216,18 @@ void CoreMemory::printCoreMemory(int startIndex, int endIndex){
 	return;
 }
 
+// Returns 1 if compilation failed
+bool CoreMemory::getCompilationResult(){
+	int compilationResult;
+	compilationResult = getValueAsDouble(INDEX_COMPILATION_RESULT);
+	if (compilationResult){
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
 // prints out the globalArrayofArrayDimensions
 // void CoreMemory::printArrayDimension(){
 	// return;

@@ -31,6 +31,7 @@ using std::string;
 ============================================================================== */
 
 #define MAX_NUM_VARIABLES 1001
+#define INDEX_COMPILATION_RESULT (MAX_NUM_VARIABLES - 1)
 #define MAX_SIZE_TEMP_MEM 20
 #define INDEX_TEMP_MEM (MAX_NUM_VARIABLES - MAX_SIZE_TEMP_MEM - 1)
 #define NOT_FOUND_IN_ARRAY -1
@@ -108,6 +109,9 @@ public:
 
 	// prints out the Rvalue for every memoryLocation in CoreMemory from startIndex to endIndex - For Executor
 	void printCoreMemory(int startIndex, int endIndex);
+
+	// Returns 1 if compilation failed
+	bool getCompilationResult();
 
 	// prints out the globalArrayofArrayDimensions
 	// void printArrayDimension();

@@ -73,7 +73,7 @@ public:
 	// Sets the EFileManagers's Global FileNames & Links to the Parent's LineManager
 	bool prepareForExecution(string fileToExecute, ProgramLineTable *currentProgramManager, CoreMemory *currentMemoryManager, LiteralTable *currentLiteralManager);
 
-	// Loads the objInputFile, literalInputFile, and coreInputFile into their associated data structure
+	// Loads the objInputFile and literalInputFile into their associated data structure  and then calls closeFiles()
 	void loadProgram();
 
 private:
@@ -118,8 +118,8 @@ private:
 	// Parses the literalInputFile and syncs lines with the ParentLiteralManager
 	void loadLiterals();
 
-	// Parses the coreInputFile and syncs lines with the ParentMemoryManager
-	void loadCoreMemory();
+	// Parses the coreInputFile and syncs lines with the ParentMemoryManager and returns the result of the compilation bit
+	bool loadCoreMemory();
 };
 
 
