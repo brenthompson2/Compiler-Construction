@@ -109,6 +109,20 @@ bool parseArguments(int numArguments, char* *arrayOfArgs, char *arrayOfFlags, st
 			else {
 				(*fileName) = (arrayOfArgs[i]);
 				gotFilename = true;
+
+				// Append extension if not already part of filename
+				int sizeOfFilename = (*fileName).length();
+				bool foundPeriod = false;
+				char currentChar;
+				for (int i = 0; i < sizeOfFilename; i++){
+					currentChar = (*fileName)[i];
+					if (currentChar == '.'){
+						foundPeriod = true;
+					}
+				}
+				if (!foundPeriod){
+					(*fileName) += ".transy";
+				}
 			}
 		}
 	}

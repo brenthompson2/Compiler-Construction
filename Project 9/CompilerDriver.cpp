@@ -115,19 +115,33 @@ bool parseArguments(int numArguments, char* *arrayOfArgs, char *arrayOfFlags, st
 			// Parse Nested Flags
 			while (currentArg[flagIterator] != '\0'){
 				arrayOfFlags[(*numFlags)] = currentArg[flagIterator];
-				// cout << "[Driver]: Got Flag: " << i << ": " << arrayOfFlags[(*numFlags)] << endl;
+				// cout << "[Compiler Driver]: Got Flag: " << i << ": " << arrayOfFlags[(*numFlags)] << endl;
 				(*numFlags)++;
 				flagIterator++;
 			}
 		}
 		else {
 			if (i != numArguments -1){
-				cout << "[Driver]: Error: Expected Flag\n";
+				cout << "[Compiler Driver]: Error: Expected Flag\n";
 				return false;
 			}
 			else {
 				(*fileName) = (arrayOfArgs[i]);
 				gotFilename = true;
+
+				// Append extension if not already part of filename
+				int sizeOfFilename = (*fileName).length();
+				bool foundPeriod = false;
+				char currentChar;
+				for (int i = 0; i < sizeOfFilename; i++){
+					currentChar = (*fileName)[i];
+					if (currentChar == '.'){
+						foundPeriod = true;
+					}
+				}
+				if (!foundPeriod){
+					(*fileName) += ".transy";
+				}
 			}
 
 		}
@@ -137,7 +151,7 @@ bool parseArguments(int numArguments, char* *arrayOfArgs, char *arrayOfFlags, st
 		(*fileName) = "test1.transy";
 	}
 
-	// cout << "[Driver]: Got Filename: " << (*fileName) << endl;
+	// cout << "[Compiler Driver]: Got Filename: " << (*fileName) << endl;
 	return true;
 }
 
