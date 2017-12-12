@@ -110,5 +110,6 @@ private:
 		Private Members
 	============================================================================== */
 	ProgramLineObject programLineArray[MAX_NUM_LINES]; // array of code indexed in order of objLineNumber
+	ProgramLineObject *endOfFileProgramLine;
 	int globalNumLinesOfCode;
 };

@@ -15,6 +15,7 @@ Brendan Thompson
 
 I) Summary of Work:
 	- Allowed for calling using the filename without the extension
+	- Fixed memory leak
 
 II) Need to Implement:
 
@@ -31,7 +32,6 @@ II.IV) Should Implement
 		- Core memory should be just an array of doubles
 
 III) Thoughts:
-	- Could there be a memory leak coming from passing the ProgramLine as a pointer to the compiler?
 
 IV) Status:
 	- Executor Driver:
@@ -147,6 +147,9 @@ V) Log Of Activity:
 - Allowed for calling using the filename without the extension
 	- The FileManager parses till it sees the .
 		- Decided to just append it on there in the CompilerDriver & ExecutorDriver if it wasn't already there
+
+- Fixed memory leak with newly allocation endOfProgramLineObject in getCopyOfNextProgramObject()
+	- Now there is a global *endOfFileProgramLine that gets passed & properly de-allocated with the ProgramLineTable Class
 
 =========================================================
 =========================================================

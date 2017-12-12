@@ -18,6 +18,8 @@ Constructor & Destructor
 
 ProgramLineTable::ProgramLineTable(){
 	globalNumLinesOfCode = 0;
+	(*endOfFileProgramLine).numElementsInLine = END_OF_PROGRAM;
+	(*endOfFileProgramLine).opCode = END_OF_PROGRAM;
 	// cout << "\t\t[ProgramLineTable]: Initialized ProgramLineTable\n";
 	return;
 }
@@ -130,9 +132,7 @@ ProgramLineObject* ProgramLineTable::getCopyOfNextProgramObject(int nextProgramC
 		nextProgramLine = getCopyOfProgramObject(programLineArray[nextProgramCounter]);
 	}
 	else {
-		nextProgramLine = new ProgramLineObject();
-		(*nextProgramLine).numElementsInLine = END_OF_PROGRAM;
-		(*nextProgramLine).opCode = END_OF_PROGRAM;
+		nextProgramLine = endOfFileProgramLine;
 		// cout << "\t\t[ProgramLineTable]: Reached End Of Program " << (*nextProgramLine).numElementsInLine << "\n";
 	}
 	return nextProgramLine;
