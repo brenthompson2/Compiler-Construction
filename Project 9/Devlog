@@ -53,9 +53,6 @@ IV) Status:
 		- #define MAX_NUM_VARIABLES 1001
 		- #define MAX_SIZE_TEMP_MEM 20
 		- #define INDEX_TEMP_MEM (MAX_NUM_VARIABLES - MAX_SIZE_TEMP_MEM - 1)
-	- LiteralTable:
-		- manages literal phrases and their associated virtual memory locations
-		- calls on the FileManager to output .literal file
 	- ProgramLineTable
 		- loads every line from the .obj file
 		- #define ALL OF THE OP CODES
